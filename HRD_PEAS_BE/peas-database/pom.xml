@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 
+    <parent>
+		<groupId>hu.nextent.peas</groupId>
+		<artifactId>peas-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+	
+	<!--
+	mvn -P local,test-local -Dliquibase.contexts=test
+	-->
+	
+	
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>peas-liquibase</artifactId>
+	
+	<properties>
+		<liquibase.skip>true</liquibase.skip>
+		<liquibase.promptOnNonLocalDatabase>false</liquibase.promptOnNonLocalDatabase>
+		<liquibase.changeLogFile>src/main/resources/liquibase-changeLog.xml</liquibase.changeLogFile>
+	</properties>
+
+    <dependencies>
+        <!-- liquibase -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>test-local</id>
+            <properties>
+				<liquibase.skip>false</liquibase.skip>
+				<liquibase.contexts>local</liquibase.contexts>
+				<liquibase.driver>${local-liquibase-datasource-driver-class}</liquibase.driver>
+				<liquibase.url>${local-liquibase-datasource-url}</liquibase.url>
+				<liquibase.username>${local-liquibase-datasource-username}</liquibase.username>
+				<liquibase.password>${local-liquibase-datasource-password}</liquibase.password>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>test-demo</id>
+            <properties>
+				<liquibase.skip>false</liquibase.skip>
+				<liquibase.contexts>demo</liquibase.contexts>
+				<liquibase.driver>${demo-liquibase-datasource-driver-class}</liquibase.driver>
+				<liquibase.url>${demo-liquibase-datasource-url}</liquibase.url>
+				<liquibase.username>${demo-liquibase-datasource-username}</liquibase.username>
+				<liquibase.password>${demo-liquibase-datasource-password}</liquibase.password>
+            </properties>
+        </profile>
+    </profiles>
+
+
+</project>

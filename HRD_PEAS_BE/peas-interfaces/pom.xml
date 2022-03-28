@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 
+    <parent>
+        <artifactId>peas-parent</artifactId>
+        <groupId>hu.nextent.peas</groupId>
+        <version>1.0.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>peas-interface</artifactId>
+    <packaging>pom</packaging>
+	
+	<properties>
+		<gen-config-file>${project.parent.basedir}/src/main/resources/gen-config.json</gen-config-file>
+		<swaggergen-template-dir>${project.parent.basedir}/src/main/resources/JavaSpring</swaggergen-template-dir>
+		<base-package>hu.nextent.peas</base-package>
+		
+		
+    </properties>			
+	
+    <modules>
+        <module>model-gen</module>
+		<module>api-gen</module>
+		<module>doc-gen</module>
+    </modules>
+	
+	<build>
+        <defaultGoal>clean install</defaultGoal>
+		
+		<plugins>
+			<!-- http://khmarbaise.github.io/iterator-maven-plugin -->
+			<!-- Child pom use this configuration -->
+			<plugin>
+				<groupId>com.soebes.maven.plugins</groupId>
+				<artifactId>iterator-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>none</phase>
+						<goals>
+							<goal>iterator</goal>
+						</goals>
+						<configuration>
+							<itemsWithProperties>
+								<itemWithProperty>
+									<name>auth</name>
+									<properties>
+										<openapi>auth-api.yml</openapi>
+										<api-file>${swagger-api-dir}/${openapi}</api-file>
+										<pomWeb>pomWeb.xml</pomWeb>
+										<appName>PEAS Auth Api</appName>
+										<appDescription>PEAS Auth Application</appDescription>
+										<appVersion>1.0.0</appVersion>
+										<infoUrl>http://nextent.hu</infoUrl>
+										<infoEmail>apiteam@nextent.hu</infoEmail>
+									</properties>
+								</itemWithProperty>
+								<itemWithProperty>
+									<name>user</name>
+									<properties>
+										<openapi>user-api.yml</openapi>
+										<api-file>${swagger-api-dir}/${openapi}</api-file>
+										<pomWeb>pomWebWithAuth.xml</pomWeb>
+										<appName>PEAS User Api</appName>
+										<appDescription>PEAS User Application</appDescription>
+										<appVersion>1.0.0</appVersion>
+										<infoUrl>http://nextent.hu</infoUrl>
+										<infoEmail>apiteam@nextent.hu</infoEmail>
+									</properties>
+								</itemWithProperty>
+								<itemWithProperty>
+									<name>demo</name>
+									<properties>
+										<openapi>demo-api.yml</openapi>
+										<api-file>${swagger-api-dir}/${openapi}</api-file>
+										<pomWeb>pomWebWithAuth.xml</pomWeb>
+										<appName>PEAS Demo Api</appName>
+										<appDescription>PEAS Demo Application</appDescription>
+										<appVersion>1.0.0</appVersion>
+										<infoUrl>http://nextent.hu</infoUrl>
+										<infoEmail>apiteam@nextent.hu</infoEmail>
+									</properties>
+								</itemWithProperty>
+								<itemWithProperty>
+									<name>resource</name>
+									<properties>
+										<openapi>resource-api.yml</openapi>
+										<api-file>${swagger-api-dir}/${openapi}</api-file>
+										<pomWeb>pomWebWithAuth.xml</pomWeb>
+										<appName>PEAS Resources Api</appName>
+										<appDescription>PEAS Resources Application</appDescription>
+										<appVersion>1.0.0</appVersion>
+										<infoUrl>http://nextent.hu</infoUrl>
+										<infoEmail>apiteam@nextent.hu</infoEmail>
+									</properties>
+								</itemWithProperty>
+								<itemWithProperty>
+									<name>task</name>
+									<properties>
+										<openapi>task-api.yml</openapi>
+										<api-file>${swagger-api-dir}/${openapi}</api-file>
+										<pomWeb>pomWebWithAuth.xml</pomWeb>
+										<appName>PEAS Task Api</appName>
+										<appDescription>PEAS Task Application</appDescription>
+										<appVersion>1.0.0</appVersion>
+										<infoUrl>http://nextent.hu</infoUrl>
+										<infoEmail>apiteam@nextent.hu</infoEmail>
+									</properties>
+								</itemWithProperty>
+								<itemWithProperty>
+									<name>evaluation</name>
+									<properties>
+										<openapi>evaluation-api.yml</openapi>
+										<api-file>${swagger-api-dir}/${openapi}</api-file>
+										<pomWeb>pomWebWithAuth.xml</pomWeb>
+										<appName>PEAS Evaluation Api</appName>
+										<appDescription>PEAS Evaluation Application</appDescription>
+										<appVersion>1.0.0</appVersion>
+										<infoUrl>http://nextent.hu</infoUrl>
+										<infoEmail>apiteam@nextent.hu</infoEmail>
+									</properties>
+								</itemWithProperty>
+								<itemWithProperty>
+									<name>todo</name>
+									<properties>
+										<openapi>todo-api.yml</openapi>
+										<api-file>${swagger-api-dir}/${openapi}</api-file>
+										<pomWeb>pomWebWithAuth.xml</pomWeb>
+										<appName>PEAS ToDo Api</appName>
+										<appDescription>PEAS ToDo Application</appDescription>
+										<appVersion>1.0.0</appVersion>
+										<infoUrl>http://nextent.hu</infoUrl>
+										<infoEmail>apiteam@nextent.hu</infoEmail>
+									</properties>
+								</itemWithProperty>
+								<itemWithProperty>
+									<name>virtue</name>
+									<properties>
+										<openapi>virtue-api.yml</openapi>
+										<api-file>${swagger-api-dir}/${openapi}</api-file>
+										<pomWeb>pomWebWithAuth.xml</pomWeb>
+										<appName>PEAS Virtue Api</appName>
+										<appDescription>PEAS Virtue Application</appDescription>
+										<appVersion>1.0.0</appVersion>
+										<infoUrl>http://nextent.hu</infoUrl>
+										<infoEmail>apiteam@nextent.hu</infoEmail>
+									</properties>
+								</itemWithProperty>
+								<itemWithProperty>
+									<name>period</name>
+									<properties>
+										<openapi>period-api.yml</openapi>
+										<api-file>${swagger-api-dir}/${openapi}</api-file>
+										<pomWeb>pomWebWithAuth.xml</pomWeb>
+										<appName>PEAS Period Api</appName>
+										<appDescription>PEAS Period Application</appDescription>
+										<appVersion>1.0.0</appVersion>
+										<infoUrl>http://nextent.hu</infoUrl>
+										<infoEmail>apiteam@nextent.hu</infoEmail>
+									</properties>
+								</itemWithProperty>
+								<itemWithProperty>
+									<name>rating</name>
+									<properties>
+										<openapi>rating-api.yml</openapi>
+										<api-file>${swagger-api-dir}/${openapi}</api-file>
+										<pomWeb>pomWebWithAuth.xml</pomWeb>
+										<appName>PEAS Rating Rating</appName>
+										<appDescription>PEAS Period Application</appDescription>
+										<appVersion>1.0.0</appVersion>
+										<infoUrl>http://nextent.hu</infoUrl>
+										<infoEmail>apiteam@nextent.hu</infoEmail>
+									</properties>
+								</itemWithProperty>
+								<itemWithProperty>
+									<name>report</name>
+									<properties>
+										<openapi>report-api.yml</openapi>
+										<api-file>${swagger-api-dir}/${openapi}</api-file>
+										<pomWeb>pomWebWithAuth.xml</pomWeb>
+										<appName>PEAS Report Api</appName>
+										<appDescription>PEAS Report Application</appDescription>
+										<appVersion>1.0.0</appVersion>
+										<infoUrl>http://nextent.hu</infoUrl>
+										<infoEmail>apiteam@nextent.hu</infoEmail>
+									</properties>
+								</itemWithProperty>
+							</itemsWithProperties>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+				  <execution>
+					<id>copy to temp-generated-sources</id>
+					<phase>process-sources</phase>
+					<goals>
+					  <goal>copy-resources</goal>
+					</goals>
+					<configuration>
+					  <outputDirectory>target/temp-generated-sources</outputDirectory>
+					  <overwrite>true</overwrite>
+					  <resources>          
+						<resource>
+						  <directory>target/generated-sources</directory>
+						</resource>
+					  </resources>              
+					</configuration>            
+				  </execution>
+				</executions>
+			</plugin>
+		  
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>clean generated-sources</id>
+						<phase>process-sources</phase>
+						<goals>
+						  <goal>clean</goal>
+						</goals>
+						<configuration>
+						  <directory>target/generated-sources</directory>
+						</configuration>            
+					 </execution>
+				</executions>
+			
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>

@@ -1,0 +1,75 @@
+@import "../../../../assets/styles/utils/colors";
+
+.cdk-overlay-container {
+  z-index: 100000000000;
+}
+
+.mat-snack-bar-container {
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: block;
+  margin: 24px 24px -14px;
+  max-width: 33vw;
+  min-width: 344px;
+  padding: 0;
+  min-height: 48px;
+  transform-origin: center;
+  background-color: transparent;
+  box-shadow: none;
+  color: $white;
+}
+
+.cdk-overlay-pane {
+  display: block;
+}
+
+.mdc-snackbar {
+  opacity: 0;
+}
+
+.mdc-snackbar--open {
+  animation-name: open;
+  animation-duration: 0.3s;
+}
+
+.mdc-snackbar--closing {
+  animation-name: close;
+  animation-duration: 0.3s;
+  opacity: 0;
+}
+
+.close {
+  color: $white;
+  text-shadow: none;
+  opacity: 1;
+}
+
+.bg-success {
+  background-color: $tertiary-color !important;
+}
+
+.bg-info {
+  background-color: $secondary-color !important;
+}
+
+@keyframes open {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes close {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}

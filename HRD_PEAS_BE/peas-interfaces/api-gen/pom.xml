@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>peas-interface</artifactId>
+		<groupId>hu.nextent.peas</groupId>
+		<version>1.0.0</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>peas-api-gen</artifactId>
+	<packaging>pom</packaging>
+	<name>Api Skeleton Generator</name>
+	<build>
+		<defaultGoal>clean install</defaultGoal>
+		<plugins>
+			<!-- http://khmarbaise.github.io/iterator-maven-plugin -->
+			<!-- Api Skeleton generálás -->
+			<plugin>
+				<groupId>com.soebes.maven.plugins</groupId>
+				<artifactId>iterator-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>iterator</goal>
+						</goals>
+						<configuration>
+							
+							<pluginExecutors>
+								<!-- 
+									Minta futató projekt létrehozása
+								-->
+								<pluginExecutor>
+									<plugin>
+										<groupId>com.soebes.maven.plugins</groupId>
+										<artifactId>maven-echo-plugin</artifactId>
+									</plugin>
+									<goal>echo</goal>
+									<configuration>
+										<echos>
+											<echo>Model package: 	${base-package}.model</echo>
+											<echo>ApiDir: 			${api-file}</echo>
+											<echo>OneApi: 			${swagger-api-dir}</echo>
+											<echo>gen-config-file: 	${gen-config-file}</echo>
+											<echo>pomWeb: 		    ${pomWeb}</echo>
+										</echos>
+									</configuration>
+								</pluginExecutor>
+
+								<!-- tényleges generálás -->
+								<pluginExecutor>
+									<plugin>
+										<groupId>io.swagger.codegen.v3</groupId>
+										<artifactId>swagger-codegen-maven-plugin</artifactId>
+									</plugin>
+									<goal>generate</goal>
+									<configuration>
+										<inputSpec>${api-file}</inputSpec>
+										<output>target/generated-sources/peas-@item@</output>
+										<language>spring</language>
+										<library>spring-mvc</library>
+										<modelPackage>${base-package}.model</modelPackage>
+										<apiPackage>${base-package}.@item@.api</apiPackage>
+										<invokerPackage>${base-package}.@item@.web</invokerPackage>
+										<generateModels>true</generateModels>
+										<generateApis>true</generateApis>
+										<generateSupportingFiles>true</generateSupportingFiles>
+										<groupId>hu.nextent.peas</groupId>
+										<artifactId>peas-@item@</artifactId>
+										<configurationFile>${gen-config-file}</configurationFile>
+										<ignoreFileOverride>${project.basedir}/.swagger-codegen-ignore</ignoreFileOverride>
+										<templateDirectory>${swaggergen-template-dir}</templateDirectory>
+									</configuration>
+								</pluginExecutor>
+								
+								<pluginExecutor>
+									<plugin>
+										<groupId>com.google.code.maven-replacer-plugin</groupId>
+										<artifactId>maven-replacer-plugin</artifactId>
+									</plugin>
+									
+									<goal>replace</goal>
+									<configuration>
+										<file>./templates/swagger.properties</file>
+										<outputFile>target/generated-sources/peas-@item@/src/main/resources/swagger.properties</outputFile>
+										
+										<replacements>
+											<replacement><token>@@contextPath@@</token><value>peas-@item@</value></replacement>
+											<replacement><token>@@item.groupId@@</token><value>hu.nextent.peas</value></replacement>
+											<replacement><token>@@item.artifactId@@</token><value>peas-@item@</value></replacement>
+											<replacement><token>@@appName@@</token><value>${appName}</value></replacement>
+											<replacement><token>@@appDescription@@</token><value>${appDescription}</value></replacement>
+											<replacement><token>@@infoUrl@@</token><value>${infoUrl}</value></replacement>
+											<replacement><token>@@appVersion@@</token><value>${appVersion}</value></replacement>
+											<replacement><token>@@infoEmail@@</token><value>${infoEmail}</value></replacement>
+										</replacements>
+									</configuration>
+								</pluginExecutor>							
+
+								<!-- api pom.xml létrehozása -->
+								<pluginExecutor>
+									<plugin>
+										<groupId>com.google.code.maven-replacer-plugin</groupId>
+										<artifactId>maven-replacer-plugin</artifactId>
+									</plugin>
+									
+									<goal>replace</goal>
+									<configuration>
+										<file>./templates/pomApi.xml</file>
+										<outputFile>target/generated-sources/peas-@item@/pom.xml</outputFile>
+										
+										<replacements>
+											<replacement><token>@@contextPath@@</token><value>peas-@item@</value></replacement>
+											<replacement><token>@@item.groupId@@</token><value>hu.nextent.peas</value></replacement>
+											<replacement><token>@@item.artifactId@@</token><value>peas-@item@</value></replacement>
+										</replacements>
+									</configuration>
+								</pluginExecutor>
+								
+								<!-- web pom.xml létrehozása -->
+								<pluginExecutor>
+									<plugin>
+										<groupId>com.google.code.maven-replacer-plugin</groupId>
+										<artifactId>maven-replacer-plugin</artifactId>
+									</plugin>
+									
+									<goal>replace</goal>
+									<configuration>
+										<file>./templates/${pomWeb}</file>
+										<outputFile>target/generated-sources/peas-@item@/pomWeb.xml</outputFile>
+										
+										<replacements>
+											<replacement><token>@@contextPath@@</token><value>peas-@item@</value></replacement>
+											<replacement><token>@@item.groupId@@</token><value>hu.nextent.peas</value></replacement>
+											<replacement><token>@@item.artifactId@@</token><value>peas-@item@</value></replacement>
+										</replacements>
+									</configuration>
+								</pluginExecutor>
+
+
+								<!-- webapp másolása -->
+								<pluginExecutor>
+									<plugin>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-resources-plugin</artifactId>
+									</plugin>
+									
+									<goal>copy-resources</goal>
+									
+									<configuration>
+										<outputDirectory>target/generated-sources/peas-@item@/src/main/webapp</outputDirectory>
+										<resources>
+											<resource>
+												<directory>templates/webapp</directory>
+												<filtering>true</filtering>
+											</resource>
+										</resources>
+									</configuration>
+								</pluginExecutor>
+								
+							</pluginExecutors>	
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

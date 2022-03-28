@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- template source: jboss-web.xml -->
+<jboss-web>
+    <context-root>/peas-task</context-root>
+</jboss-web>

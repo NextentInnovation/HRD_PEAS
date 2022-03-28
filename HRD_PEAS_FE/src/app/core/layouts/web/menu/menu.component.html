@@ -1,0 +1,24 @@
+<nav>
+    <ul>
+        <li (click)="menuClicked()">
+            <a [routerLink]="'/'" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">{{ 'menu.main_site' | translate }}</a>
+        </li>
+        <li (click)="menuClicked()">
+            <a [routerLink]="'/' + SiteURLS.TO_DO.BASE" [ngClass]="{ 'active' : isThisUrl('/' + SiteURLS.RATING.BASE) || isThisUrl('/' + SiteURLS.TO_DO.BASE) }">{{ 'menu.to_do' | translate }}</a>
+        </li>
+        <li (click)="menuClicked()">
+            <a [routerLink]="'/' + SiteURLS.TASK.BASE" routerLinkActive="active">{{ 'menu.task' | translate }}</a>
+        </li>
+        <li (click)="menuClicked()">
+            <a [routerLink]="'/' + SiteURLS.REPORT.PERSONAL_BASE + '/' + SiteURLS.REPORT.EVALUATED + '/active'"
+               [ngClass]="{ 'active' : isThisUrl('/' + SiteURLS.REPORT.PERSONAL_BASE + '/' + SiteURLS.REPORT.EVALUATED) }">{{ 'menu.personal' | translate }}</a>
+        </li>
+        <li (click)="menuClicked()" *peasHasAnyPermission="[Permissions.HR, Permissions.LEADER]">
+            <a [routerLink]="'/' + SiteURLS.REPORT.BASE" routerLinkActive="active">{{ 'menu.report' | translate }}</a>
+        </li>
+        <!--li class="line"></li>
+        <li (click)="menuClicked()">
+            <a [routerLink]="'/' + SiteURLS.SETTINGS.BASE + '/' + SiteURLS.SETTINGS.PERIOD_LIST" routerLinkActive="active">{{ 'menu.periods' | translate }}</a>
+        </li-->
+    </ul>
+</nav>

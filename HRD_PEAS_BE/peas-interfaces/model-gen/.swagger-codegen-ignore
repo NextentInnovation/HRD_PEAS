@@ -1,0 +1,6 @@
+# Swagger Codegen Ignore
+target/generated-sources/src/test/
+target/generated-sources/src/main/resources/
+target/generated-sources/src/**/config/
+
+

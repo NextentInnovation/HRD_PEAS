@@ -1,0 +1,15 @@
+<div class="page-sizer-wrapper">
+  <span class="page-sizer-label text-muted">
+    {{ 'table_control.page_size.size.text' | translate }}
+  </span>
+    <select [(ngModel)]="config.defaultPageSize" (change)="onChange( config.defaultPageSize )">
+      <option *ngFor="let size of sizes" [value]="size" >{{size}}</option>
+    </select>
+  <!--
+  <mat-form-field>
+    <mat-select [(ngModel)]="config.defaultPageSize" (selectionChange)="onChange( config.defaultPageSize )">
+      <mat-option *ngFor="let size of sizes" [value]="size" >{{size}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  -->
+</div>

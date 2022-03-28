@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<property name="LOG_DIR" value="/opt/wildfly-17.0.1.Final/standalone/log"/>
+	<property name="LOG_FILE_PREFIX" value="peas"/>
+	<property name="LOG_FILE" value="${LOG_DIR}/${LOG_FILE_PREFIX}.log"/>
+	<property name="LOG_FILE_PATTERN" value="${LOG_DIR}/${LOG_FILE_PREFIX}.%d{yyyy-MM-dd}.%i.log.gz"/>
+	
+	<property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd};%d{HH:mm:ss.SSS};%t;%5p;%logger{25};%m%n"/>
+	 
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoder>
+			<pattern>${FILE_LOG_PATTERN}</pattern>
+		</encoder>
+		<file>${LOG_FILE}</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_FILE_PATTERN}</fileNamePattern>
+			<maxFileSize>10MB</maxFileSize>
+		</rollingPolicy>
+	</appender>
+	
+	<appender name="CONSOL" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+	 
+
+	<springProfile name="!test">
+		<root level="DEBUG">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="FILE" />
+		</root>
+
+		<logger name="org.hibernate.SQL" level="INFO" additivity="false"/>
+		<logger name="org.hibernate.type" level="INFO" additivity="false"/>
+		<logger name="io.swagger.models.parameters.AbstractSerializableParameter" level="ERROR" additivity="false"/>
+		<logger name="liquibase" level="ERROR" additivity="false"/>
+	</springProfile>
+
+	<springProfile name="test">
+		<root level="DEBUG">
+			<appender-ref ref="CONSOLE" />
+		</root>
+
+		<logger name="org.hibernate.SQL" level="INFO" additivity="false"/>
+		<logger name="org.hibernate.type" level="INFO" additivity="false"/>
+		<logger name="io.swagger.models.parameters.AbstractSerializableParameter" level="ERROR" additivity="false"/>
+		<logger name="liquibase" level="ERROR" additivity="false"/>
+	</springProfile>
+
+</configuration>

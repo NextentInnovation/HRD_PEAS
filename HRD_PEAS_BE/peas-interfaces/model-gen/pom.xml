@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>peas-interface</artifactId>
+		<groupId>hu.nextent.peas</groupId>
+		<version>1.0.0</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>peas-interface-model</artifactId>
+	<packaging>jar</packaging>
+	<name>Api Model Generator</name>
+	
+	<build>
+		<defaultGoal>clean install</defaultGoal>
+		<plugins>
+			<!-- http://khmarbaise.github.io/iterator-maven-plugin -->
+			<!-- Model generálás -->
+			<plugin>
+				<groupId>com.soebes.maven.plugins</groupId>
+				<artifactId>iterator-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>iterator</goal>
+						</goals>
+						<configuration>
+							<pluginExecutors>
+								<pluginExecutor>
+									<plugin>
+										<groupId>com.soebes.maven.plugins</groupId>
+										<artifactId>maven-echo-plugin</artifactId>
+									</plugin>
+									<goal>echo</goal>
+									<configuration>
+										<echos>
+											<echo>Generate: 		@item@ api model</echo>
+											<echo>Model package: 	${base-package}.model</echo>
+											<echo>ApiDir: 			${api-file}</echo>
+											<echo>OneApi: 			${swagger-api-dir}</echo>
+										</echos>
+									</configuration>
+								</pluginExecutor>
+								
+								<pluginExecutor>
+									<plugin>
+										<groupId>io.swagger.codegen.v3</groupId>
+										<artifactId>swagger-codegen-maven-plugin</artifactId>
+									</plugin>
+
+									<goal>generate</goal>
+									<configuration>
+										<inputSpec>${api-file}</inputSpec>
+										<output>target/generated-sources</output>
+										<language>spring</language>
+										<library>spring-mvc</library>
+										<modelPackage>${base-package}.model</modelPackage>
+										<apiPackage>${base-package}.@item@</apiPackage>
+										<invokerPackage>${base-package}.@item@.web</invokerPackage>
+										<generateModels>true</generateModels>
+										<generateApis>false</generateApis>
+										<generateSupportingFiles>false</generateSupportingFiles>
+										<groupId>hu.nextent.peas</groupId>
+										<artifactId>peas-interface-model-@item@</artifactId>
+										<configurationFile>${gen-config-file}</configurationFile>
+										<ignoreFileOverride>${project.basedir}/.swagger-codegen-ignore</ignoreFileOverride>
+										<!--
+										<templateDirectory>${swaggergen-template-dir}</templateDirectory>
+										-->
+										<configOptions>
+											<configPackage>${base.package}.@item@.config</configPackage>
+										</configOptions>
+									</configuration>
+								</pluginExecutor>
+							</pluginExecutors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/temp-generated-sources/src/main/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

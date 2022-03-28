@@ -1,0 +1,114 @@
+<peas-card [title]="'to_do_list.card.title' | translate">
+    <peas-table [options]="tableOptions" (refresh)="getList()" [list]="list">
+        <table class="table table-sm table-striped">
+
+            <thead class="thead-inverse">
+            <tr>
+                <th></th>
+                <th peas-sortable-column="deadline">{{ 'to_do_list.table.header.deadline' | translate }}</th>
+                <th>{{ 'to_do_list.table.header.message' | translate }}</th>
+                <th peas-sortable-column="status">{{ 'to_do_list.table.header.status' | translate }}</th>
+                <th peas-sortable-column="taskStatus">{{ 'to_do_list.table.header.task_status' | translate }}</th>
+            </tr>
+
+            <tr class="search-row">
+                <td class="small-icon-button">
+                    <sas-search-button [searchObject]="search"></sas-search-button>
+                </td>
+                <td class="inline-2date">
+                    <!--input disabled class="form-control form-control-sm" peasSearchColumn name="createTo" type="text"/-->
+                    <p-calendar peasSearchColumn
+                                [(ngModel)]="search.deadlineRange.min"
+                                [maxDate]="search.deadlineRange.max"
+                                [locale]="calendarLocalConfig"
+                                dateFormat="yy-mm-dd"
+                                showButtonBar="true"
+                                [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                [monthNavigator]="true"></p-calendar>-<p-calendar peasSearchColumn
+                                                                                  [(ngModel)]="search.deadlineRange.max"
+                                                                                  [minDate]="search.deadlineRange.min"
+                                                                                  [locale]="calendarLocalConfig"
+                                                                                  dateFormat="yy-mm-dd"
+                                                                                  showButtonBar="true"
+                                                                                  [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                                                                  [monthNavigator]="true"></p-calendar>
+                </td>
+                <td style="max-width: 300px;">
+                    <ng-select peasSearchColumn name="taskStatus" #select
+                               [notFoundText]="'global.select.search.not_found' | translate"
+                               [items]="toDoTypes"
+                               [(ngModel)]="search.todoType"
+                               [multiple]="true"
+                               [closeOnSelect]="true"
+                               [searchable]="false"
+                               (close)="select.ngOnChanges(null)">
+                        <ng-template ng-label-tmp let-item="item">
+                            <span class="ng-value-label ng-star-inserted">{{ 'constants.to_do_type.' + item.toLowerCase() | translate }}</span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item">
+                            <span class="ng-option-label ng-star-inserted">{{ 'constants.to_do_type.' + item.toLowerCase() | translate }}</span>
+                        </ng-template>
+                    </ng-select>
+                </td>
+                <td style="max-width: 300px;">
+                    <ng-select peasSearchColumn name="taskStatus" #select
+                               [notFoundText]="'global.select.search.not_found' | translate"
+                               [items]="toDoStatuses"
+                               [(ngModel)]="search.status"
+                               [multiple]="true"
+                               [closeOnSelect]="true"
+                               [searchable]="false"
+                               (close)="select.ngOnChanges(null)">
+                        <ng-template ng-label-tmp let-item="item">
+                            <span class="ng-value-label ng-star-inserted">{{ 'constants.to_do_status.' + item.toLowerCase() | translate }}</span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item">
+                            <span class="ng-option-label ng-star-inserted">{{ 'constants.to_do_status.' + item.toLowerCase() | translate }}</span>
+                        </ng-template>
+                    </ng-select>
+                </td>
+                <td class="inline-2date">
+                    <p-calendar peasSearchColumn
+                                [(ngModel)]="search.doneRange.min"
+                                [maxDate]="search.doneRange.max"
+                                [locale]="calendarLocalConfig"
+                                dateFormat="yy-mm-dd"
+                                showButtonBar="true"
+                                [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                [monthNavigator]="true"></p-calendar>-<p-calendar peasSearchColumn
+                                                                                  [(ngModel)]="search.doneRange.max"
+                                                                                  [minDate]="search.doneRange.min"
+                                                                                  [locale]="calendarLocalConfig"
+                                                                                  dateFormat="yy-mm-dd"
+                                                                                  showButtonBar="true"
+                                                                                  [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                                                                  [monthNavigator]="true"></p-calendar>
+                </td>
+            </tr>
+            </thead>
+
+            <tbody id="{{ tableOptions.name }}">
+            <tr *ngFor="let o of list  | paginate: tableOptions.paginationConfig">
+                <td>
+                    <div class="btn-group" dropdown *ngIf="o.status === toDoStatus.OPEN">
+                        <button class="btn btn-lg dropdown-toggle" dropdownToggle><i class="fas fa-ellipsis-v"></i></button>
+                        <ul class="dropdown-menu" *dropdownMenu>
+                            <li>
+                                <button class="dropdown-item" (click)="goToReferenceAction(o)">
+                                    <i class="far fa-hand-point-right"></i> {{ 'to_do_list.table.row.button.execute' | translate }}
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                <td (click)="goToReferenceAction(o)" [innerHTML]="DateUtils.formatHours((o?.deadline | date:DateUtils.DATE_TIME_FORMAT))"></td>
+                <td (click)="goToReferenceAction(o)">{{o?.message}}</td>
+                <td (click)="goToReferenceAction(o)">{{ o && o.status ? ('constants.to_do_status.' + o.status.toLowerCase() | translate) : '' }}</td>
+                <td (click)="goToReferenceAction(o)" [innerHTML]="DateUtils.formatHours((o?.done | date:DateUtils.DATE_TIME_FORMAT))"></td>
+            </tr>
+            </tbody>
+
+        </table>
+    </peas-table>
+
+</peas-card>

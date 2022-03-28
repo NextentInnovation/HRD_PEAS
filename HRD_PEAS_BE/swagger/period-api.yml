@@ -1,0 +1,258 @@
+openapi: "3.0.0"
+info:
+  title: PEAS Period API
+  description: Periódus interfészek
+  version: 1.0.0
+  contact:
+    name: Nextent Informatics
+    email: apiteam@nextent.hu
+    url: http://nextent.hu
+servers:
+  - url: "http://127.0.0.1:8080/peas-period"
+    description: local szerver
+  - url: "http://localhost:8080/peas-period"
+    description: local szerver
+  - url: "http://wildfly-peas.nextentdmz.hu:8080/peas-period"
+    description: demo szerver
+tags:
+  - name: period
+    description: Periódus
+
+
+paths:
+  /period_v1:
+    put:
+      tags:
+        - period
+      summary: Periódus lista lekérdezése
+      description: >-
+        A periódusok adatainak visszaadása szűrhető és rendezhető módon.  
+          
+        Ellenőrzés:
+          - Csak üzleti admin szerepkör férhet hozzá (BUSINESS_ADMIN).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PeriodQueryParameterModel"
+      operationId: queryPeriod
+      responses:
+        200:
+          description: Periódus lista lekérdezése
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/PeriodPageModel"
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+    
+    post:
+      tags:
+        - period
+      summary: Új periódus létrehozása
+      description: >-
+        Új periódus adatainak mentése.  
+          
+        Ellenőrzés:
+          - Csak üzleti admin szerepkör férhet hozzá (BUSINESS_ADMIN).
+          
+        Megadott adatok javítása:
+          - Ha nincs megadva valamely adat, generálni kell.
+          - Ha nincs megadva a vége dátum, a minősítés vége dátum is generálásra kerül.
+          - Vége dátuma az előző periódus minősítés vége dátum utáni. Ha nem így van, a dátumok generálódnak.
+          - Minősítés vége dátuma a vége dátum utáni. Ha nem így van, generálódik.
+          - A névnek egyedinek kell lennie. Ha nem így van, úgy generálódik, hogy egyedi legyen.
+          
+        Működés:
+          - Adatok alapján új periódus létrehozása.
+      operationId: createPeriod
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "common.yml#/components/CreatePeriodModel"
+      responses:
+        200:
+          description: >-
+            Új periódus létrehozása
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/PeriodModel"
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+  /period_v1/{periodId}:
+    parameters:
+      - name: periodId
+        in: path
+        required: true
+        description: Kiválasztott periódus azonosítója
+        schema:
+          type: integer
+          format: int64  
+          nullable: false
+    get:
+      tags:
+        - period
+      summary: Egy periódus lekérdezése
+      description: >-
+        Egy periódus lekérdezése azonosító alapján.  
+          
+        Ellenőrzés:
+          - Csak üzleti admin szerepkör férhet hozzá (BUSINESS_ADMIN).
+
+      operationId: getPeriod
+      responses:
+        200:
+          description: Periódus lekérdezás
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/PeriodModel"
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+    put:
+      tags:
+        - period
+      summary: Egy periódus módosítása
+      description: >-
+        Periódus adatainak mentése.  
+          
+        Ellenőrzés:
+          - Csak üzleti admin szerepkör férhet hozzá (BUSINESS_ADMIN).
+          
+        Megadott adatok javítása:
+          - Csak a periódus állapotának megfelelő adatok változhatnak:
+            - Jövőbeli: name, vége, minősítés vége
+            - Aktuális: név, vége (csak jövőbeli lehet), minősítés vége
+            - Minősítés alatt: név, minősítés vége (csak jövőbeli lehet)
+            - Lezárt: név
+          - Ha nincs megadva valamely adat, generálni kell.
+          - Ha nincs megadva a vége dátum, a minősítés vége dátum is generálásra kerül.
+          - Vége dátuma az előző periódus minősítés vége dátum utáni. Ha nem így van, a dátumok generálódnak.
+          - Minősítés vége dátuma a vége dátum utáni. Ha nem így van, generálódik.
+          - A névnek egyedinek kell lennie. Ha nem így van, úgy generálódik, hogy egyedi legyen.
+          
+        Működés:
+          - Adatok alapján periódus mentése.
+          - Ha változott a minősítés vége dátum, a következő periódusok vége dátumai sorra ellenőrzendőek és módosítandóak, ha korábbi.
+      operationId: modifyPeriod
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "common.yml#/components/PeriodModel"
+      responses:
+        200:
+          description: Periódus lekérdezás
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/PeriodModel"
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+    delete:
+      tags:
+        - period
+      summary: Periódus törlése
+      description: >-
+        Periódus törlése.  
+          
+        Ellenőrzés:
+          - Csak üzleti admin szerepkör férhet hozzá (BUSINESS_ADMIN).
+          - Csak a legutolsó jövőbeli periódus törölhető.
+
+        Művelet:
+          - Periódus törlése.
+      operationId: deletePeriod
+      responses:
+        200:
+          description: Sikeres törlés
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+  /period_v1/next:
+    get:
+      tags:
+        - period
+      summary: Követekező periódus minta lekérdezése
+      description: >-
+        A periódus létrehozásához az utolsó periódus utánit generáló minta lekérdezése.
+      operationId: periodTemplate
+      responses:
+        200:
+          description: Minta periódus
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/CreatePeriodModel"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+components:
+  schemas:
+    PeriodQueryParameterModel:
+      description: >-
+        A periódusok adatainak visszaadása szűrhető és rendezhető módon.
+      allOf:
+        - $ref: "common.yml#/components/PagingAndSortingModel"
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              nullable: true
+              description: Periódus azonosító
+              example: 12
+            status:
+              type: array
+              items: 
+                type: string
+              description: >-
+                Periódus állapota
+                Érték készlete:
+                  - FUTURE
+                  - ACTIVE
+                  - RATING
+                  - CLOSED
+              example: 
+                - ACTIVE
+            name:
+              type: string
+              nullable: true
+              description: Periódus neve
+              example: Aktív periódus
+            startDateRange:
+              $ref: "common.yml#/components/RangeDateTimeModel"
+              example:
+                min: 2019-10-01T00:00:01Z
+                max: 2019-10-02T00:00:00Z
+            endDateRange:
+              $ref: "common.yml#/components/RangeDateTimeModel"
+              example:
+                min: 2019-10-01T00:00:01Z
+                max: 2019-10-02T00:00:00Z
+
+
+  securitySchemes:
+    bearerAuth:  # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+
+security:
+  - bearerAuth: []

@@ -1,0 +1,78 @@
+# Amikor env alapon fog működni a kitelepítés ide kell felvenni a 
+# wildfly és mysql tulajdonságokat
+variables:
+  ARTIFACT_NAME: "peas-web-1.0.0.war"
+  WILDFLY_HQ_USER: "root"
+  WILDFLY_HQ_HOST: "192.168.102.206"
+  AUTODEPLOY_PATH: "/opt/wildfly-17.0.1.Final/standalone/deployments"
+  
+  GIT_DEPTH: 10
+  MAVEN_CLI_OPTS: "--batch-mode -Dmaven.test.skip=true"
+  PROFILES: "demo"
+
+stages:
+  - build
+  - deploy
+#  - update_test_database
+
+
+
+
+build:
+  image: maven:3.6.1-jdk-8-alpine
+  stage: build
+  script:
+    - echo "build"
+    - echo mvn $MAVEN_CLI_OPTS clean install -P $PROFILES
+    - mvn $MAVEN_CLI_OPTS clean install -P $PROFILES
+  only:
+    - develop
+    - demo
+  cache:
+    paths:
+      - .m2
+  artifacts:
+    paths:
+      - peas-app/peas-web/target/*.war
+    expire_in: 1 week
+ 
+
+deploy-demo:
+  stage: deploy
+  image: registry.nextentdmz.hu:5000/peas/builder/fe-war:1.0
+  script:
+    - echo "deploy"
+    # Undeploy
+    - echo $WILDFLY_SERVER_SSH_KEY | base64 -d > private.key
+    - chmod 600 private.key
+    - ssh -oStrictHostKeyChecking=no -i private.key $WILDFLY_HQ_USER@$WILDFLY_HQ_HOST rm -f $AUTODEPLOY_PATH/$ARTIFACT_NAME
+    - sleep 3
+    # Copy Deploy to autodeploy dir
+    - scp -i private.key peas-app/peas-web/target/$ARTIFACT_NAME $WILDFLY_HQ_USER@$WILDFLY_HQ_HOST:$AUTODEPLOY_PATH/$ARTIFACT_NAME
+  when: manual
+  only:
+    - develop
+    - demo
+
+# update_test_database:
+#   image: maven:latest
+#   stage: update_test_database
+#   dependencies:
+#     - build
+#     - deploy-auth-test
+#     - deploy-mdm-test
+#     - deploy-cargo-handling-test
+#   script:
+#     - echo "liquibase drop all objects"
+#     - mvn liquibase:dropAll -P liquibase-test-remote -f SAS-Liquibase/pom.xml
+#     - echo "liquibase update"
+#     - mvn liquibase:update -P liquibase-test-remote -Dliquibase.contexts=test -f SAS-Liquibase/pom.xml
+#   environment:
+#     name: test
+#     url: http://wildfly-tmx-tst.nextentdmz.hu:9990
+#   when: on_success
+#   tags:
+#     - gitlab-sas-runner
+#   only:
+#     - test
+

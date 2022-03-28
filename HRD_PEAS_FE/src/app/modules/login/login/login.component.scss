@@ -1,0 +1,32 @@
+@import "../../../../assets/styles/utils/colors";
+
+.login-card {
+  width: 400px;
+  margin: auto;
+  margin-top: calc(50vh - 200px);
+}
+
+.card-header {
+  display: block;
+}
+
+.logo {
+  width: 100%;
+  top: -25px;
+  position: relative;
+}
+
+h1 {
+  font-size: 2rem;
+  position: absolute;
+  top: 122px;
+  left: 114px;
+  color: $primary-color;
+}
+
+button {
+  width: calc(100% - 50px);
+  margin-left: 25px;
+  margin-right: 25px;
+  display: block;
+}

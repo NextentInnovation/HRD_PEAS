@@ -1,0 +1,297 @@
+@import "colors";
+
+.ui-float-label {
+  text-align: center;
+
+  input {
+    width: 90% !important;
+    margin: auto;
+    background-clip: padding-box !important;
+    border: 1px solid $primary-color !important;
+    border-radius: 0.25rem !important;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+  }
+
+  input:focus {
+    color: #495057 !important;
+    border-color: #80bdff !important;
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+  }
+
+  label {
+    left: calc(5% + 10px) !important;
+    color: $primary-color !important;
+  }
+}
+
+.ui-chkbox .ui-chkbox-box.ui-state-active {
+  border-color: $primary-border-color !important;
+  background-color: $primary-color !important;
+  color: $white !important;
+}
+
+.ui-inputswitch.ui-inputswitch-checked .ui-inputswitch-slider {
+  background-color: $primary-color !important;
+}
+
+.upper-label-group {
+  width: 100%;
+  padding-left: 0px;
+  padding-right: 0px;
+  display: block;
+  margin-bottom: 20px;
+
+  .input, .ui-dropdown, .ui-multiselect {
+    display: block;
+    min-height: 35px;
+    height: auto;
+    width: 100% !important;
+    background-clip: padding-box !important;
+    border: 1px solid $primary-color !important;
+    border-radius: 0.25rem !important;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+  }
+
+  .input:focus, .ui-dropdown:focus, .ui-multiselect:focus {
+    color: #495057 !important;
+    border-color: #80bdff !important;
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+  }
+
+  .ui-dropdown .ui-dropdown-clear-icon {
+    color: $primary-color;
+  }
+
+  .ui-dropdown .ui-dropdown-trigger {
+    color: $primary-color !important;
+  }
+
+  .ui-multiselect .ui-multiselect-trigger {
+    color: $primary-color !important;
+  }
+
+  .ui-multiselect-panel .ui-multiselect-header {
+    display: inline-block;
+    width: 100%;
+
+    .ui-multiselect-close {
+      color: $primary-color;
+    }
+  }
+
+  .ui-multiselect-panel .ui-multiselect-header .ui-multiselect-filter-container {
+    width: calc(100% - 50px);
+  }
+
+
+  .ui-multiselect-panel .ui-multiselect-items .ui-multiselect-item {
+    .multiselect-item-with-switch {
+      display: inline-flex;
+      width: calc(100% - 25px);
+    }
+
+    span {
+      display: flex;
+      margin-left: auto;
+
+      label {
+        line-height: 24px;
+        margin: 0 5px;
+        padding: 0;
+      }
+    }
+
+    label {
+      vertical-align: initial;
+      white-space: normal;
+    }
+  }
+
+  .ui-multiselect-panel .ui-multiselect-items .ui-multiselect-item.ui-state-highlight {
+    color: $white;
+    background-color: $secondary-color;
+  }
+
+  .ui-multiselect .ui-multiselect-label {
+    padding-bottom: 0 !important;
+
+    .delete-item-icon {
+      margin: auto;
+    }
+
+    .delete-item-icon {
+      margin: auto 5px;
+      background: $white;
+      border-radius: inherit;
+      color: $primary-color;
+    }
+
+    span {
+      background-color: $secondary-color;
+      color: $white;
+      padding: 5px;
+      margin-right: 5px;
+      border-radius: 10px;
+      display: inline-flex;
+      margin-bottom: 5px;
+      white-space: normal;
+    }
+
+    span.required {
+      background-color: $primary-color;
+    }
+
+    span.required:after {
+      content: ' *';
+      color: $white;
+    }
+  }
+
+  .ui-selectbutton {
+    display: block;
+    width: 100%;
+    border-radius: 0.25rem;
+    overflow: hidden;
+
+    .ui-button {
+      background-color: $white;
+      border: 1px solid $primary-color;
+      color: $primary-color !important;
+      width: 100%;
+      line-height: 35px;
+    }
+
+    .button-info {
+      padding: 5px;
+      float: right;
+      margin-right: 0px;
+      font-size: 22px;
+      line-height: 24px;
+    }
+
+    .ui-button:hover {
+      background-color: $secondary-color !important;
+      border: 1px solid $primary-border-color !important;
+      color: $white !important;
+    }
+
+    .ui-button.ui-state-active {
+      background-color: $primary-color !important;
+      border-color: $primary-border-color !important;
+      color: $white !important;
+    }
+
+    .ui-button.ui-state-active:not(.ui-state-disabled):hover {
+      background-color: $primary-color;
+      border-color: $primary-border-color;
+      color: $white;
+    }
+  }
+
+  p-calendar {
+    display: block;
+    width: 100%;
+
+    .ui-calendar {
+      width: 100%;
+
+      input {
+        display: block;
+        min-height: 35px;
+        height: auto;
+        width: 100% !important;
+        background-clip: padding-box !important;
+        border: 1px solid $primary-color !important;
+        border-radius: 0.25rem !important;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+      }
+
+      input:focus {
+        color: #495057 !important;
+        border-color: #80bdff !important;
+        outline: 0 !important;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+      }
+
+      .ui-inputtext:enabled:hover:not(.ui-state-error) {
+        border-color: $primary-color !important;
+      }
+    }
+
+  }
+
+  @media (min-width: 576px) {
+    .ui-selectbutton {
+      display: flex !important;
+
+      .ui-button {
+        flex-basis: 0;
+        flex-grow: 1;
+        max-width: 100%;
+      }
+    }
+  }
+
+  .upper-label {
+    display: block;
+    font-weight: bold;
+    pointer-events: none;
+    transition: .3s ease all;
+    -moz-transition: .3s;
+    -webkit-transition: .3s;
+    color: $primary-color;
+    line-height: 1;
+    font-size: 12px;
+  }
+
+  .big-label {
+    font-size: 18px;
+  }
+}
+
+.inline-label-group {
+  display: flex;
+  label {
+    margin-left: 10px;
+    font-weight: bold;
+    color: $primary-color;
+  }
+}
+
+.outbox-button-row {
+  margin-top: 10px;
+
+  .mat-raised-button.mat-primary {
+    background-color: $white;
+    color: $primary-color;
+  }
+
+  .mat-raised-button.mat-accent {
+    background-color: $white;
+    color: $primary-color;
+  }
+
+  .mat-raised-button[disabled]:not([class*=mat-elevation-z]) {
+    background-color: #c9e1ff;
+    color: #0b79fe;
+  }
+
+  .mat-raised-button {
+    font-size: 17px;
+  }
+}
+
+.ui-listbox {
+  width: 100% !important;
+  overflow: auto;
+  border: 1px solid $primary-color !important;
+  border-radius: 0.25rem !important;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+
+  .ui-listbox-list .ui-listbox-item.ui-state-highlight {
+    color: $white !important;
+    background-color: $primary-color !important;
+  }
+}

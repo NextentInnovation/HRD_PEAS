@@ -1,0 +1,16 @@
+//@import '../../../../assets/styles/utils/variables';
+//@import '../../../../assets/styles/utils/colors';
+.v-align-center-parent {
+  position: relative;
+}
+.v-align-center{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+h1 {
+  color: #fff;
+  margin: 20px;
+}

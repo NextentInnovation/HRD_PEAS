@@ -1,0 +1,62 @@
+openapi: "3.0.0"
+info:
+  title: PEAS Demo API
+  description: PEAS Demo Application
+  version: 1.0.0
+  contact:
+    name: Nextent Informatics
+    email: apiteam@nextent.hu
+    url: http://nextent.hu
+servers:
+  - url: "http://127.0.0.1:8080/peas-demo"
+    description: local szerver
+  - url: "http://localhost:8080/peas-demo"
+    description: local szerver
+  - url: "http://wildfly-peas.nextentdmz.hu:8080/peas-demo"
+    description: demo szerver
+tags:
+  - name: demo
+    description: Demo
+
+
+paths:
+  /hello/{name}:
+    get:
+      tags:
+        - demo
+      summary: Hello-t mondó hívás
+      description: >-
+        name helyére egy nevet beírva, köszön az alkalmazás
+      security: []
+      operationId: helloSomeOne
+      parameters:
+        - name: name
+          in: path
+          description: Name from FE
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Say hello!
+          content:
+            application/json:
+              schema:
+                type: string
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+
+components:
+  securitySchemes:
+    bearerAuth:  # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+
+security:
+  - bearerAuth: []
+
+

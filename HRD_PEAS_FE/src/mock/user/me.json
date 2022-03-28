@@ -1,0 +1,15 @@
+{
+  "active": true,
+  "companyFullname": "Nextent Informatika Zrt.",
+  "companyName": "Nextent",
+  "component": [],
+  "email": "palhidy.csaba@nextent.hu",
+  "fullName": "Pálhidy Csaba",
+  "id": 342342,
+  "initial": "PCS",
+  "mode": "normal",
+  "organisation": "Alkalmazás fejlesztés",
+  "roleItems": ["minden"],
+  "roles": ["user, admin"],
+  "userName": "palhidy.csaba"
+}

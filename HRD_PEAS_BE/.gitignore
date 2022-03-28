@@ -1,0 +1,29 @@
+*.patch
+
+# IntelliJ IDEA Files #
+/.idea
+*.iml
+*.ipr
+*.iws
+*.idea
+
+# Eclipse Files and directories #
+.settings
+.project
+.classpath
+.factorypath
+
+**/.settings
+**/.project
+**/.classpath
+*bin
+**/bin
+
+# maven build directories #
+/target
+**/target
+
+# etc #
+log
+*.bak
+

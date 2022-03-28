@@ -1,0 +1,69 @@
+<ng-container *ngIf="data">
+    <form #form="ngForm">
+    <div class="row">
+        <div class="col-12">
+            <peas-card class="data-view-card">
+                <h1>{{ data.task.name }}</h1>
+            </peas-card>
+        </div>
+        <ng-template #baseDataBox>
+            <peas-card class="card-margin data-view-card" [title]="'evaluation.base_data.title' | translate">
+                <div class="row">
+                    <label class="col-sm-4">{{ 'evaluation.owner' | translate }} </label>
+                    <span class="col-sm-8">{{ data.task.owner.fullName }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'evaluation.description' | translate }} </label>
+                    <span class="col-sm-8">{{ data.task.description }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'evaluation.difficulty' | translate }} </label>
+                    <span class="col-sm-8">{{ data.task.difficulty.name }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'evaluation.deadline' | translate }} </label>
+                    <span class="col-sm-8" [innerHTML]="DateUtils.formatHours((data.deadline | date:DateUtils.DATE_TIME_FORMAT))"></span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'evaluation.end_task' | translate }} </label>
+                    <span class="col-sm-8" [innerHTML]="DateUtils.formatHours((data.evaluatedStartDate | date:DateUtils.DATE_TIME_FORMAT))"></span>
+                </div>
+            </peas-card>
+        </ng-template>
+        <div class="col-lg-6 col-lg-hide">
+            <ng-container *ngTemplateOutlet="baseDataBox"></ng-container>
+        </div>
+        <div class="col-lg-6">
+            <peas-card class="card-margin" [title]="'evaluation.evaluation.title' | translate">
+                <div class="row">
+                    <div class="col-12" *ngFor="let factor of data.factors">
+                    <span class="upper-label-group">
+                        <label class="upper-label big-label">{{ factor.factor.name }}
+                            <ng-container *ngIf="factor.required">{{ 'evaluation.factor.required' | translate }}</ng-container>
+                        </label>
+                        <p-listbox [options]="factor.factor.options" [(ngModel)]="factor.selected" optionLabel="name" name="{{factor.factor.name}}" [required]="factor.required"></p-listbox>
+                    </span>
+                    </div>
+                    <div class="col-12">
+                        <span class="upper-label-group">
+                            <label for="note" class="upper-label big-label">{{ 'evaluation.note' | translate }}</label>
+                            <textarea id="note" name="note" class="form-control input" pInputTextarea [rows]="5" [(ngModel)]="data.note" maxlength="255"></textarea>
+                        </span>
+                    </div>
+                </div>
+            </peas-card>
+        </div>
+        <div class="col-lg-6 col-lg-show none-left-space">
+            <ng-container *ngTemplateOutlet="baseDataBox"></ng-container>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="button-row outbox-button-row">
+                <button mat-raised-button color="primary" type="button" [disabled]="form.form.invalid" (click)="saveEvaluation()">{{ 'evaluation.send' | translate }}</button>
+                <button mat-raised-button color="accent" type="button" (click)="back()">{{ 'global.button.cancel' | translate }}</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</ng-container>

@@ -1,0 +1,460 @@
+openapi: "3.0.0"
+info:
+  title: PEAS Report API
+  description: Riport interfészek
+  version: 1.0.0
+  contact:
+    name: Nextent Informatics
+    email: apiteam@nextent.hu
+    url: http://nextent.hu
+servers:
+  - url: "http://127.0.0.1:8080/peas-report"
+    description: local szerver
+  - url: "http://localhost:8080/peas-report"
+    description: local szerver
+  - url: "http://wildfly-peas.nextentdmz.hu:8080/peas-report"
+    description: demo szerver
+tags:
+  - name: report
+    description: Riportok
+
+
+paths:
+
+  /report_v1/period_v1:
+    get:
+      tags:
+        - report
+      summary: Aktív, minősítés alatt és lezárt periódusok lekérdezése
+      description: >-
+        Periódusok lekérdezése endDate szerint csökkenő sorrendben.
+      operationId: queryPeriod
+      responses:
+        200:
+          description: Periódusok lekérdezése
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportPeriodListModel"
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+  /report_v1/employees_v1:
+    put:
+      tags:
+        - report
+      summary: Összes dolgozó riport
+      description: >-
+        Adott periódusban a belépett felhasználó által elérhető felhasználók és vezetők pontszámai és csoportpontjai.  
+          
+        Ellenőrzés:
+          - Csak aktív, minősítés alatt és lezárt periódus lehet.
+          
+        Működés:
+          - Riport visszaadása.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportAllEmployeeQueryParameterModel"
+      operationId: reportAllEmployee
+      responses:
+        200:
+          description: Összes dolgozó riport
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportAllEmployeePageModel"
+        404:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+  /report_v1/employee_v1:
+    put:
+      tags:
+        - report
+      summary: Dolgozó riport
+      description: >-
+        Adott periódus adott felhasználó részletei és feladatainak riportja.  
+          
+        Paraméterezése:
+          - vagy userId és periodId
+          - vagy ratingId
+
+        Ellenőrzés:
+          - Csak aktív, minősítés alatt és lezárt periódus lehet.
+          - Csak a belépett felhasználó által látható felhasználó lehet.
+            - HR szerepkör minden felhasználót láthat.
+            - Vezető szerepkör saját magát és az általa vezetett csoport összes felhasználóját alcsoportokkal együtt.
+            - User szerepkör csak saját magát.
+
+        Működés:
+          - Felhasználó, vezetője, csoportja, pont, vezetőként csoportja, csoport átlag
+          - Céges átlag
+          - Vezetői periódus minősítés adatai.
+          - Feladatok adatai.
+      security: []
+      operationId: reportEmployee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportEmployeeQueryModel"
+      responses:
+        200:
+          description: Dolgozói riport
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportEmployee"
+        404:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"  
+
+  /report_v1/evaluation_v1/{taskId}:
+    put:
+      tags:
+        - report
+      summary: Feladat értékelés riport
+      description: >-
+        Adott feladat részleteinek és értékeléseinek a riportja.  
+          
+        Ellenőrzés:
+          - Csak a belépett felhasználó által látható feladat lehet.
+            - HR szerepkör minden feladatot láthat.
+            - Vezető szerepkör saját és az általa vezetett csoport összes feladatot alcsoportokkal együtt.
+            - User szerepkör csak saját feladatot.
+          
+        Működés:
+          - A felhasználó saját feladata anonimizálva kerül visszaadásra (az értékelők neve nélkül).
+          - Felhasználó, vezetője, csoportja, pont, vezetőként csoportja, csoport átlag
+          - Céges átlag
+          - Vezetői periódus minősítés adatai.
+          - Feladat adatai.
+          - A feladat értékelési szempontjai.
+          - A feladat értékelői által adott válaszok pontszámai értékelési szempontonként.
+          - Szöveges értékelések.
+          - Összátlagok.
+      security: []
+      operationId: reportEvaluation
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Task azonosító
+      responses:
+        200:
+          description: Feladat értékelés riport
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportEvaluationModel"
+        404:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"  
+
+components:
+
+  schemas:
+
+    ReportEmployeeQueryModel:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+          description: Felhasználó azonosító
+        periodId:
+          type: integer
+          format: int64
+          description: Periódus azonosító
+        ratingId:
+          type: integer
+          format: int64
+          description: Minősítés azonosító    
+
+    ReportPeriodModel:
+      description: Minimális periódus információ a riport periódus választáshoz.
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: "342342"
+          readOnly: true
+          description: Periódus azonosító
+        name:
+          type: string
+          nullable: false
+          description: Periódus neve
+          example: 2018/1
+
+    ReportPeriodListModel:
+      type: array
+      items:
+        $ref: "#/components/schemas/ReportPeriodModel"
+
+    ReportAllEmployeeQueryParameterModel:
+      allOf:
+        - $ref: "common.yml#/components/PagingAndSortingModel"      
+        - type: object
+          description: Összes dolgozó riport paraméterei.
+          required:
+            - periodId
+          properties:
+            periodId:
+              type: integer
+              format: int64
+            userId:
+              type: integer
+              format: int64
+            leaderId:
+              type: integer
+              format: int64
+            organization:
+              type: string
+            score:
+              $ref: "common.yml#/components/RangeDoubleModel"
+              example:
+                min: 5
+                max: 10
+            asLeaderOrganization:
+              type: string
+            asLeaderOrganizationScore:
+              $ref: "common.yml#/components/RangeDoubleModel"
+              example:
+                min: 5
+                max: 10
+
+    ReportAllEmployeeRowModel:
+      type: object
+      description: Összes dolgozó riport egy adatsora.
+      properties:
+        employee:
+          $ref: "common.yml#/components/UserSimpleModel"
+        leader:
+          $ref: "common.yml#/components/UserSimpleModel"
+        score:
+          type: number
+          format: double
+        asLeaderOrganization:
+          type: string
+        asLeaderOrganizationScore:
+          type: number
+          format: double
+
+    ReportAllEmployeePageModel:
+      description: Összes dolgozó riport lista és aggregáció.
+      allOf:
+        - $ref: 'common.yml#/components/PageModel'
+        - type: object
+          properties:
+            content:
+              type: array
+              items:
+                $ref: "#/components/schemas/ReportAllEmployeeRowModel"
+            companyScoreAvg:
+              type: number
+              format: double
+            organizationScoreAvg:
+              type: number
+              format: double
+
+    ReportEmployee:
+      description: Dolgozói riport adatok és feladat lista.
+      properties:
+        period:
+          $ref: "#/components/schemas/ReportPeriodModel"
+        employee:
+          $ref: "common.yml#/components/UserSimpleModel"
+          nullable: false
+        leader:
+          $ref: "common.yml#/components/UserSimpleModel"
+          nullable: false
+        score:
+          type: number
+          format: double
+          description: >-
+            Pontszám = normalTasksScoreAvg + automaticTaskScore
+          nullable: false
+        normalTasksScoreAvg:
+          type: number
+          format: double
+          description: >-
+            Normál típusú taskok átlaga az adott periódusban.
+          nullable: false
+        automaticTaskScore:
+          type: number
+          format: double
+          description: >-
+            Automatikus task számított értéke
+          nullable: false
+        asLeaderOrganization:
+          type: string
+          description: >-
+            Vezetőként csoportja: ha az értekelt employee egy vezető, és van beosztottja, akkor ez az egyik beosztottjának a csoportneve.
+        asLeaderOrganizationScore:
+          type: number
+          format: double
+          description: >-
+            Csoport átlag: ha az értekelt employee egy vezető, és van beosztottja, akkor a beosztottjainak ennyi az átlagpontszáma a periódusban.
+        organizationScoreAvg:
+          type: number
+          format: double
+          description: >-
+            Csoport átlagok átlaga.
+        companyScoreAvg:
+          type: number
+          format: double
+          nullable: false
+          description: >-
+            Pontszámok átlaga.
+        tasks:
+          type: array
+          items:
+            $ref: "common.yml#/components/TaskItemModel"
+        # Lehet, hogy a minősítés objektumot kell ehhez felhasználni
+        textualEvaluation:
+          type: string
+          nullable: true
+          description: Szöveges értékelés
+        gradeRecommendation:
+          type: string
+          nullable: true
+          description: Besorolás és juttatatási javaslat
+        cooperation:
+          type: boolean
+          nullable: true
+          description: Együttműködés igen/nem
+
+    ReportEvaluationModel:
+      description: Feladat értékelés riport adatok és értékelések.
+      properties:
+        period:
+          $ref: "common.yml#/components/PeriodModel"
+        employee: 
+          $ref: "common.yml#/components/UserSimpleModel"
+          nullable: false
+        leader:
+          $ref: "common.yml#/components/UserSimpleModel"
+          nullable: false
+        score:
+          type: number
+          format: double
+          description: >-
+            = normalTasksScoreAvg + automaticTaskScore
+          nullable: false
+        normalTasksScoreAvg:
+          type: number
+          format: double
+          description: >-
+            Normál típusú feladatok átlagpontszáma a periódusban.
+            Nem számít bele az automatikus feladat.
+          nullable: false
+        automaticTaskScore:
+          type: number
+          format: double
+          description: >-
+            Automatikus feladat pontszáma a periódusban.
+          nullable: false
+        asLeaderOrganization:
+          type: string
+          description: >-
+            Vezetőként csoportja: ha az értekelt employee egy vezető, és van beosztottja, akkor ez az egyik beosztottjának a csoportneve.
+        asLeaderOrganizationScore:
+          type: number
+          format: double
+          description: >-
+            Csoport átlag: ha az értekelt employee egy vezető, és van beosztottja, akkor a beosztottjainak ennyi az átlagpontszáma a periódusban.
+        organizationScoreAvg:
+          type: number
+          format: double
+          description: >-
+            Csoport átlagok átlaga.
+        companyScoreAvg:
+          type: number
+          format: double
+          description: >-
+            Cég átlagpontszáma a periódusban.
+          nullable: false
+        task:
+          $ref: "common.yml#/components/TaskItemModel"
+        # Lehet, hogy a minősítés objektumot kell ehhez felhasználni
+        textualEvaluation:
+          type: string
+          nullable: true
+          description: A vezetői periódus minősítés szöveges minősítése.
+        gradeRecommendation:
+          type: string
+          nullable: true
+          description: A vezetői periódus minősítés besorolás és juttatatási javaslata.
+        cooperation:
+          type: boolean
+          nullable: true
+          description: A vezetői periódus minősítés együttműködés része, igen/nem.
+        # Táblázat
+        rows:
+          type: array
+          description: >-
+            Az értékelők,
+            az általuk adott pontszámok az egyes szempontokra (a factors sorrendjében),
+            és az átlagok.
+          items:
+            $ref: "#/components/schemas/ReportEvaluationRowModel"
+        factors:
+          type: array
+          description: >-
+            Az értékelési szempontok, ebben a sorrendben vannak megadva a rows pontszámai és a factorScoreAvgs átlagai.
+          items:
+            $ref: "common.yml#/components/FactorSimpleModel"
+        factorScoreAvgs:
+          type: array
+          description: >-
+            Az értékelési szempontokra adott átlagpontszámok, a factors sorrendjében,
+            valamint az átlagok.
+          items:
+            type: number
+            format: double
+
+    ReportEvaluationRowModel:
+      description: >-
+        Az értékelők,
+        az általuk adott pontszámok az egyes szempontokra (a factors sorrendjében),
+        és az átlagok.
+      properties:
+        evaluatorName:
+          type: string
+          nullable: true
+        factorScores:
+          type: array
+          nullable: false
+          items:
+            type: number
+            format: double
+        note:
+          type: string
+        scoreAvg:
+          type: number
+          format: double
+          nullable: false
+
+  securitySchemes:
+    bearerAuth:  # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+
+security:
+  - bearerAuth: []
+
+

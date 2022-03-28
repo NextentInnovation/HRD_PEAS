@@ -1,0 +1,112 @@
+<ng-container>
+    <div class="row">
+        <div class="col-12">
+            <peas-card class="data-view-card">
+                <h1>{{ 'report.employees.title' | translate }}</h1>
+            </peas-card>
+        </div>
+        <div class="col-12">
+            <div class="row peroid_selector">
+                <label>{{ 'report.period.selector' | translate }} </label>
+                <span>
+                        <ng-select *ngIf="periods"
+                                   [notFoundText]="'global.select.search.not_found' | translate"
+                                   [items]="periods"
+                                   [multiple]="false"
+                                   name="periodName"
+                                   bindLabel="name"
+                                   bindValue="id"
+                                   [closeOnSelect]="true"
+                                   [clearable]="false"
+                                   [(ngModel)]="search.periodId"
+                                   (change)="changePeriod()">
+                        </ng-select>
+                    </span>
+            </div>
+        </div>
+        <div class="col-12">
+            <peas-card >
+                <peas-table [options]="tableOptions" (refresh)="getReport()" [list]="data?.content">
+                    <table class="table table-sm table-striped">
+
+                        <thead class="thead-inverse">
+                        <tr>
+                            <th></th>
+                            <th peas-sortable-column="employee.fullName">{{ 'report.employees.table.header.employee.full_name' | translate }}</th>
+                            <th peas-sortable-column="leader.fullName">{{ 'report.employees.table.header.leader.full_name' | translate }}</th>
+                            <th peas-sortable-column="employee.organization">{{ 'report.employees.table.header.employee.organization' | translate }}</th>
+                            <th peas-sortable-column="score">{{ 'report.employees.table.header.score' | translate }}</th>
+                            <th peas-sortable-column="asLeaderOrganization">{{ 'report.employees.table.header.as_leader_organization' | translate }}</th>
+                            <th peas-sortable-column="asLeaderOrganizationScore">{{ 'report.employees.table.header.as_leader_organization_score' | translate }}</th>
+                        </tr>
+
+                        <tr class="search-row">
+                            <td class="small-icon-button">
+                                <sas-search-button [searchObject]="search"></sas-search-button>
+                            </td>
+                            <td>
+                                <ng-select *ngIf="users"
+                                           peasSearchColumn
+                                           [notFoundText]="'global.select.search.not_found' | translate"
+                                           [items]="users"
+                                           [multiple]="false"
+                                           name="userId"
+                                           bindLabel="evaluator.fullName"
+                                           bindValue="evaluator.id"
+                                           [closeOnSelect]="true"
+                                           [(ngModel)]="search.userId">
+                                </ng-select>
+                            </td>
+                            <td>
+                                <ng-select *ngIf="users"
+                                           peasSearchColumn
+                                           [notFoundText]="'global.select.search.not_found' | translate"
+                                           [items]="users"
+                                           [multiple]="false"
+                                           name="userId"
+                                           bindLabel="evaluator.fullName"
+                                           bindValue="evaluator.id"
+                                           [closeOnSelect]="true"
+                                           [(ngModel)]="search.leaderId">
+                                </ng-select>
+                            </td>
+                            <td><input class="form-control form-control-sm input" peasSearchColumn name="organization" type="text" [(ngModel)]="search.organization "/></td>
+                            <td class="inline-3char">
+                                <input class="form-control form-control-sm" peasSearchColumn name="score_min" type="text" peasNumberChecker [max]="100" [min]="0" [(ngModel)]="search.score.min"
+                                />-<input class="form-control form-control-sm" peasSearchColumn name="score_max" type="text" peasNumberChecker [max]="100" [min]="0" [(ngModel)]="search.score.max"/>
+                            </td>
+                            <td><input class="form-control form-control-sm input" peasSearchColumn name="leaderOrganization" type="text" [(ngModel)]="search.asLeaderOrganization "/></td>
+                            <td class="inline-3char">
+                                <input class="form-control form-control-sm" peasSearchColumn name="organizationScore_min" type="text" peasNumberChecker [max]="100" [min]="0" [(ngModel)]="search.asLeaderOrganizationScore.min"
+                                />-<input class="form-control form-control-sm" peasSearchColumn name="organizationScore_max" type="text" peasNumberChecker [max]="100" [min]="0" [(ngModel)]="search.asLeaderOrganizationScore.max"/>
+                            </td>
+                        </tr>
+                        </thead>
+
+                        <tbody id="{{ tableOptions.name }}" *ngIf="data">
+                        <tr *ngFor="let o of data.content  | paginate: tableOptions.paginationConfig"
+                            [routerLink]="['/' + SiteURLS.REPORT.BASE + '/' + SiteURLS.REPORT.EMPLOYEE, o?.employee.id, search.periodId ]">
+                            <td></td>
+                            <td>{{ o?.employee?.fullName }}</td>
+                            <td>{{ o?.leader?.fullName }}</td>
+                            <td>{{ o?.employee?.organization }}</td>
+                            <td>{{ o?.score | number: Parameters.scoreNumberFormat }}</td>
+                            <td>{{ o?.asLeaderOrganization }}</td>
+                            <td>{{ o?.asLeaderOrganizationScore | number: Parameters.scoreNumberFormat }}</td>
+                        </tr>
+                        </tbody>
+                        <tfoot class="thead-inverse" *ngIf="data && data.content && data.content.length > 0" >
+                        <th></th>
+                        <th colspan="3">
+                            {{ 'report.employees.table.scoreAvg' | translate }}
+                        </th><!-- TODO itt az alábbi két érték valószínüleg nem azt tartalmazza amit kellene -->
+                        <th>{{data.companyScoreAvg ? (data.companyScoreAvg | number: Parameters.scoreNumberFormat) : ''}}</th>
+                        <th></th>
+                        <th>{{data.organizationScoreAvg ? (data.organizationScoreAvg | number: Parameters.scoreNumberFormat) : ''}}</th>
+                        </tfoot>
+                    </table>
+                </peas-table>
+            </peas-card>
+        </div>
+    </div>
+</ng-container>

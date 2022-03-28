@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
+	<parent>
+        <artifactId>peas-parent</artifactId>
+        <groupId>hu.nextent.peas</groupId>
+        <version>1.0.0</version>
+    </parent>
+	
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>peas-common</artifactId>
+	<packaging>jar</packaging>
+	<name>peas-common</name>
+  
+	<dependencies>
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-interface-model</artifactId>
+			<version>1.0.0</version>
+        </dependency>
+		
+        <dependency>
+        	<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+		</dependency>
+		
+		<!-- Betölthetővé váljon teszt módban az adatbázis -->
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Betölthetővé váljon teszt módban az adatbázis -->
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-liquibase</artifactId>
+			<version>1.0.0</version>
+			<scope>test</scope>
+        </dependency>
+
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-test-tool</artifactId>
+			<version>1.0.0</version>
+			<scope>test</scope>
+        </dependency>
+
+	</dependencies>
+
+	<build>
+		
+		<plugins>
+		
+			<plugin>
+				<groupId>com.soebes.maven.plugins</groupId>
+				<artifactId>maven-echo-plugin</artifactId>
+				<executions>
+					<execution>
+						<!-- 
+						<phase>initialize</phase>
+						 -->
+						<goals>
+							<goal>echo</goal>
+						</goals>
+						<configuration>
+							<echos>
+								<echo>profile-id:	${profile-id}</echo>
+								<echo>rootDir:      ${rootDir}</echo>
+							</echos>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+					
+			<!-- generate repositories
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>gen-repository</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+
+						<configuration>
+							<includePluginDependencies>true</includePluginDependencies>
+							<mainClass>hu.nextent.peas.jpa.generator.HibernateRepositoryGen</mainClass>
+							<arguments>
+								<argument>-o</argument><argument>${project.build.directory}/generated-sources/repository</argument>
+								<argument>-p</argument><argument>hu.nextent.peas.jpa.entity</argument>
+								<argument>-r</argument><argument>hu.nextent.peas.jpa.daogen</argument>
+								<argument>-s</argument><argument>GenRepository</argument>
+							</arguments>
+							<systemProperties>
+								<systemProperty>
+									<key>java.util.logging.config.file</key>
+									<value>src/test/resources/log4j.properties </value>
+								</systemProperty>
+							</systemProperties>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+				  <dependency>
+					<groupId>hu.nextent.peas</groupId>
+					<artifactId>peas-jpa-tool</artifactId>
+					<version>1.0.0</version>
+					<type>jar</type>
+				  </dependency>
+				</dependencies>
+			</plugin>
+			-->
+			
+			<!-- Compile Generated Repository
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+				<executions>
+			        <execution>
+						<id>gen-repository-compile</id>
+						<phase>process-classes</phase>
+			            <goals>
+			                <goal>compile</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+            </plugin>
+            -->
+
+			
+			<!-- generate ddl -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>gen-ddl</id>
+						<phase>install</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						
+						<configuration>
+							<includePluginDependencies>true</includePluginDependencies>
+							<mainClass>hu.nextent.peas.jpa.generator.HibernateExporter</mainClass>
+							<arguments>
+								<!-- output file -->
+								<argument>-o</argument>
+								<argument>${project.build.directory}/0130_create_schema.sql</argument>
+								<!-- package 
+								<argument>-p</argument>
+								<argument>hu.nextent.peas.jpa</argument>
+								-->
+								<argument>-p</argument>
+								<argument>hu.nextent.peas.jpa.entity</argument>
+							</arguments>
+						</configuration>
+				
+					</execution>
+				</executions>
+				<dependencies>
+				  <dependency>
+					<groupId>hu.nextent.peas</groupId>
+					<artifactId>peas-jpa-tool</artifactId>
+					<version>1.0.0</version>
+					<type>jar</type>
+				  </dependency>
+				</dependencies>
+			</plugin>
+			
+			
+        </plugins>
+    </build>
+  
+</project>

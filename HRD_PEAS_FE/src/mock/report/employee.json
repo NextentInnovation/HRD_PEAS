@@ -1,0 +1,149 @@
+{
+  "asLeaderOrganization": "Főnökök",
+  "asLeaderOrganizationScore": 6.6,
+  "automaticTaskScore": 0.8,
+  "companyScoreAvg": 6.5,
+  "cooperation": true,
+  "employee": {
+    "active": true,
+    "companyName": "nextent",
+    "email": "hegedus.tamas@nextent.hu",
+    "fullName": "Hegedűs Tamás",
+    "id": 6,
+    "mode": "normal",
+    "organization": "Alkalmazás fejlesztés",
+    "userName": "hegedus.tamas"
+  },
+  "gradeRecommendation": "Nem terjesztem jelenleg fizetésmódosításra",
+  "leader": {
+    "active": true,
+    "email": "szabo.istvan@nextent.hu",
+    "fullName": "Szabó István",
+    "id": 342343,
+    "mode": "normal",
+    "organization": "Vezetői",
+    "userName": "szabo.istvan"
+  },
+  "normalTasksScoreAvg": 6.8,
+  "organizationScore": 6.7,
+  "score": 7.1,
+  "tasks": [
+    {
+      "createdDate": "2019-11-27T09:24:44.859Z",
+      "deadline": "2019-11-27T09:24:44.859Z",
+      "description": "Ez egy feladat leírása",
+      "difficulty": {
+        "description": "Egyszerű",
+        "id": 1,
+        "multiplier": 1,
+        "name": "Egyszerű"
+      },
+      "endDate": "2019-11-27T09:24:44.859Z",
+      "evaluationPercentage": 80,
+      "id": 342342,
+      "name": "Peas tesztelése",
+      "owner": {
+        "active": true,
+        "companyName": "nextent",
+        "email": "hegedus.tamas@nextent.hu",
+        "fullName": "Hegedűs Tamás",
+        "id": 6,
+        "mode": "normal",
+        "organisation": null,
+        "userName": "hegedus.tamas"
+      },
+      "score": 7.1,
+      "startDate": "2019-11-27T09:24:44.859Z",
+      "status": "PARAMETERIZATION",
+      "taskType": "NORMAL"
+    },
+    {
+      "createdDate": "2019-11-27T09:24:44.859Z",
+      "deadline": "2019-11-27T09:24:44.859Z",
+      "description": "Ez egy feladat leírása",
+      "difficulty": {
+        "description": "Egyszerű",
+        "id": 1,
+        "multiplier": 1,
+        "name": "Egyszerű"
+      },
+      "endDate": "2019-11-27T09:24:44.859Z",
+      "evaluationPercentage": 33,
+      "id": 342342,
+      "name": "Peas tesztelése v2",
+      "owner": {
+        "active": true,
+        "companyName": "nextent",
+        "email": "hegedus.tamas@nextent.hu",
+        "fullName": "Hegedűs Tamás",
+        "id": 6,
+        "mode": "normal",
+        "organisation": null,
+        "userName": "hegedus.tamas"
+      },
+      "score": 7.1,
+      "startDate": "2019-11-27T09:24:44.859Z",
+      "status": "PARAMETERIZATION",
+      "taskType": "NORMAL"
+    },
+    {
+      "createdDate": "2019-11-27T09:24:44.859Z",
+      "deadline": "2019-11-27T09:24:44.859Z",
+      "description": "Ez egy feladat leírása",
+      "difficulty": {
+        "description": "Egyszerű",
+        "id": 1,
+        "multiplier": 1,
+        "name": "Egyszerű"
+      },
+      "endDate": "2019-11-27T09:24:44.859Z",
+      "evaluationPercentage": 50,
+      "id": 342342,
+      "name": "Peas tesztelése v3",
+      "owner": {
+        "active": true,
+        "companyName": "nextent",
+        "email": "hegedus.tamas@nextent.hu",
+        "fullName": "Hegedűs Tamás",
+        "id": 6,
+        "mode": "normal",
+        "organisation": null,
+        "userName": "hegedus.tamas"
+      },
+      "score": 7.2,
+      "startDate": "2019-11-27T09:24:44.859Z",
+      "status": "PARAMETERIZATION",
+      "taskType": "NORMAL"
+    },
+    {
+      "createdDate": "2019-11-27T09:24:44.859Z",
+      "deadline": "2019-11-27T09:24:44.859Z",
+      "description": "Ez egy feladat leírása",
+      "difficulty": {
+        "description": "Egyszerű",
+        "id": 1,
+        "multiplier": 1,
+        "name": "Egyszerű"
+      },
+      "endDate": "2019-11-27T09:24:44.859Z",
+      "evaluationPercentage": 100,
+      "id": 342342,
+      "name": "Peas tesztelése v4",
+      "owner": {
+        "active": true,
+        "companyName": "nextent",
+        "email": "hegedus.tamas@nextent.hu",
+        "fullName": "Hegedűs Tamás",
+        "id": 6,
+        "mode": "normal",
+        "organisation": null,
+        "userName": "hegedus.tamas"
+      },
+      "score": 7,
+      "startDate": "2019-11-27T09:24:44.859Z",
+      "status": "PARAMETERIZATION",
+      "taskType": "NORMAL"
+    }
+  ],
+  "textualEvaluation": "Időre a tudásának megfelelően, minden feladatot teljesített"
+}

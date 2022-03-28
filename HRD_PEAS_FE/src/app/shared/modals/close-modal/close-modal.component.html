@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{ 'close_modal.title.text' | translate }}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-12">
+      <p>{{ 'close_modal.question.text' | translate:{ title: title } }}</p>
+      <form #form="ngForm">
+        <div class="form-group row">
+          <label class="col-6">{{ 'close_modal.valid_to.text' | translate }}</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control form-control-sm" placeholder="{{ 'close_modal.valid_to.hint' | translate }}" name="validTo" [(ngModel)]="validTo" sasFormatDateModelDirective [dpDayPicker]="DateUtils.DATE_PICKER_CONFIG" mode="day" theme="dp-material" required>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-warning" (click)="onClose()" [disabled]="!form.form.valid">{{ 'global.button.lock.text' | translate }}</button>
+  <button type="button" class="btn btn-default" (click)="modal.hide()">{{ 'global.button.cancel.text' | translate }}</button>
+</div>

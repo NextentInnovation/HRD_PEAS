@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
+	<parent>
+        <artifactId>peas-parent</artifactId>
+        <groupId>hu.nextent.peas</groupId>
+        <version>1.0.0</version>
+    </parent>
+	
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>peas-service</artifactId>
+	<packaging>jar</packaging>
+	<name>peas-service</name>
+  
+	<dependencies>
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-common</artifactId>
+			<version>1.0.0</version>
+        </dependency>
+		
+		
+		<!-- Betölthetővé váljon teszt módban az adatbázis -->
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Betölthetővé váljon teszt módban az adatbázis -->
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-liquibase</artifactId>
+			<version>1.0.0</version>
+			<scope>test</scope>
+        </dependency>
+		
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-test-tool</artifactId>
+			<version>1.0.0</version>
+			<scope>test</scope>
+        </dependency>
+		
+		 <!-- javax.mail -->
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>javax.mail-api</artifactId>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.sun.mail</groupId>
+				<artifactId>javax.mail</artifactId>
+				<scope>test</scope>
+			</dependency>
+		
+	</dependencies>
+  
+</project>

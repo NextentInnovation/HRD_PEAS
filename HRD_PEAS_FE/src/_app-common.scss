@@ -1,0 +1,64 @@
+// Place any CSS rules you want to apply on all platform.
+// This is where the vast majority of your CSS code goes.
+
+// Utils
+@import 'assets/styles/utils/colors';
+@import 'assets/styles/utils/variables';
+
+// Base
+@import "assets/styles/base/icons.css";
+@import "assets/styles/base/core";
+
+.base-background {
+  background-color: $primary-color;
+  color: $white;
+}
+
+.secondary-background {
+  background-color: $white;
+  color: $black;
+}
+
+.primary-text-color {
+  color: $primary-color;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.mg-l-20 {
+  margin-left: 20px !important;
+}
+
+.mg-r-20 {
+  margin-right: 20px !important;
+}
+
+.p-l-20 {
+  padding-left: 20px !important;
+}
+
+.p-r-20 {
+  padding-right: 20px !important;
+}
+
+.mg-t-20 {
+  margin-top: 20px !important;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.pointer {
+  cursor: pointer !important;
+
+  label {
+    cursor: pointer !important;
+  }
+}

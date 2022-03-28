@@ -1,0 +1,10 @@
+
+c:\petert\git\peas-be\peas-database>mvn liquibase:dropAll liquibase:update -P test-local 
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< hu.nextent.peas:peas-liquibase >-------------------
+[INFO] Building peas-liquibase 1.0.0
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- liquibase-maven-plugin:3.4.2:dropAll (default-cli) @ peas-liquibase ---
+Terminate batch job (Y/N)? 

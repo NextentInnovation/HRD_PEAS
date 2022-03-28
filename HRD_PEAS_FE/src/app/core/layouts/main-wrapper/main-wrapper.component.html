@@ -1,0 +1,21 @@
+<peas-header (sidebarToggleEvent)="onSideBarToogle($event)" class="fixed-header"></peas-header>
+
+<mat-drawer-container class="drawer-container" autosize>
+    <mat-drawer class="sidebar fixed-sidebar base-background" #sidebar [mode]="mobileQuery.matches ? 'over' : 'side'">
+        <peas-menu (closeMenu)="onSidebarClick($event)"></peas-menu>
+    </mat-drawer>
+    <mat-drawer-content>
+        <div class="container-fluid loading-points" [hidden]="!loading">
+            <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <div class="container-fluid pt-3" style="position: relative" [hidden]="loading" [@routeAnimations]="outlet.isActivated && outlet.activatedRoute.routeConfig.path">
+            <router-outlet  #outlet="outlet"></router-outlet>
+            <peas-footer></peas-footer>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>

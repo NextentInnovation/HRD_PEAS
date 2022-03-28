@@ -1,0 +1,14 @@
+@import "../utils/variables";
+@import "../utils/colors";
+
+.card {
+  border-radius: 10px;
+  margin: 10px;
+  color: $black;
+}
+
+.card .card-header {
+  border: 0;
+  background: transparent;
+  display: flex;
+}

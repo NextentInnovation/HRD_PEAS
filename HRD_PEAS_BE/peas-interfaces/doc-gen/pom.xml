@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>peas-interface</artifactId>
+		<groupId>hu.nextent.peas</groupId>
+		<version>1.0.0</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>peas-doc-gen</artifactId>
+	<packaging>pom</packaging>
+	<name>Api Doc Generator</name>
+	<build>
+		<defaultGoal>clean install</defaultGoal>
+		<plugins>
+			<!-- http://khmarbaise.github.io/iterator-maven-plugin -->
+			<!-- Api Skeleton generálás -->
+			<plugin>
+				<groupId>com.soebes.maven.plugins</groupId>
+				<artifactId>iterator-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>iterator</goal>
+						</goals>
+						<configuration>
+							
+							<pluginExecutors>
+
+								<!-- tényleges generálás -->
+								<pluginExecutor>
+									<plugin>
+										<groupId>io.swagger.codegen.v3</groupId>
+										<artifactId>swagger-codegen-maven-plugin</artifactId>
+									</plugin>
+									<goal>generate</goal>
+									<configuration>
+										<inputSpec>${api-file}</inputSpec>
+										<output>target/generated-sources/peas-@item@</output>
+										<language>html</language>
+										<modelPackage>${base-package}.model</modelPackage>
+										<apiPackage>${base-package}.@item@.api</apiPackage>
+										<invokerPackage>${base-package}.@item@.web</invokerPackage>
+										<generateModels>true</generateModels>
+										<generateApis>true</generateApis>
+										<generateSupportingFiles>true</generateSupportingFiles>
+										<groupId>hu.nextent.peas</groupId>
+										<artifactId>peas-@item@</artifactId>
+										<configurationFile>${gen-config-file}</configurationFile>
+										<!--
+										<ignoreFileOverride>${project.basedir}/.swagger-codegen-ignore</ignoreFileOverride>
+										-->
+									</configuration>
+								</pluginExecutor>
+								
+							</pluginExecutors>	
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

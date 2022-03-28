@@ -1,0 +1,186 @@
+openapi: "3.0.0"
+info:
+  title: PEAS Virtue API
+  description: PEAS Virtue Application
+  version: 1.0.0
+  contact:
+    name: Nextent Informatics
+    email: apiteam@nextent.hu
+    url: http://nextent.hu
+servers:
+  - url: "http://127.0.0.1:8080/peas-virtue"
+    description: local szerver
+  - url: "http://localhost:8080/peas-virtue"
+    description: local szerver
+  - url: "http://wildfly-peas.nextentdmz.hu:8080/peas-virtue"
+    description: demo szerver
+tags:
+  - name: virtue
+    description: virtue
+
+
+
+paths:
+  /virtues_v1/company_v1:
+    put:
+      tags:
+        - virtue
+      summary: Céges értékek lekérdezése
+      description: >-
+          Szerkeszthető Céges értékek lekérdezése
+      operationId: queryEditableCompanyVirtues
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CompanyVirtueQueryParameterModel"
+      responses:
+        200:
+          description: Szerkeszthető céges értékek lekérdezése
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/CompanyVirtueEditablePageModel"
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+    
+    post:
+      summary: Új szerkeszthető céges érték létrehozása
+      description: >-
+        Új szerkeszthető céges érték létrehozása
+        Csak ADMIN és HR jogkörrel
+        Csak az editablevalue lesz mentve.
+        Akkor jelenik meg más felületetn, ha a value értéke nem null
+      operationId: createCompanyVirtue
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "common.yml#/components/CompanyVirtueEditableModel"
+      responses:
+        200:
+          description: Céges értékek lekérdezése
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/CompanyVirtueEditableModel"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+
+  /virtues_v1/company_v1/{virtueId}:
+    parameters:
+      - name: virtueId
+        in: path
+        required: true
+        description: Kiválasztott céges érték
+        schema:
+          type: integer
+          format: int64
+          
+    get:
+      summary: Egy szerkeszthető céges érték lekérdezése
+      description: >-
+          Egy szerkeszthető céges érték lekérdezése
+      operationId: getEditableCompanyVirtue
+      responses:
+        200:
+          description: Egy szerkeszthető céges érték
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/CompanyVirtueEditableModel"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+    put:
+      summary: Egy szerkeszthető céges érték módosítása
+      description: >-
+          Egy szerkeszthető céges érték módosítása
+          Csak az editvalue lesz módosítva
+      operationId: modifyEditableCompanyVirtue
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "common.yml#/components/CompanyVirtueEditableModel"
+      responses:
+        200:
+          description: Céges értékek lekérdezése
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/CompanyVirtueEditableModel"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+  /virtues_v1/company_v1/public/{virtueId}:  
+    parameters:
+      - name: virtueId
+        in: path
+        required: true
+        description: Kiválasztott céges érték
+        schema:
+          type: integer
+          format: int64
+    
+    post:
+      summary: Egy szerkeszthető céges érték publikálása
+      description: >-
+          Egy szerkeszthető céges érték publikálása
+          Ha van editvalue, akkor azt a value helyére másolja
+      operationId: publicEditableCompanyVirtue
+      responses:
+        200:
+          description: Céges értékek publikálása
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+  # /virtues_v1/leader_v1:
+
+  # /virtues_v1/leader_v1:{virtueId}:
+  #   parameters:
+  #     - name: virtueId
+  #       in: path
+  #       required: true
+  #       description: Kiválasztott vezetői érték
+  #       schema:
+  #         type: integer
+  #         format: int64  
+
+
+components:
+
+  schemas:
+    
+    CompanyVirtueQueryParameterModel:
+      allOf:
+        - $ref: "common.yml#/components/PagingAndSortingModel"
+        - properties:
+            id:
+              type: integer
+              format: int64
+              nullable: true
+              description: Érték azonosító
+              example: 12
+            value:
+              type: string
+              nullable: true
+              description: Érték
+              example: 12
+
+  securitySchemes:
+    bearerAuth:  # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+
+security:
+  - bearerAuth: []
+
+

@@ -1,0 +1,321 @@
+@import "../utils/colors";
+@import "../utils/variables";
+
+// Table core style
+table {
+  border-top: 0;
+
+  thead {
+
+    background: $white;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: $primary-color;
+    // border-bottom: 2px solid $secondary-color;
+    // border-top: 2px solid $secondary-color;
+
+
+    th {
+      vertical-align: bottom;
+      // font-family: $main-font;
+      font-weight: 400;
+
+      i {
+        margin-left: 5px;
+      }
+    }
+
+    .search-row {
+      background-color: & white;
+
+      sas-search-button {
+        display: flex;
+      }
+
+      td {
+        .form-control-sm {
+          font-size: 12px;
+
+          height: calc(1.2em + 0.5rem + 2px);
+          padding: 0.15rem 0.2rem;
+          line-height: 1.2;
+
+        }
+      }
+
+      td.inline-3char {
+        width: 120px;
+
+        input {
+          display: inline-block;
+          width: 50px;
+        }
+      }
+
+      td.inline-2date {
+        width: 170px;
+
+        p-calendar {
+          display: inline-block !important;
+          width: 75px !important;
+        }
+      }
+
+      .ng-select {
+        .ng-select-container {
+          min-height: 26px;
+          height: 26px;
+          border: 1px solid #ced4da !important;
+          background-clip: padding-box !important;
+          transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+
+          .ng-value-container {
+            font-size: 12px;
+            line-height: 1.2;
+
+            .ng-value {
+
+              span {
+                background-color: transparent;
+                color: #495057;
+                padding: 0;
+                margin: 0;
+                border-radius: 0;
+                display: inline-flex;
+              }
+
+              .ng-value-label:after {
+                content: ",";
+                margin-right: 5px;
+              }
+
+              .ng-value-icon {
+                display: none;
+              }
+
+            }
+          }
+
+          .ng-clear-wrapper {
+            top: -7px;
+
+            .ng-clear {
+              color: #495057;
+            }
+          }
+
+          .ng-arrow-wrapper {
+            padding-top: 0px;
+            .ng-arrow {
+              color: #495057;
+            }
+          }
+        }
+
+      }
+
+      p-calendar {
+        display: block;
+        width: 100%;
+
+        .ui-calendar {
+          width: 100%;
+
+          input {
+            display: block;
+            width: 100%;
+            font-weight: 400;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            border-radius: 0.2rem;
+            font-size: 12px;
+            height: calc(1.2em + 0.5rem + 2px);
+            padding: 0.15rem 0.2rem;
+            line-height: 1.2;
+          }
+
+          input:focus {
+            color: #495057;
+            background-color: #fff;
+            border-color: #80bdff !important;
+            outline: 0 !important;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+          }
+
+          .ui-inputtext:enabled:hover:not(.ui-state-error) {
+            border-color: #ced4da !important;
+          }
+        }
+
+      }
+    }
+  }
+
+  td {
+    // font-family: $main-font;
+    font-size: 14px;
+    vertical-align: middle !important;
+
+    &:first-child {
+      width: 42px;
+      text-align: center;
+
+      button.btn {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 400;
+        box-shadow: none !important;
+        width: 32px;
+
+        &:hover {
+          background-color: $primary-color;
+          color: $white;
+        }
+      }
+
+      .dropdown-toggle::after {
+        display: none;
+      }
+    }
+
+
+  }
+
+  tbody {
+    tr:nth-of-type(even):hover,
+    tr:nth-of-type(odd):hover {
+      background-color: $hover-color;
+    }
+  }
+
+  tfoot {
+    background: $white;
+    font-size: 16px;
+    color: $primary-color;
+    //border-bottom: 2px solid $secondary-color;
+
+    th {
+      vertical-align: bottom;
+      // font-family: $main-font;
+      font-weight: 400;
+
+      span {
+        display: block;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+// Table pagination
+.table-pagination {
+
+  font-size: 12px; //.875rem;
+  text-align: right;
+  float: right;
+  // font-family: $main-font;
+
+  /*
+  position: sticky;
+  top: -1px;
+  z-index: 1;
+  background: #fafafa;
+  padding-left: 15px;
+*/
+  pagination-template {
+    & > div {
+      display: inline-block;
+    }
+
+    button {
+      color: $primary-color;
+
+      &:hover {
+        color: $secondary-color;
+      }
+
+      i {
+        font-size: 14px;
+      }
+    }
+  }
+
+  select {
+    border: 0;
+    border-bottom: 1px solid #6c757d;
+    outline: 0;
+    padding: 0.4375em;
+  }
+
+  .page-sizer-wrapper {
+    display: inline-block;
+    padding: 0 10px;
+  }
+
+  .page-sizer-label {
+    margin: 0 12px;
+  }
+
+
+}
+
+/*
+***  Üres táblázat esetén látható felirat
+ */
+.empty-table-text {
+  text-align: center;
+  font-weight: bold;
+  color: $primary-color;
+}
+
+
+// TODO: refact - implement
+
+/***
+  Table loader
+ */
+
+.loader_base {
+  position: relative;
+  clear: both;
+
+
+  tbody {
+    min-height: 100px;
+  }
+}
+
+.loader_shadow_div {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 10;
+  top: 0;
+  left: 0;
+}
+
+.loader {
+  border: 6px solid #c3c3c3;
+  border-top: 6px solid #424242;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

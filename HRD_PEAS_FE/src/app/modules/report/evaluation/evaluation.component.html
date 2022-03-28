@@ -1,0 +1,167 @@
+<ng-container *ngIf="data">
+    <div class="row">
+        <div class="col-12">
+            <peas-card class="data-view-card">
+                <h1>{{ data.task.name }}</h1>
+            </peas-card>
+        </div>
+        <div class="col-lg-6">
+            <peas-card class="card-margin data-view-card" [title]="'report.employee.user_data.title' | translate">
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.employee' | translate }} </label>
+                    <span class="col-sm-8">{{ data.employee.fullName }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.leader' | translate }} </label>
+                    <span class="col-sm-8">{{ data.leader?.fullName }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.employee.organization' | translate }} </label>
+                    <span class="col-sm-8">{{ data.employee.organization }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.as_leader.organization' | translate }} </label>
+                    <span class="col-sm-8">{{ data.asLeaderOrganization }}</span>
+                </div>
+            </peas-card>
+        </div>
+        <div class="col-lg-6 none-left-space" *ngIf="data.score">
+            <peas-card class="card-margin data-view-card" [title]="'report.employee.user_score_data.title' | translate">
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.employee.score' | translate }} </label>
+                    <span class="col-sm-8">{{ data.score | number: Parameters.scoreNumberFormat }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.company.score' | translate }} </label>
+                    <span class="col-sm-8">{{ data.companyScoreAvg | number: Parameters.scoreNumberFormat }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.organization.score' | translate }} </label>
+                    <span class="col-sm-8">{{ data.organizationScore | number: Parameters.scoreNumberFormat }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.as_leader.score' | translate }} </label>
+                    <span class="col-sm-8">{{ data.asLeaderOrganizationScore | number: Parameters.scoreNumberFormat }}</span>
+                </div>
+            </peas-card>
+        </div>
+        <div class="col-12" *ngIf="!isMe() && CommonUtils.isNotEmpty(data.textualEvaluation)">
+            <peas-card class="card-margin data-view-card" [title]="'report.employee.rating.title' | translate">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label class="col-sm-4">{{ 'report.employee.rating.textual_evaluation' | translate }} </label>
+                            <span class="col-sm-8">{{ data.textualEvaluation }}</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label class="col-sm-4">{{ 'report.employee.rating.grade_recommendation' | translate }} </label>
+                            <span class="col-sm-8">{{ data.gradeRecommendation }}</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label class="col-sm-4">{{ 'report.employee.rating.cooperation' | translate }} </label>
+                            <span class="col-sm-8">{{ data.cooperation ? ('report.rating.cooperation.yes' | translate) : ('report.rating.cooperation.no' | translate) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </peas-card>
+        </div>
+        <div class="col-12">
+            <peas-card class="card-margin data-view-card" [title]="'report.evaluation.task.title' | translate">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label class="col-sm-4">{{ 'report.evaluation.task.period' | translate }} </label>
+                            <span class="col-sm-8">{{ data.period.name }}</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label class="col-sm-4">{{ 'report.evaluation.task.createdDate' | translate }} </label>
+                            <span class="col-sm-8" [innerHTML]="DateUtils.formatHours((data.task.createdDate | date:DateUtils.DATE_TIME_FORMAT))"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label class="col-sm-4">{{ 'report.evaluation.task.name' | translate }} </label>
+                            <span class="col-sm-8">{{ data.task.name }}</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label class="col-sm-4">{{ 'report.evaluation.task.endDate' | translate }} </label>
+                            <span class="col-sm-8" [innerHTML]="DateUtils.formatHours((data.task.endDate | date:DateUtils.DATE_TIME_FORMAT))"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label class="col-sm-4">{{ 'report.evaluation.task.difficulty' | translate }} </label>
+                            <span class="col-sm-8">{{ data.task.difficulty.name }}</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label class="col-sm-4">{{ 'report.evaluation.task.deadline' | translate }} </label>
+                            <span class="col-sm-8" [innerHTML]="DateUtils.formatHours((data.task.deadline | date:DateUtils.DATE_TIME_FORMAT))"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label class="col-sm-4">{{ 'report.evaluation.task.score' | translate }} </label>
+                            <span class="col-sm-8">{{ data.task.score | number: Parameters.scoreNumberFormat }}</span>
+                        </div>
+                    </div>
+                </div>
+            </peas-card>
+        </div>
+        <div class="col-12">
+            <peas-card [title]="'report.evaluation.table.title' | translate"  [titleTemplate]="titleTemplate">
+                <ng-template #titleTemplate>
+                    <button *ngIf="!isMe()" (click)="tiggleNames()" mat-raised-button color="primary" style="margin-left: auto;">
+                        {{ isAnonymized ? ('report.evaluation.table.button.show_names' | translate) : ('report.evaluation.table.button.hide_names' | translate) }}
+                    </button>
+                </ng-template>
+                <peas-table [options]="tableOptions" [list]="data.rows">
+                    <table class="table table-sm table-striped table-header-rotated">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th></th>
+                                <th>{{ 'report.evaluation.table.header.evaluator_name' | translate }}</th>
+                                <th *ngFor="let factor of data.factors" class="italic rotate"><div><span>{{ factor.name }}</span></div></th>
+                                <th>{{ 'report.evaluation.table.header.scoreAvg' | translate }}</th>
+                                <th>{{ 'report.evaluation.table.header.note' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody id="{{ tableOptions.name }}">
+                            <tr *ngFor="let row of data.rows">
+                                <td></td>
+                                <td class="primary-text-color">{{ isAnonymously(row.evaluatorName) ? ('report.evaluation.table.anonymous' | translate) : row.evaluatorName }}</td>
+                                <td *ngFor="let score of row.factorScores">{{ score | number: Parameters.scoreNumberFormat }}</td>
+                                <td class="primary-text-color">{{ row.scoreAvg | number: Parameters.scoreNumberFormat }}</td>
+                                <td>{{ row.note }}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="thead-inverse">
+                            <tr>
+                                <th></th>
+                                <th>{{ 'report.evaluation.table.foot.avg' | translate }}</th>
+                                <th *ngFor="let scoreAvg of data.factorScoreAvgs">{{ scoreAvg | number: Parameters.scoreNumberFormat }}</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </peas-table>
+            </peas-card>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="button-row outbox-button-row">
+                <button peasBackButton mat-raised-button color="primary">{{ 'global.button.back' | translate }}</button>
+            </div>
+        </div>
+    </div>
+</ng-container>

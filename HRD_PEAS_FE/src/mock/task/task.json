@@ -1,0 +1,100 @@
+{
+  "companyVirtues": [
+    {
+      "id": 1,
+      "value": "Elismert monetáris politikai és pénzügyi szaktekintély"
+    },
+    {
+      "id": 3,
+      "value": "Elszámoltathatóság, függetlenség, hitelesség; közeli kapcsolat az európai polgárokkal"
+    }
+  ],
+  "createdDate": "2019-10-15T08:27:20.193Z",
+  "deadline": "2019-10-15T08:27:20.193Z",
+  "description": "Ez egy feladat leírása",
+  "difficulty": {
+    "description": "Egyszerű",
+    "id": 1,
+    "multiplier": 1,
+    "name": "Egyszerű"
+  },
+  "evaluationPercentage": 0,
+  "evaluators": [
+    {
+      "evaluator": {
+        "email": "palhidy.csaba@nextent.hu",
+        "fullName": "Pálhidy Csaba",
+        "id": 9,
+        "userName": "palhidy.csaba",
+        "active": true,
+        "companyName": "nextent",
+        "mode": "normal",
+        "organisation": "Alkalmazás fejlesztés"
+      },
+      "evaulatedDate": null,
+      "score": 0,
+      "status": "BEFORE_EVAULATING"
+    },
+    {
+      "evaluator": {
+        "id": 6,
+        "fullName": "Hegedűs Tamás",
+        "userName": "hegedus.tamas",
+        "email": "hegedus.tamas@nextent.hu"
+      },
+      "evaulatedDate": null,
+      "score": 0,
+      "status": "BEFORE_EVAULATING"
+    }
+  ],
+  "id": 1,
+  "leaderVirtues": [
+    {
+      "id": 4,
+      "own": false,
+      "owner": {
+        "active": false,
+        "companyName": "string",
+        "email": "string",
+        "fullName": "string",
+        "id": 342342,
+        "mode": "normal",
+        "organisation": "Alkalmazás fejlesztés",
+        "userName": "string"
+      },
+      "value": "Légy jelen és vond be az alkalmazottaidat"
+    }
+  ],
+  "name": "Test task neve",
+  "owner": {
+    "active": true,
+    "companyName": "nextent",
+    "email": "hegedus.tamas@nextent.hu",
+    "fullName": "Hegedűs Tamás",
+    "id": 6,
+    "mode": "normal",
+    "organisation": null,
+    "userName": "hegedus.tamas"
+  },
+  "period": {
+    "closedUser": null,
+    "endDate": null,
+    "id": 0,
+    "name": null,
+    "startDate": null
+  },
+  "score": 0,
+  "startDate": "2019-10-15T08:27:20.194Z",
+  "taskStatus": "PARAMETERIZATION",
+  "taskType": "NORMAL",
+  "taskfactors": [
+    {
+      "id": 1,
+      "name": "Kommunikáció"
+    },
+    {
+      "id": 4,
+      "name": "Együttműködés hatékonysága"
+    }
+  ]
+}

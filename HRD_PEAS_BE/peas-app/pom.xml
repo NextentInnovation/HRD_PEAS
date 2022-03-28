@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>peas-parent</artifactId>
+        <groupId>hu.nextent.peas</groupId>
+        <version>1.0.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>peas-app</artifactId>
+    <packaging>pom</packaging>
+ 
+	<dependencies>
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-interface-model</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+ 		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-service</artifactId>
+            <version>1.0.0</version>
+        </dependency>   
+	</dependencies>
+
+	<modules>
+        <module>peas-auth</module>
+        <module>peas-auth-web</module>
+        <module>peas-demo</module>
+        <module>peas-demo-web</module>
+        <module>peas-user</module>
+        <module>peas-user-web</module>
+        <module>peas-resource</module>
+        <module>peas-resource-web</module>
+        <module>peas-task</module>
+        <module>peas-task-web</module>
+        <module>peas-evaluation</module>
+        <module>peas-evaluation-web</module>
+        <module>peas-todo</module>
+        <module>peas-todo-web</module>
+        <module>peas-virtue</module>
+        <module>peas-virtue-web</module>
+        <module>peas-rating</module>
+        <module>peas-rating-web</module>
+        <module>peas-period</module>
+        <module>peas-period-web</module>
+        <module>peas-report</module>
+        <module>peas-report-web</module>
+        <module>peas-web</module>
+    </modules>
+	
+	<build>
+        <defaultGoal>clean install</defaultGoal>
+		
+		<sourceDirectory>src/main/java</sourceDirectory>
+		
+		<plugins>
+			
+			<plugin>
+				<groupId>com.soebes.maven.plugins</groupId>
+				<artifactId>maven-echo-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>echo</goal>
+						</goals>
+						<configuration>
+							<echos>
+								<echo>profile-id:	${profile-id}</echo>
+								<echo>rootDir:		${rootDir}</echo>
+								
+							</echos>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-jar-plugin</artifactId>
+		        <configuration>
+		          <excludes>
+		            <exclude>**/config/*</exclude>
+		          </excludes>
+		        </configuration>
+		    </plugin>
+			
+			
+		</plugins>
+	</build>
+
+</project>

@@ -1,0 +1,26 @@
+{
+    "extends": "../tslint.json",
+    "rules": {
+        "directive-selector": [
+            true,
+            "attribute",
+            "peas",
+            "camelCase"
+        ],
+        "component-selector": [
+            true,
+            ["element", "attribute"],
+            "peas",
+            ["kebab-case","camelCase"]
+        ],
+        "use-input-property-decorator": true,
+        "use-output-property-decorator": true,
+        "use-host-property-decorator": true,
+        "no-input-rename": false,
+        "no-output-rename": false,
+        "use-life-cycle-interface": true,
+        "use-pipe-transform-interface": true,
+        "component-class-suffix": true,
+        "directive-class-suffix": true
+    }
+}

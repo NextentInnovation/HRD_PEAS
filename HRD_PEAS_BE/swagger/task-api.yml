@@ -1,0 +1,314 @@
+openapi: "3.0.0"
+info:
+  title: PEAS Task API
+  description: PEAS Task Application
+  version: 1.0.0
+  contact:
+    name: Nextent Informatics
+    email: apiteam@nextent.hu
+    url: http://nextent.hu
+servers:
+  - url: "http://127.0.0.1:8080/peas-task"
+    description: local szerver
+  - url: "http://localhost:8080/peas-task"
+    description: local szerver
+  - url: "http://wildfly-peas.nextentdmz.hu:8080/peas-task"
+    description: demo szerver
+tags:
+  - name: task
+    description: Feladatok
+
+
+paths:
+  /task_v1:
+    put:
+      tags:
+        - task
+      summary: Taskok lekérdezése
+      description: >-
+        Taskok lekérdezése
+        Itt csak saját és beosztottak taskjai kérdezhetőek le
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskQueryParameterModel"
+      operationId: queryTask
+      responses:
+        200:
+          description: Taskok lekérdezése
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/TaskItemPageModel"
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+    post:
+      tags:
+        - task
+      summary: Új szerkeszthető task létrehozása
+      description: >-
+        Új szerkeszthető task létrehozása
+      operationId: createTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "common.yml#/components/TaskCreateModel"
+      responses:
+        200:
+          description: >-
+            Paraméterezhető task
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/TaskModel"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+  /task_v1/{taskId}:
+    parameters:
+      - name: taskId
+        in: path
+        required: true
+        description: Kiválasztott task
+        schema:
+          type: integer
+          format: int64  
+          nullable: false
+    get:
+      tags:
+        - task
+      summary: Adott referenciával rendelkező task lekérdezése
+      description: >-
+        Adott referenciával rendelkező task lekérdezése
+
+        Minden olyan task lekérdhető, amely:
+          * Aktív
+          * Role esetén:
+            * ADMIN: Minegyik
+            * HR: Mindegyik
+            * USER: Saját
+            * LEADER: Saját és beosztottak
+      operationId: getTask
+      responses:
+        200:
+          description: Taskok lekérdezás
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/TaskModel"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+    put:
+        tags:
+          - task
+        summary: Szerkeszthető task módosítása
+        description: >-
+          Szerkeszthető task módosítása
+          Amelyik 
+            - a felhasználó saját tulajdonában van 
+            - Aktív
+            - szerkeszthető státuszú
+        operationId: modifyTask
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/TaskModel"
+        responses:
+          200:
+            description: >-
+              Lekérdezett szerkeszthető task
+            content:
+              application/json:
+                schema:
+                  $ref: "common.yml#/components/TaskModel"
+          default:
+            $ref: "common.yml#/response/DefaultErrorResponse"
+
+    delete:
+      tags:
+        - task
+      summary: Szerkeszthető task törlése
+      description: >-
+        Szerkeszthető task törlése
+        Törölhető, amelyik:
+            - a felhasználó saját tulajdonában van 
+            - Aktív
+            - szerkeszthető státuszú
+      operationId: deleteTask
+      responses:
+        200:
+          description: >-
+            Sikeres törlés
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+  /task_v1/copy_v1/{taskId}:
+    parameters:
+      - name: taskId
+        in: path
+        required: true
+        description: Kiválasztott szerkeszthető task
+        schema:
+          type: integer
+          format: int64
+          nullable: false
+    post:
+        tags:
+          - task
+        summary: Szerkeszthető task másolása
+        description: >-
+          Szerkeszthető task másolása
+          Az következő taskok másolhatóak:
+            - Saját taskjai
+            - Vezető taskjai
+          A másolás során az értékelők nem kerülnek másolásra.
+          A task NORMAL típusként jön létre
+        operationId: copyTask
+        responses:
+          200:
+            description: >-
+              Másolt task
+            content:
+              application/json:
+                schema:
+                  $ref: "common.yml#/components/TaskModel"
+          default:
+            $ref: "common.yml#/response/DefaultErrorResponse"
+
+  /task_v1/start_evaluation/{taskId}:
+    parameters:
+      - name: taskId
+        in: path
+        required: true
+        description: Kiválasztott szerkeszthető task
+        schema:
+          type: integer
+          format: int64
+    post:
+        tags:
+          - task
+        summary: Értékelés indítása
+        description: >-
+          Értékelés indítása
+          Csak olyan taskok szerkeszthetőek, amelyeknél igaz, hogy:
+          - rendelkezik értékelőkkel
+          - típusa: NORMAL/AUTOMATIC
+          - státusza: PARAMETERIZATION
+        operationId: startEvaluation
+        responses:
+          200:
+            description: >-
+              Sikeres indítás
+          default:
+            $ref: "common.yml#/response/DefaultErrorResponse"
+            
+components:
+
+  schemas:
+  
+    TaskQueryParameterModel:
+      allOf:
+        - $ref: "common.yml#/components/PagingAndSortingModel"
+        - properties:
+            id:
+              type: integer
+              format: int64
+              nullable: true
+              description: Task azonosító
+              example: 12
+            taskType:
+              type: string
+              enum:
+                - NORMAL
+                - AUTOMATIC
+              nullable: true
+              description: Feladat típusa
+              example: NORMAL
+            status:
+              type: array
+              items: 
+                type: string
+              description: >-
+                Feladat státusza
+                Érték készlete:
+                  - PARAMETERIZATION
+                  - UNDER_EVALUATION
+                  - EVALUATED
+                  - CLOSED
+              example: 
+                - PARAMETERIZATION
+                - UNDER_EVALUATION
+            name:
+              type: string
+              nullable: true
+              description: Feladat neve
+              example: Mit is kell csinálni!
+            ownerName:
+              type: string
+              nullable: true
+              description: Tulajdonos
+              example: amás
+            ownerId:
+              type: integer
+              format: int64
+              nullable: true
+              description: Tulajdonos azonosító
+              example: 12
+            description:
+              type: string
+              nullable: true
+              description: Feladat leírása
+              example: Mit is kell csinálni!
+            percentageRange:
+              $ref: "common.yml#/components/RangeDoubleModel"
+              example:
+                min: 0.1
+                max: 3
+            scoreRange:
+              $ref: "common.yml#/components/RangeDoubleModel"
+              example:
+                min: 0.1
+                max: 3
+            createdDateRange:
+              $ref: "common.yml#/components/RangeDateTimeModel"
+              example:
+                min: 2019-10-01T00:00:01Z
+                max: 2019-10-02T00:00:00Z
+            deadlineRange:
+              $ref: "common.yml#/components/RangeDateTimeModel"
+              example:
+                min: 2019-10-01T00:00:01Z
+                max: 2019-10-02T00:00:00Z
+            startDateRange:
+              $ref: "common.yml#/components/RangeDateTimeModel"
+              example:
+                min: 2019-10-01T00:00:01Z
+                max: 2019-10-02T00:00:00Z
+            endDateRange:
+              $ref: "common.yml#/components/RangeDateTimeModel"
+              example:
+                min: 2019-10-01T00:00:01Z
+                max: 2019-10-02T00:00:00Z
+                  
+  securitySchemes:
+    bearerAuth:  # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+
+security:
+  - bearerAuth: []
+
+

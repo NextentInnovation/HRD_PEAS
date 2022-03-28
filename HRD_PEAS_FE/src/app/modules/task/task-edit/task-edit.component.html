@@ -1,0 +1,240 @@
+<form #form="ngForm">
+<div class="row">
+    <div class="col-12">
+        <peas-card class="special-header-card">
+            <input id="name" name="name" class="box-title-input" maxlength="100" type="text" placeholder="{{ 'task_edit.form.name' | translate }}" [(ngModel)]="data.name" required/>
+        </peas-card>
+    </div>
+    <div class="col-lg-6">
+        <div class="row">
+            <div class="col-12">
+                <peas-card class="card-margin" [title]="'task_edit.form.base_data.title' | translate ">
+                    <div class="row">
+                        <div class="col-lg-4">
+                <span class="upper-label-group">
+                    <label for="name" class="upper-label">{{ 'task_edit.form.deadline' | translate }}</label>
+                    <p-calendar
+                            [(ngModel)]="data.deadline"
+                            name="deadline"
+                            [locale]="calendarLocalConfig"
+                            [disabled]="viewMode === ViewMode.VIEW"
+                            dateFormat="yy-mm-dd"
+                            showButtonBar="true"
+                            [yearNavigator]="true" [yearRange]="DateUtils.yearRange(2, 1)"
+                            [monthNavigator]="true"></p-calendar>
+                </span>
+                        </div>
+                        <div class="col-lg-8">
+                <span class="upper-label-group">
+                    <label for="select-button" class="upper-label required-star">{{ 'task_edit.form.difficulty' | translate }}</label>
+                    <p-selectButton name="select-button"
+                                    [options]="baseData.difficulties"
+                                    [(ngModel)]="data.difficulty"
+                                    optionLabel="name"
+                                    [disabled]="viewMode === ViewMode.VIEW"
+                                    *ngIf="baseData">
+                        <ng-template let-item>
+                             <div [tooltip]="item.value.description" container="body" containerClass="peas-tooltip" placement="bottom"
+                                  #pop_select_button="bs-tooltip">
+                                <span>{{ item.value.name }}</span>
+                                <i class="far fa-question-circle button-info" (click)="$event.stopPropagation()"></i>
+                            </div>
+                        </ng-template>
+                    </p-selectButton>
+                </span>
+                        </div>
+                        <div class="col-12">
+                <span class="upper-label-group">
+                    <label for="description" class="upper-label">{{ 'task_edit.form.description' | translate }}</label>
+                    <textarea id="description" name="description" class="form-control input" type="text" pInputTextarea [rows]="3" [(ngModel)]="data.description" maxlength="255"></textarea>
+                </span>
+                        </div>
+
+                    </div>
+                </peas-card>
+            </div>
+            <div class="col-12">
+                <peas-card class="card-margin" [title]="'task_edit.form.evaluation.title' | translate">
+                    <div class="row">
+                        <div class="col-12">
+                    <span class="upper-label-group">
+                        <label for="Ng-select Multi Select" class="upper-label required-star">{{ 'task_edit.form.task_factors' | translate : { min: baseData?.parameters['taskeditor.factor.min'], max: baseData?.parameters['taskeditor.factor.max']} }}</label>
+                        <ng-select *ngIf="baseData"
+                                   name="taskfactors"
+                                   [notFoundText]="'global.select.search.not_found' | translate"
+                                   [items]="baseData.factors"
+                                   [multiple]="true"
+                                   bindLabel="name"
+                                   [closeOnSelect]="false"
+                                   [clearSearchOnAdd]="true"
+                                   [disabled]="viewMode === ViewMode.VIEW"
+                                   [(ngModel)]="data.taskfactors"
+                                   appendTo="body"
+                                   class="append-to-body"
+                                   (remove)="removeFactor($event)"
+                                   (clear)="clearSelectedFactor()">
+
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    <span [ngClass]="{ 'required' : item.required }">
+                                        <p>{{ item.name }}</p>
+                                        <i class="pi pi-times delete-item-icon" (click)="clear(item); $event.stopPropagation()"></i>
+                                    </span>
+                                </ng-template>
+
+                                <ng-template ng-option-tmp let-item="item">
+                                    <div class="multiselect-item-with-switch">
+                                        <label>{{ item.name }}</label>
+                                        <span>
+                                            <label>{{ 'task_edit.form.task_factors.required' | translate }} </label>
+                                            <p-inputSwitch [(ngModel)]="item.required" name="{{item.name}}" (click)="$event.stopPropagation()" (onChange)="changeFactorRequired($event, item.id)"></p-inputSwitch>
+                                        </span>
+                                    </div>
+                                </ng-template>
+                        </ng-select>
+                    </span>
+                        </div>
+                        <div class="col-12">
+                    <span class="upper-label-group">
+                        <label for="Ng-select Multi Select" class="upper-label">{{ 'task_edit.form.evaluators' | translate : { min: baseData?.parameters['taskeditor.user.min'], max: baseData?.parameters['taskeditor.user.max']} }}</label>
+                        <ng-select *ngIf="users"
+                                   name="evaluators"
+                                   [notFoundText]="'global.select.search.not_found' | translate"
+                                   [items]="users"
+                                   [multiple]="true"
+                                   bindLabel="evaluator.fullName"
+                                   [closeOnSelect]="false"
+                                   [clearSearchOnAdd]="true"
+                                   [disabled]="viewMode === ViewMode.VIEW"
+                                   [(ngModel)]="data.evaluators"
+                                   (clear)="clearSelectedEvaluators()"
+                                   (remove)="removeEvaluators($event)"
+                                   appendTo="body"
+                                   class="append-to-body">
+
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    <span>{{ item.evaluator.fullName }}
+                                        <i *ngIf="item.evaluator.id !== meUser.id" class="pi pi-times delete-item-icon" (click)="clear(item); $event.stopPropagation()"></i>
+                                    </span>
+                                </ng-template>
+
+                                <ng-template ng-option-tmp let-item="item">
+                                    <div class="multiselect-item-with-switch">
+                                        <label>{{ item.evaluator.fullName }}</label>
+                                    </div>
+                                </ng-template>
+                        </ng-select>
+                    </span>
+                        </div>
+                    </div>
+                </peas-card>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 none-left-space">
+        <div class="row">
+            <div class="col-12">
+                <peas-card class="card-margin" [title]="'task_edit.form.base_auto_data.title' | translate">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <span class="upper-label-group">
+                                <label for="owner.fullName" class="upper-label">{{ 'task_edit.form.owner' | translate }}</label>
+                                <input *ngIf="data.owner" id="owner.fullName" name="fullName"  class="form-control input" type="text" pInputText disabled [(ngModel)]="data.owner.fullName">
+                            </span>
+                                    </div>
+                                    <div class="col-lg-6">
+                            <span class="upper-label-group">
+                                <label for="taskStatus" class="upper-label">{{ 'task_edit.form.task_status' | translate }}</label>
+                                <input id="taskStatus" class="form-control input" name="taskStatus"  type="text" pInputText disabled
+                                       [value]="data.status ? ('constants.task_status.' + data.status.toLowerCase() | translate) : '-'">
+                            </span>
+                                    </div>
+                                    <div class="col-lg-6">
+                            <span class="upper-label-group">
+                                <label for="createdDate" class="upper-label">{{ 'task_edit.form.created_date' | translate }}</label>
+                                <input id="createdDate" name="createdDate"  class="form-control input" type="text" pInputText disabled [value]="data.createdDate | date:DateUtils.DATE_TIME_FORMAT ">
+                            </span>
+                        </div>
+                    </div>
+                </peas-card>
+            </div>
+            <div class="col-12">
+                <peas-card class="card-margin" [title]="'task_edit.form.virtues.title' | translate ">
+                    <div class="row">
+                        <div class="col-12">
+                    <span class="upper-label-group">
+                        <label for="Ng-select Multi Select" class="upper-label">{{ 'task_edit.form.company_virtues' | translate : { min: baseData?.parameters['taskeditor.leader.virtue.min'], max: baseData?.parameters['taskeditor.leader.virtue.max']} }}</label>
+                        <ng-select *ngIf="baseData"
+                                   name="companyVirtues"
+                                   [notFoundText]="'global.select.search.not_found' | translate"
+                                   [items]="baseData.companyVirtues"
+                                   [multiple]="true"
+                                   bindLabel="value"
+                                   [closeOnSelect]="false"
+                                   [clearSearchOnAdd]="true"
+                                   [disabled]="viewMode === ViewMode.VIEW"
+                                   [(ngModel)]="data.companyVirtues"
+                                   appendTo="body"
+                                   class="append-to-body">
+
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    <span>{{ item.value }}
+                                        <i class="pi pi-times delete-item-icon" (click)="clear(item); $event.stopPropagation()"></i>
+                                    </span>
+                                </ng-template>
+
+                                <ng-template ng-option-tmp let-item="item">
+                                    <div class="multiselect-item-with-switch">
+                                        <label>{{ item.value }}</label>
+                                    </div>
+                                </ng-template>
+                        </ng-select>
+                    </span>
+                        </div>
+                        <div class="col-12">
+                    <span class="upper-label-group">
+                        <label for="Ng-select Multi Select" class="upper-label">{{ 'task_edit.form.leader_virtues' | translate : { min: baseData?.parameters['taskeditor.company.virtue.min'], max: baseData?.parameters['taskeditor.company.virtue.max']} }}</label>
+                        <ng-select *ngIf="baseData"
+                                   name="leaderVirtues"
+                                   [notFoundText]="'global.select.search.not_found' | translate"
+                                   [items]="baseData.leaderVirtues"
+                                   [multiple]="true"
+                                   bindLabel="value"
+                                   [closeOnSelect]="false"
+                                   [clearSearchOnAdd]="true"
+                                   [disabled]="viewMode === ViewMode.VIEW"
+                                   [(ngModel)]="data.leaderVirtues"
+                                   appendTo="body"
+                                   class="append-to-body">
+
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    <span>{{ item.value }}
+                                        <i class="pi pi-times delete-item-icon" (click)="clear(item); $event.stopPropagation()"></i>
+                                    </span>
+                                </ng-template>
+
+                                <ng-template ng-option-tmp let-item="item">
+                                    <div class="multiselect-item-with-switch">
+                                        <label>{{ item.value }}</label>
+                                    </div>
+                                </ng-template>
+                        </ng-select>
+                    </span>
+                        </div>
+                    </div>
+                </peas-card>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="button-row outbox-button-row">
+            <button mat-raised-button color="primary" type="button" (click)="startEvaluation()" [disabled]="form.form.invalid || !data.difficulty.id || !(data.taskfactors && data.taskfactors.length > 0)" *ngIf="viewMode === ViewMode.EDIT">{{ 'task_edit.form.button.start_evaluation' | translate }}</button>
+            <button mat-raised-button color="primary" type="button" (click)="copy()" *ngIf="viewMode !== ViewMode.CREATE">{{ 'task_edit.form.button.copy' | translate }}</button>
+            <button mat-raised-button color="primary" type="button" (click)="save()" [disabled]="form.form.invalid || !data.difficulty.id"  *ngIf="viewMode === ViewMode.EDIT">{{ 'global.button.save' | translate }}</button>
+            <button mat-raised-button color="primary" type="button" (click)="create()" [disabled]="form.form.invalid || !data.difficulty.id" *ngIf="viewMode === ViewMode.CREATE">{{ 'global.button.create' | translate }}</button>
+            <button mat-raised-button color="accent" type="button" (click)="back()">{{ 'global.button.back' | translate }}</button>
+        </div>
+    </div>
+</div>
+</form>

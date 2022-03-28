@@ -1,0 +1,1296 @@
+
+components:
+
+  StringListModel:
+    type: array
+    items:
+      type: string
+
+  IntegerListModel:
+    type: array
+    items:
+      type: integer
+      format: int64
+
+  ErrorMessageModel:
+    type: object
+    description: Általános hibaüzenet
+    required:
+      - code
+      - status
+      - message
+    properties:
+      code:
+        type: string
+        description: Hibaüzenet kódja
+      status:
+        type: integer
+        description: Státusz kód
+      message:
+        type: string
+        description: Hibaüzenet
+      stacktrace:
+        description: Stacktrace, majd éles esetben rejteni kell
+        type: array
+        items:
+          type: string
+
+  PageModel:
+    description: >-
+      Lapozható lekérdezéshez a válasz információk
+
+      Leszármaztatott elemeknél meg kell valósítani a content tulajdonságot,
+      amely tartlmazza a lap elemeit
+    type: object
+    properties:
+      size:
+        type: integer
+        format: int32
+        default: 0
+        description: >-
+          Lapon az elemk száma
+      totalPages:
+        type: integer
+        format: int32
+        default: 0
+        description: >-
+          Hány lap kérdezhető le
+      totalElements:
+        type: integer
+        format: int64
+        default: 0
+        description: >-
+          Hány elem kérdezhető le
+      number:
+        type: integer
+        format: int32
+        default: 0
+        description: >-
+          Lap index
+
+  PagingAndSortingModel:
+    type: object
+    description: Lapozó és rendezés model
+    required:
+      - number
+      - size
+    properties:
+      number:
+        type: integer
+        format: int32
+        minimum: 0
+        default: 0
+        nullable: false
+        description: >-
+          Lap index
+      size:
+        type: integer
+        format: int32
+        default: 10
+        nullable: false
+        description: >-
+          Lap méret
+      sort:
+        type: string
+        nullable: false
+        description: >-
+          Rendezés oszlopa
+      order:
+        type: string
+        nullable: true
+        default: asc
+        enum:
+          - asc
+          - desc
+        description: >-
+          Lap index        
+
+  RangeDateTimeModel:
+    type: object
+    description: date-time range
+    properties:
+      min:
+        type: string
+        format: date-time
+      max:
+        type: string
+        format: date-time
+
+  RangeDoubleModel:
+    type: object
+    description: Double Range
+    properties:
+      min:
+        type: number
+        format: double
+      max:
+        type: number
+        format: double
+
+  PeasAppInfoModel:
+    type: object
+    properties:
+      parameters:
+        type: object
+        description: >-
+          Tulajdonságok
+          Kiértékelési sorrendje
+            - Felhasználó paraméterek
+            - Cég paraméterek
+          Itt lehet majd a kliens számára olyan tulajdonságok átadására, mint példáúl:
+            - Lapozás tartalmazó lekérdezéseknél egy adott lap mérete
+            - Nyelvek listája
+            - Alapértelemezett nyelv
+            - stb 
+        example:
+          kulcs: érték
+          kréta: tábla
+          tej: vaj
+      currentUser:
+        $ref: '#/components/UserModel'
+      leader:
+        description: >-
+          Vezető
+        $ref: '#/components/UserModel'
+      difficulties:
+        description: >-
+          Nehézségek felsorolása
+        type: array
+        items:
+          $ref: "#/components/DifficultyModel"
+      taskstatuses:
+        description: >-
+          Task státuszok
+          - PARAMETERIZATION # Paraméterezés
+          - UNDER_EVALUATION # Értékelés alatt
+          - EVALUATED # Értékelt
+          - CLOSED # Lezárt
+        type: array
+        items:
+          type: string
+        example: PARAMETERIZATION
+      tasktypes:
+        description: >-
+          Task típusok
+          - NORMAL # Felhasználó által létrehozott
+          - AUTOMATIC # Automatikusan létrejött              
+        type: array
+        items: 
+          type: string
+        example: NORMAL
+      evaluationstatuses:
+        description: >-
+          Értékelés státuszok
+          - BEFORE_EVALUATING # Még nincs értékelve
+          - EVALUATING # Értékelendő
+          - EVALUATED # Értékelt
+          - CLOSED # Lezárt
+        type: array
+        items:
+          type: string
+        example: BEFORE_EVALUATING
+      companyVirtues:
+        type: array
+        items:
+          $ref: '#/components/CompanyVirtueModel'
+        description: >-
+          Vezetői értékek listája
+      leaderVirtues:
+        type: array
+        items:
+          $ref: '#/components/LeaderVirtueModel'
+        description: >-
+          Vezetői értékek listája
+      activePeriod:
+        $ref: '#/components/PeriodModel'
+        description: >-
+          Aktív periódus
+      periodstatuses:
+        description: >-
+          Periódus státusok:
+            - OPEN
+            - ACTIVE
+            - CLOSE
+        type: array
+        items:
+          type: string
+        example: ACTIVE
+      factors:
+        type: array
+        items:
+          $ref: '#/components/FactorModel'
+
+
+  CompanySimpleModel:
+    type: object
+    description: Felhasználó adatai
+    required:
+      - id
+      - active
+      - name
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: "342342"
+        readOnly: true
+        description: Felhasználó belső azonosító
+      active:
+        type: boolean
+        default: "true"
+        description: Aktív/Passív cég, most nincs kezelve
+      name:
+        type: string
+        readOnly: true
+        description: Cég név
+      fullName:
+        type: string
+        readOnly: true
+        description: Cég teljes név
+
+  UserSimpleModel:
+    type: object
+    description: Felhasználó adatai
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: "342342"
+        readOnly: true
+        description: Felhasználó belső azonosító
+      active:
+        type: boolean
+        nullable: true
+        default: "true"
+        description: Aktív/Passív felhasználó, most nincs kezelve
+      mode:
+        type: string
+        nullable: true
+        enum:
+            - normal
+            - virtual
+        readOnly: true
+        description: >-
+          `normal`: Normális felhasználó
+          `virtual`: Ideglenes felhasználó, most nincs használatban
+      userName:
+        type: string
+        nullable: true
+        readOnly: true
+        description: Felhasználó név
+      fullName:
+        type: string
+        readOnly: true
+        nullable: true
+        description: Felhasználó teljes neve
+      email:
+        type: string
+        maxLength: 256
+        readOnly: true
+        nullable: true
+        description: Elérhetőség
+      organization:
+        type: string
+        readOnly: true
+        nullable: true
+        example: Alkalmazás fejlesztés
+        description: >-
+          Szervezeti egység
+
+  UserModel:
+    type: object
+    description: Felhasználó adatai
+    required:
+      - id
+      - active
+      - mode
+      - userName
+    allOf:
+      - $ref: "#/components/UserSimpleModel"
+      - type: object
+        properties:
+          initial:
+            type: string
+            maxLength: 256
+            readOnly: true
+            nullable: true
+            description: Név kezdőbetűi
+          companyFullname:
+            type: string
+            readOnly: true
+            nullable: true
+            description: Cég teljes név
+          component:
+            type: array
+            items:
+              type: string
+            readOnly: true
+            nullable: true
+            description: >-
+              Virtuális felhasználó esetén az értékelendő feladat azonosítója
+              `TODO`: Lehet, hogy linket kell belőle csinálni
+          roles:
+            type: array
+            items:
+              type: string
+              default: user
+            readOnly: true
+            nullable: true
+            description: >-
+              Szerepkör
+                - admin
+                - hr
+                - user
+                - leader
+                - virtual - Most nincs használatban
+            example: user
+          roleItems:
+            type: array
+            items:
+              type: string
+            readOnly: true
+            nullable: true
+            uniqueItems: true
+            description: >-
+              A szerepkörökhoz tartozó összes jogosúltság elem
+            example: user
+
+  UserSimpleListModel:
+    description: Felhasználók egyszerű listája
+    type: array
+    items:
+      $ref: "#/components/UserSimpleModel"
+
+  UserListModel:
+    description: Felhasználók listája
+    type: array
+    items:
+      $ref: "#/components/UserModel"
+
+  UserPageModel:
+    type: object
+    description: Felhasználók egyszerű vagy normál listája, attól függően, hogy a lekérdezésben mi szerepel
+    allOf:
+      - $ref: '#/components/PageModel'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: "#/components/UserSimpleModel"
+
+  CompanyVirtueModel:
+    description: Vállalati érték
+    type: object
+    required:
+      - value
+    properties:
+      id:
+        type: integer
+        readOnly: true
+        format: int64
+        example: "342342"
+        description: Vállalati érték azonosító
+      value:
+        readOnly: true
+        nullable: true
+        type: string 
+        description: >-
+          Vállalati érték szövege
+
+  CompanyVirtueEditableModel:
+    description: Vállalati érték, szerkeszthető
+    type: object
+    required:
+      - value
+    properties:
+      id:
+        type: integer
+        readOnly: true
+        format: int64
+        example: "342342"
+        description: Vállalati érték azonosító
+      value:
+        readOnly: true
+        nullable: true
+        type: string 
+        description: >-
+          Vállalati érték szövege
+      editvalue:
+        type: string 
+        description: >-
+          Szerkesztett vállalati érték szövege
+  
+  CompanyVirtueEditablePageModel:
+    description: Szerkeszthető vállalati érték lapozással
+    type: object
+    allOf:
+      - $ref: '#/components/PageModel'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: "#/components/CompanyVirtueEditableModel"
+
+  LeaderVirtueModel:
+    description: Vezetői érték
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: "342342"
+        readOnly: true
+        description: Vezetői érték azonosító
+      own:
+        type: boolean
+        readOnly: true
+        nullable: true
+        description: >-
+          Jelzi, hogy az adott vezetői érték a bejelentkezett felhasználó tulajdona
+      owner:
+        $ref: "#/components/UserSimpleModel"
+        readOnly: true
+        nullable: true
+        description: >-
+          Vezetői érték tulajdonosa
+      value:
+        type: string 
+        readOnly: true
+        nullable: true
+        description: >-
+          Vezetői érték szövege
+
+  CreatePeriodModel:
+    description: Periódus létrehozása
+    type: object
+    properties:
+      name:
+        type: string
+        nullable: true
+        description: Periódus neve.
+      startDate:
+        type: string
+        format: date-time
+        nullable: true
+        description: Periódus kezdete, nem használt.
+      endDate:
+        type: string
+        nullable: false
+        format: date-time
+        readOnly: true
+        description: >-
+          Periódus vége.  
+
+          Az előző periódus ratingEndDate-nál nagyobbnak kell lennie.
+      ratingEndDate:
+        type: string
+        format: date-time
+        nullable: false
+        description: >-
+          Periódus minősítés vége.  
+
+          Nagyobbnak kell lennie, mint az endDate.
+
+  PeriodModel:
+    description: Periódus
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: "342342"
+        readOnly: true
+        description: Periódus azonosító
+      name:
+        type: string
+        nullable: true
+        description: Periódus neve
+      status:
+        type: string
+        nullable: false
+        description: Periódus állapota
+        enum:
+          - FUTURE
+          - ACTIVE
+          - RATING
+          - CLOSED
+        example: 
+          ACTIVE
+      startDate:
+        type: string
+        format: date-time
+        nullable: true
+        description: >-
+          Periódus kezdete
+      endDate:
+        type: string
+        format: date-time
+        nullable: true
+        description: >-
+          Periódus vége
+      ratingEndDate:
+        type: string
+        format: date-time
+        nullable: true
+        description: >-
+          Periódus minősítés vége.  
+
+          Nagyobb, mint az endDate.
+
+
+  PeriodPageModel:
+    description: Periódusok lapozható model-je
+    type: object
+    allOf:
+      - $ref: '#/components/PageModel'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: "#/components/PeriodModel"
+
+
+  DifficultyModel:
+    description: Nehézség
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: "342342"
+        readOnly: true
+        description: Nehézség azonosító
+      name:
+        type: string
+        readOnly: true
+        description: >-
+          Nehézség foka
+        example: Könnyű
+      description:
+        type: string
+        readOnly: true
+        description: >-
+          Nehézség leírása
+        example: A feladat Könnyű
+      multiplier:
+        type: number
+        format: double
+        readOnly: true
+        description: >-
+          Szorzó tényező
+          Csak megfelelő lekérdezés esetén megjelenítendő
+        example: 0.3
+
+  FactorOptionModel:
+    description: Értékelési szempont választási lehetősége
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: "342342"
+        readOnly: true
+        description: Lehetőség azonosító
+      name:
+        type: string
+        readOnly: true
+        description: >-
+          Lehetőség neve
+      score:
+        type: number
+        format: double
+        readOnly: true
+        description:
+          Lehetőség értéke
+    example:
+      id: 1
+      name: Elvárt/Vállalt
+      score: 3.0
+
+  FactorOptionListModel:
+    description: Érték szempontok opciónak listája
+    type: array
+    items:
+      $ref: "#/components/FactorOptionModel"
+
+  FactorSimpleModel:
+    description: >-
+      Egyszerű értékelési szempont választási opciók nélkül
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: "342342"
+        readOnly: true
+        description: Értékelési szempont azonosító
+      name:
+        type: string
+        readOnly: true
+        description: >-
+          Értékelési szempont neve
+    example:
+      id: 1
+      name: Kommunikáció
+
+  FactorModel:
+    description: >-
+      Egyszerű értékelési szempont választási opciók nélkül
+    type: object
+    required:
+      - id
+    allOf:
+      - $ref: "#/components/FactorSimpleModel"
+      - type: object
+        properties:
+          options:
+            $ref: "#/components/FactorOptionListModel"
+
+  TaskSimpleModel:
+    description: >-
+      Feladal alap adatai
+    type: object
+    required:
+      - id
+      - name
+      - taskType
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: "342342"
+        readOnly: true
+        nullable: true
+        description: Feladat azonosító
+      taskType:
+        type: string
+        readOnly: true
+        nullable: true
+        description: >-
+          Feladat típusa
+          Érték készlete:
+            - NORMAL
+            - AUTOMATIC
+            - TEMPLATE
+        example: NORMAL
+      status:
+        type: string
+        readOnly: true
+        nullable: true
+        description: >-
+          Feladat státusza
+          Érték készlete:
+            - PARAMETERIZATION
+            - UNDER_EVALUATION
+            - EVALUATED
+            - CLOSED
+            - DELETED
+        example: PARAMETERIZATION
+      name:
+        type: string
+        description: Feladat neve
+        example: Peas tesztelése
+        nullable: false
+      description:
+        type: string
+        nullable: true
+        description: Feladat leírása
+      owner:
+        $ref: "#/components/UserSimpleModel"
+        description: Tulajdonos
+      difficulty:
+        $ref: "#/components/DifficultyModel"
+        nullable: false
+        description: >-
+          Nehézségi szint
+          Szerkesztés esetén módosítható
+
+
+  TaskSimpleListModel:
+    type: array
+    items:
+      $ref: '#/components/TaskSimpleModel'
+
+  TaskItemModel:
+    description:
+      Task lekérdezés minimális értékekkel
+    type: object
+    allOf:
+      - $ref: "#/components/TaskSimpleModel"
+      - type: object
+        properties:
+          createdDate:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: false
+            description: >-
+              Létrehozás ideje
+          deadline:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+            description: >-
+              Határidő
+          startDate:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+            description: >-
+              Értékelés indításának az ideje.
+              Azelőtt van kitöltve, amikor a feladat értéklehetővé vált.
+              A Task befejezési dátuma is egyben.
+          endDate:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+            description: >-
+              Értékelés vége: 
+              - Az értékelés kezdetén az értékelés határidejét jelenti
+              - Az értékelés végén az utolsó értékelés időpontját
+              - Ha lejárt az értékelés, akkor a határidő marad, tehát nem változtatja meg az értékét
+          evaluationPercentage:
+            type: number
+            format: double
+            default: 0
+            readOnly: true
+            nullable: false
+            description:
+              (Elvégzett értékelések száma / Értékelők száma) * 100
+          score:
+            type: number
+            format: double
+            default: 0
+            readOnly: true
+            nullable: false
+            description:
+              Értékelés eredménye
+
+  TaskItemListModel:
+    type: array
+    items:
+      $ref: '#/components/TaskItemModel'
+
+  TaskItemPageModel:
+    type: object
+    allOf:
+      - $ref: '#/components/PageModel'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/TaskItemModel'
+
+  TaskFactorModel:
+    description: >-
+      Taskhoz rendelt értékelési szempont
+      Ahol a factor.id az id és nem a kapcsoló tábla
+    type: object
+    required:
+      - id
+      - required
+    allOf:
+      - $ref: "#/components/FactorSimpleModel"
+      - type: object
+        properties:
+          required:
+            type: boolean
+            description: >-
+              Kötelező értékelni ?
+    example:
+      id: 1
+      name: Kommunikáció
+      required: false
+
+  TaskEvaluationModel:
+    description: >-
+      Taskhoz rendelt értékelések
+    type: object
+    required:
+      - evaluator
+    properties:
+      evaluator:
+        $ref: "#/components/UserSimpleModel"
+      status:
+        type: string
+        enum:
+          - BEFORE_EVALUATING
+          - EVALUATING
+          - EVALUATED
+          - CLOSED
+      score:
+        type: number
+        format: double
+        description: >-
+          Érték
+        example: 0.3
+      evaluatedDate:
+        type: string
+        format: date-time
+        readOnly: true
+        description: >-
+          Értékelés időpontja
+      evaluable:
+        type: boolean
+        readOnly: true
+        nullable: false
+        description: >-
+          Értékelhető a task a belépett felhasználó számára
+          Akkor igaz, ha:
+            - A Task értékelés alatt van
+            - Tartozik hozzá a felhasználó számára értékelés
+            - De még nem végezte el az értékelést
+        example: false
+  
+  TaskEvaluationListModel:
+    type: array
+    items:
+      $ref: "#/components/TaskEvaluationModel"
+
+  TaskModel:
+    description: Feladat
+    type: object
+    allOf:
+      - $ref: "#/components/TaskSimpleModel"
+      - type: object
+        properties:
+          createdDate:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: false
+            description: >-
+              Létrehozás ideje
+          deadline:
+            type: string
+            format: date-time
+            description: >-
+              Értékelés határideje időpont
+              Szerkesztés esetén módosítható
+          companyVirtues:
+            type: array
+            items:
+              $ref: '#/components/CompanyVirtueModel'
+            nullable: false
+            description: >-
+              Vezetői értékek listája
+              Szerkesztés esetén módosítható
+          leaderVirtues:
+            type: array
+            items:
+              $ref: '#/components/LeaderVirtueModel'
+            nullable: false
+            description: >-
+              Vezetői értékek listája
+              Szerkesztés esetén módosítható
+          taskfactors:
+            type: array
+            items:
+              $ref: '#/components/TaskFactorModel'
+            nullable: false
+            description: >-
+              Taskhoz rendelt értékelési szempontok
+              Szerkesztés esetén módosítható
+          evaluators:
+            $ref: "#/components/TaskEvaluationListModel"
+            nullable: false
+            description: >-
+              A task értékeléséhez meghívott felhasználók
+              Szerkesztés esetén módosítható
+          startDate:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+            description: >-
+              Értékelés indításának az ideje
+              Azelött van kitöltve, amikor a feladat értéklehetővé vált
+          endDate:
+            type: string
+            format: date-time
+            readOnly: true
+            nullable: true
+            description: >-
+              Értékelés vége
+          evaluationPercentage:
+            type: number
+            format: double
+            default: 0
+            readOnly: true
+            nullable: false
+            description:
+              (Elvégzett értékelések száma / Értékelők száma) * 100
+          score:
+            type: number
+            format: double
+            default: 0
+            readOnly: true
+            nullable: false
+            description:
+              Értékelés eredménye
+          period:
+            $ref: "#/components/PeriodModel"
+            description: Periódus
+          evaluationId:
+            type: integer
+            format: int64
+            example: "342342"
+            readOnly: true
+            nullable: true
+            description: Értékelés azonosító, ha a felhasználó értékelheti a feladatot.
+
+  TaskCreateModel:
+    description: >-
+      Task létrehozása
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: Feladat neve
+        example: Peas tesztelése
+        nullable: false
+      description:
+        type: string
+        nullable: true
+        description: Feladat leírása
+      difficulty:
+        $ref: "#/components/DifficultyModel"
+        nullable: false
+        description: >-
+          Nehézségi szint
+          Szerkesztés esetén módosítható
+      deadline:
+        type: string
+        format: date-time
+        description: >-
+          Értékelés határideje időpont
+          Szerkesztés esetén módosítható
+      companyVirtues:
+        type: array
+        items:
+          $ref: '#/components/CompanyVirtueModel'
+        nullable: false
+        description: >-
+          Vezetői értékek listája
+          Szerkesztés esetén módosítható
+      leaderVirtues:
+        type: array
+        items:
+          $ref: '#/components/LeaderVirtueModel'
+        nullable: false
+        description: >-
+          Vezetői értékek listája
+          Szerkesztés esetén módosítható
+      taskfactors:
+        type: array
+        items:
+          $ref: '#/components/TaskFactorModel'
+        nullable: false
+        description: >-
+          Taskhoz rendelt értékelési szempontok
+          Szerkesztés esetén módosítható
+      evaluators:
+        $ref: "#/components/TaskEvaluationListModel"
+        nullable: false
+        description: >-
+          A task értékeléséhez meghívott felhasználók
+          Szerkesztés esetén módosítható
+
+  EvaluationItemModel:
+    description: >-
+      Értékelés alap
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: "342342"
+        readOnly: true
+        nullable: true
+        description: Értékelés azonosító
+      evaluatedStartDate:
+        type: string
+        format: date-time
+        readOnly: true
+        description: >-
+          Értékelés indításának az időpontja    
+      deadline:
+        type: string
+        format: date-time
+        readOnly: true
+        description: >-
+          Értékelés határideje
+      task:
+        $ref: "#/components/TaskSimpleModel"
+      note:
+        type: string
+        nullable: true
+        description: >-
+          Szöveges értékelés
+
+  EvaluationItemListModel:
+    description: Értékelések listája
+    type: array
+    items:
+      $ref: "#/components/EvaluationItemModel"
+
+  EvaluationItemPageModel:
+    description: Felhasználók egyszerű vagy normál listája, attól függően, hogy a lekérdezésben mi szerepel
+    type: object
+    allOf:
+      - $ref: '#/components/PageModel'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: "#/components/EvaluationItemModel"
+
+  EvaluationSelectionModel:
+    description: >-
+      Kiválasztott értékelési opció
+      FactorOptionModel leszármaztatva, és megfeleltetve és a FactorOption adataival
+    type: object
+    properties:
+      factor:
+        $ref: "#/components/FactorModel"
+        description: Factorok
+      selected:
+        $ref: "#/components/FactorOptionModel"
+        description: Factor opciók közöl kiválasztott opció
+      required:
+        type: boolean
+        description: >-
+          Kötelező értékelni ?
+
+  EvaluationModel:
+    description: Értékelés
+    type: object
+    allOf:
+      - $ref: "#/components/EvaluationItemModel"
+      - properties:
+          factors:
+            description: Értékelések és a hozzá kiválasztott opció
+            type: array
+            items:
+              $ref: "#/components/EvaluationSelectionModel"
+
+
+  ReferenceTypeEnumModel:
+    type: string
+    enum:
+      - TODO
+      - TASK
+      - EVALUATION
+      - RATING
+      - LEADERVIRTUE
+      - PERIOD
+    example: "TASK"
+    readOnly: true
+    nullable: true
+    description: Kapcsolód objektum típusa
+
+  ToDoModel:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: "342342"
+        readOnly: true
+        nullable: true
+        description: TODO azonosító
+      status:
+        type: string
+        enum:
+          - OPEN
+          - CLOSE
+          - EXPIRED
+          - DELETED
+        default: OPEN
+      todoType:
+        type: string
+        example: EVALUATED
+        description: >-
+          Tennivaló típusa
+      deadlineComming:
+        type: boolean
+        example: false
+        description: >-
+          A határidő közeleg ...
+          Ha a teendő nyitott, és a határidőig kevesebb, mint a céges paraméterben megadott idő van hátra, akkor a sor kiemelten jelenik meg.
+      message:
+        type: string
+        example: "Nyelvfüggő generált üzenet"
+        readOnly: true
+        nullable: true
+        description: Nyelvfüggő generált üzenet
+      createdDate:
+        type: string
+        format: date-time
+        readOnly: true
+        nullable: false
+        description: >-
+          Létrehozás ideje
+      deadline:
+        type: string
+        format: date-time
+        readOnly: true
+        nullable: false
+        description: >-
+          Határidő
+      done:
+        type: string
+        format: date-time
+        readOnly: true
+        nullable: true
+        description: >-
+          Dátum, amikor elkészült
+      referenceType:
+        $ref: "#/components/ReferenceTypeEnumModel"
+      reference:
+        type: integer
+        format: int64
+        example: "342342"
+        readOnly: true
+        nullable: true
+        description: Kapcsolód objektum
+
+  ToDoPageModel:
+    type: object
+    allOf:
+      - $ref: '#/components/PageModel'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/ToDoModel'
+
+  NotificationModel:
+    type: object
+    required:
+      - id
+      - message
+      - createdDate
+      - type
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: "342342"
+        readOnly: true
+        nullable: true
+        description: Értesítés azonosító
+      subject:
+        type: string
+        example: "Nyelvfüggő generált üzenet"
+        readOnly: true
+        nullable: true
+        description: Nyelvfüggő generált üzenet
+      body:
+        type: string
+        example: "Nyelvfüggő generált üzenet"
+        readOnly: true
+        nullable: true
+        description: Nyelvfüggő generált üzenet
+      createdDate:
+        type: string
+        format: date-time
+        readOnly: true
+        nullable: false
+        description: >-
+          Létrehozás ideje
+      referenceType:
+        $ref: "#/components/ReferenceTypeEnumModel"
+      reference:
+        type: integer
+        format: int64
+        example: "342342"
+        readOnly: true
+        nullable: true
+        description: >-
+          Kapcsolód objektum<br/>
+          Lehetőleg mindig a forrás objektum kell benne, és nem a ToDo azonosító<br/>
+          - Értékelés<br/>
+          - Feldata<br/>
+          - Periódus<br/>
+          - Minősítés<br/>
+      status:
+        type: string
+        example: "OPEN"
+        readOnly: true
+        description: Notifikáció státusza
+      notificationType:
+        type: string
+        readOnly: true
+        description: Notifikáció státusza
+      readed:
+        type: boolean
+        readOnly: true
+        description: Olvasottság jelzése
+
+  NotificationPageModel:
+    type: object
+    allOf:
+      - $ref: '#/components/PageModel'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/NotificationModel'
+
+  ModuleModel:
+    description: Module információk
+    type: object
+    properties:
+      name:
+        type: string
+        description: Modul neve
+      info:
+        type: object
+        description: információk
+  
+  ModuleListModel:
+    type: array
+    items:
+      $ref: "#/components/ModuleModel"
+
+response:
+
+  DefaultErrorResponse:
+    description: Általános hibaüzenet
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/ErrorMessageModel"
+
+  NoContentResponse:
+    description: Nincs válasz
+
+
+

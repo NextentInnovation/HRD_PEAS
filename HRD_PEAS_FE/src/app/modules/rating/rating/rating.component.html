@@ -1,0 +1,32 @@
+<peas-employee-report [ratingId]="ratingId" *ngIf="ratingId"></peas-employee-report>
+
+<form #form="ngForm">
+<peas-card class="card-margin" [title]="'rating.rate.title' | translate">
+    <div class="row">
+        <div class="col-lg-6">
+            <span class="upper-label-group">
+                <label for="textual_evaluation" class="upper-label">{{ 'rating.rate.textual_evaluation' | translate }}</label>
+                <textarea id="textual_evaluation" name="textual_evaluation" class="form-control input" type="text" pInputTextarea [rows]="3"
+                          [(ngModel)]="data.textualEvaluation" required="true" maxlength="1000"></textarea>
+            </span>
+        </div>
+        <div class="col-lg-6">
+            <span class="upper-label-group">
+                <label for="grade_recommendation" class="upper-label">{{ 'rating.rate.grade_recommendation' | translate }}</label>
+                <textarea id="grade_recommendation" name="grade_recommendation" class="form-control input" type="text" pInputTextarea [rows]="3"
+                          [(ngModel)]="data.gradeRecommendation" maxlength="1000"></textarea>
+            </span>
+        </div>
+        <div class="col-lg-6">
+            <span class="inline-label-group">
+                <p-inputSwitch [(ngModel)]="data.cooperation" name="cooperation"></p-inputSwitch>
+                <label>{{ 'rating.rate.cooperation' | translate }}</label>
+            </span>
+        </div>
+        <div class="col-lg-6 align-right">
+            <button mat-raised-button color="primary" [disabled]="form.form.invalid" class="mg-l-20" (click)="save()">{{ 'rating.rate.button.rate' | translate }}</button>
+            <button mat-raised-button  class="mg-l-20" color="accent" type="button" (click)="back()">{{ 'global.button.cancel' | translate }}</button>
+        </div>
+    </div>
+</peas-card>
+</form>

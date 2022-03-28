@@ -1,0 +1,52 @@
+@import "colors";
+
+.btn-outline-primary {
+  color: $white !important;
+  border-color: $primary-color;
+}
+
+.btn-outline-primary:hover {
+  color: $white;
+  background-color: $primary-color;
+  border-color: $white;
+}
+
+.card-body {
+  padding: 0;
+  padding-bottom: 20px;
+}
+
+.peas-tooltip {
+  top: -50px !important;
+
+  .tooltip-inner {
+    background-color: $primary-color;
+    color: #fff;
+  }
+
+  .tooltip.top .tooltip-arrow:before,
+  .tooltip.top .tooltip-arrow {
+    border-top-color: $primary-color;
+  }
+}
+
+.peas-header-tooltip {
+  top: -50px !important;
+
+  .tooltip-inner {
+    color: #212529;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+  }
+
+  .tooltip.top .tooltip-arrow:before,
+  .tooltip.top .tooltip-arrow {
+    border-top-color: $primary-color;
+  }
+}
+
+.modal-content {
+  border-radius: 10px;
+  color: $black;
+}

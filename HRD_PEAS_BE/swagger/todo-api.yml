@@ -1,0 +1,152 @@
+openapi: "3.0.0"
+info:
+  title: PEAS TODO API
+  description: PEAS TODO Application
+  version: 1.0.0
+  contact:
+    name: Nextent Informatics
+    email: apiteam@nextent.hu
+    url: http://nextent.hu
+servers:
+  - url: "http://127.0.0.1:8080/peas-todo"
+    description: local szerver
+  - url: "http://localhost:8080/peas-todo"
+    description: local szerver
+  - url: "http://wildfly-peas.nextentdmz.hu:8080/peas-todo"
+    description: demo szerver
+tags:
+  - name: todo
+    description: Feladatok
+  - name: notification
+    description: Értesítések
+
+
+paths:
+  /todo_v1/:
+    put:
+      tags:
+        - todo
+      operationId: queryTodo
+      summary: Tennivaló lekérdezése
+      description: >-
+        Tennivaló lekérdezése<br/>
+        Saját felhasználónak feladott TODO elemek lekérdezése<br/>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ToDoQueryParameterModel"
+      responses:
+        200:
+          description: Teendő lekérdezése
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/ToDoPageModel"
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+  /notification_v1/:
+    put:
+      tags:
+        - notification
+      summary: Értesítések lekérdezése
+      description: >-
+        Értesítések lekérdezése<br/>
+        Saját felhasználónak feladott értesítések elemek lekérdezése<br/>
+      operationId: queryNotification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotificationQueryParameterModel"
+      responses:
+        200:
+          description: Értesítések lekérdezése
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/NotificationPageModel"
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+    
+components:
+  schemas:
+    
+    ToDoQueryParameterModel:
+      allOf:
+        - $ref: "common.yml#/components/PagingAndSortingModel"
+        - properties:
+            id:
+              type: integer
+              format: int64
+              nullable: true
+              description: ToDo azonosító
+              example: 12
+            todoType:
+              $ref: "common.yml#/components/StringListModel"
+              nullable: true
+              description: >-
+                Teendő típusa
+                Felsorolva a típusok
+                Péláúl:
+                  - RATING
+                  - EVALUATION
+              example: EVALUATION
+            status:
+              $ref: "common.yml#/components/StringListModel"
+              nullable: true
+              description: Teendő státusza
+            deadlineRange:
+              $ref: "common.yml#/components/RangeDateTimeModel"
+              example:
+                min: 2019-10-01T00:00:01Z
+                max: 2019-10-02T00:00:00Z
+              description: Határidő
+            doneRange:
+              $ref: "common.yml#/components/RangeDateTimeModel"
+              example:
+                min: 2019-10-01T00:00:01Z
+                max: 2019-10-02T00:00:00Z
+              description: Elvégezve
+
+    NotificationQueryParameterModel:
+      allOf:
+        - $ref: "common.yml#/components/PagingAndSortingModel"
+        - properties:
+            hideReaded:
+              type: boolean
+              default: false
+              nullable: false
+              description: A már olvasott notifikációk rejtése
+              example: false
+            markReaded:
+              type: boolean
+              default: false
+              nullable: false
+              description: >-
+                True esetén a hivás során az aktuális időben olvasottá teszi a notifikációt
+              example: false
+            createdDateRange:
+              $ref: "common.yml#/components/RangeDateTimeModel"
+              example:
+                min: 2019-10-01T00:00:01Z
+                max: 2019-10-02T00:00:00Z
+              description: Létrehozás ideje
+
+  securitySchemes:
+    bearerAuth:  # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+
+security:
+  - bearerAuth: []
+
+

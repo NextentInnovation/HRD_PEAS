@@ -1,0 +1,171 @@
+<peas-card [title]="'task_list.card.title' | translate">
+    <button class="btn btn-sm btn-primary mg-l-20" [routerLink]="[SiteURLS.TASK.CREATE]">{{ 'button.new.task' | translate }}</button>
+    <peas-table [options]="tableOptions" (refresh)="getList()" [list]="list">
+        <table class="table table-sm table-striped">
+
+            <thead class="thead-inverse">
+            <tr>
+                <th></th>
+                <th peas-sortable-column="name">{{ 'task_list.table.header.name' | translate }}</th>
+                <th peas-sortable-column="ownerName">{{ 'task_list.table.header.owner_name' | translate }}</th>
+                <th peas-sortable-column="createdDate">{{ 'task_list.table.header.create_to' | translate }}</th>
+                <th peas-sortable-column="taskStatus">{{ 'task_list.table.header.task_status' | translate }}</th>
+                <th peas-sortable-column="deadline">{{ 'task_list.table.header.deadline' | translate }}</th>
+                <th peas-sortable-column="endDate">{{ 'task_list.table.header.end-date' | translate }}</th>
+                <th peas-sortable-column="percentage">{{ 'task_list.table.header.percentage' | translate }}</th>
+                <th peas-sortable-column="score">{{ 'task_list.table.header.score' | translate }}</th>
+            </tr>
+
+            <tr class="search-row">
+                <td class="small-icon-button">
+                    <sas-search-button [searchObject]="search"></sas-search-button>
+                </td>
+                <td><input class="form-control form-control-sm input" peasSearchColumn name="name" type="text" [(ngModel)]="search.name"/></td>
+                <td class="inline-2date">
+                    <ng-select *ngIf="users"
+                               peasSearchColumn
+                               [notFoundText]="'global.select.search.not_found' | translate"
+                               [items]="users"
+                               [multiple]="false"
+                               name="ownerName"
+                               bindLabel="evaluator.fullName"
+                               bindValue="evaluator.id"
+                               [closeOnSelect]="true"
+                               [(ngModel)]="search.ownerId">
+                    </ng-select>
+                </td>
+                <td class="inline-2date">
+                    <!--input disabled class="form-control form-control-sm" peasSearchColumn name="createTo" type="text"/-->
+                    <p-calendar peasSearchColumn
+                                [(ngModel)]="search.createdDateRange.min"
+                                [maxDate]="search.createdDateRange.max"
+                                [locale]="calendarLocalConfig"
+                                dateFormat="yy-mm-dd"
+                                showButtonBar="true"
+                                [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                [monthNavigator]="true"></p-calendar>-<p-calendar peasSearchColumn
+                                [(ngModel)]="search.createdDateRange.max"
+                                [minDate]="search.createdDateRange.min"
+                                [locale]="calendarLocalConfig"
+                                dateFormat="yy-mm-dd"
+                                showButtonBar="true"
+                                [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                [monthNavigator]="true"></p-calendar>
+                </td>
+                <td style="max-width: 300px;">
+                    <ng-select peasSearchColumn name="taskStatus" #select *ngIf="baseData"
+                               [notFoundText]="'global.select.search.not_found' | translate"
+                               [items]="baseData.taskstatuses"
+                               [(ngModel)]="search.status"
+                               [multiple]="true"
+                               [closeOnSelect]="true"
+                               [searchable]="false"
+                               (close)="select.ngOnChanges(null)">
+                        <ng-template ng-label-tmp let-item="item">
+                            <span class="ng-value-label ng-star-inserted">{{ 'constants.task_status.' + item.toLowerCase() | translate }}</span>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item">
+                            <span class="ng-option-label ng-star-inserted">{{ 'constants.task_status.' + item.toLowerCase() | translate }}</span>
+                        </ng-template>
+                    </ng-select>
+                </td>
+                <td class="inline-2date">
+                    <p-calendar peasSearchColumn
+                                [(ngModel)]="search.deadlineRange.min"
+                                [maxDate]="search.deadlineRange.max"
+                                [locale]="calendarLocalConfig"
+                                dateFormat="yy-mm-dd"
+                                showButtonBar="true"
+                                [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                [monthNavigator]="true"></p-calendar>-<p-calendar peasSearchColumn
+                                [(ngModel)]="search.deadlineRange.max"
+                                [minDate]="search.deadlineRange.min"
+                                [locale]="calendarLocalConfig"
+                                dateFormat="yy-mm-dd"
+                                showButtonBar="true"
+                                [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                [monthNavigator]="true"></p-calendar>
+                </td>
+                <td class="inline-2date">
+                    <!-- TODO étékelés vége kereső mezők -->
+                     <p-calendar peasSearchColumn
+                                [(ngModel)]="search.endDateRange.min"
+                                [maxDate]="search.endDateRange.max"
+                                [locale]="calendarLocalConfig"
+                                dateFormat="yy-mm-dd"
+                                showButtonBar="true"
+                                [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                [monthNavigator]="true"></p-calendar>-<p-calendar peasSearchColumn
+                                [(ngModel)]="search.endDateRange.max"
+                                [minDate]="search.endDateRange.min"
+                                [locale]="calendarLocalConfig"
+                                dateFormat="yy-mm-dd"
+                                showButtonBar="true"
+                                [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                [monthNavigator]="true"></p-calendar>
+
+                </td>
+                <td class="inline-3char">
+                    <input class="form-control form-control-sm" peasSearchColumn name="evaluatorRated_min" type="text" peasNumberChecker [max]="100" [min]="0" [(ngModel)]="search.percentageRange.min"/>-<input class="form-control form-control-sm" peasSearchColumn name="evaluatorRated_max" type="text" peasNumberChecker [max]="100" [min]="0" [(ngModel)]="search.percentageRange.max"/>
+                </td>
+                <td class="inline-3char">
+                    <input class="form-control form-control-sm" peasSearchColumn name="result_min" type="text" peasNumberChecker [max]="100" [min]="0" [(ngModel)]="search.scoreRange.min"/>-<input class="form-control form-control-sm" peasSearchColumn name="result_max" type="text" peasNumberChecker [max]="100" [min]="0" [(ngModel)]="search.scoreRange.max"/>
+                </td>
+            </tr>
+            </thead>
+
+            <tbody id="{{ tableOptions.name }}">
+            <tr *ngFor="let o of list  | paginate: tableOptions.paginationConfig">
+                <td>
+                    <div class="btn-group" dropdown *ngIf="TaskStatuses.DELETED !== o?.status">
+                        <button class="btn btn-lg dropdown-toggle" dropdownToggle><i class="fas fa-ellipsis-v"></i></button>
+                        <ul class="dropdown-menu" *dropdownMenu>
+                            <li *ngIf="TaskStatuses.PARAMETERIZATION !== o?.status || o?.owner.id !== meUser.id">
+                                <button class="dropdown-item" [routerLink]="[SiteURLS.TASK.VIEW, o?.id ]"><i class="far fa-eye"></i> {{ 'task_list.table.row.button.view' | translate }}</button>
+                            </li>
+                            <li *ngIf="TaskStatuses.PARAMETERIZATION === o?.status && o?.owner.id === meUser.id">
+                                <button class="dropdown-item" [routerLink]="[SiteURLS.TASK.EDIT, o?.id ]"><i class="far fa-edit"></i> {{ 'task_list.table.row.button.edit' | translate }}</button>
+                            </li>
+                            <li *ngIf="TaskStatuses.UNDER_EVALUATION === o?.status && o?.evaluable">
+                                <button class="dropdown-item"><i class="fas fa-star-half-alt"></i> {{ 'task_list.table.row.button.evaluation' | translate }}</button>
+                            </li>
+                            <li *ngIf="o?.owner.id === meUser.id">
+                                <button class="dropdown-item" (click)="openConfrimModal(o?.id)"><i class="far fa-clone"></i> {{ 'task_list.table.row.button.copy' | translate }}</button>
+                            </li>
+                            <li *ngIf="o?.owner.id === meUser.id && TaskStatuses.PARAMETERIZATION === o?.status">
+                                <button class="dropdown-item" (click)="openDeleteModal(o?.id)"><i class="far fa-trash-alt"></i> {{ 'task_list.table.row.button.delete' | translate }}</button>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                <td [routerLink]="[TaskStatuses.PARAMETERIZATION === o?.status && o?.owner.id === meUser.id ? SiteURLS.TASK.EDIT : SiteURLS.TASK.VIEW, o?.id ]">
+                    {{o?.name}}
+                </td>
+                <td [routerLink]="[TaskStatuses.PARAMETERIZATION === o?.status && o?.owner.id === meUser.id ? SiteURLS.TASK.EDIT : SiteURLS.TASK.VIEW, o?.id ]">
+                    {{o?.owner.fullName}}
+                </td>
+                <td [routerLink]="[TaskStatuses.PARAMETERIZATION === o?.status && o?.owner.id === meUser.id ? SiteURLS.TASK.EDIT : SiteURLS.TASK.VIEW, o?.id ]"
+                    [innerHTML]="DateUtils.formatHours((o?.createdDate | date:DateUtils.DATE_TIME_FORMAT))">
+                </td>
+                <td [routerLink]="[TaskStatuses.PARAMETERIZATION === o?.status && o?.owner.id === meUser.id ? SiteURLS.TASK.EDIT : SiteURLS.TASK.VIEW, o?.id ]">
+                    {{ o && o.status ? ('constants.task_status.' + o.status.toLowerCase() | translate) : '' }}
+                </td>
+                <td [routerLink]="[TaskStatuses.PARAMETERIZATION === o?.status && o?.owner.id === meUser.id ? SiteURLS.TASK.EDIT : SiteURLS.TASK.VIEW, o?.id ]"
+                    [innerHTML]="DateUtils.formatHours((o?.deadline | date:DateUtils.DATE_TIME_FORMAT))">
+                </td>
+                <td [routerLink]="[TaskStatuses.PARAMETERIZATION === o?.status && o?.owner.id === meUser.id ? SiteURLS.TASK.EDIT : SiteURLS.TASK.VIEW, o?.id ]"
+                    [innerHTML]="DateUtils.formatHours((o?.endDate | date:DateUtils.DATE_TIME_FORMAT))">
+                </td>
+                <td [routerLink]="[TaskStatuses.PARAMETERIZATION === o?.status && o?.owner.id === meUser.id ? SiteURLS.TASK.EDIT : SiteURLS.TASK.VIEW, o?.id ]">
+                    {{o?.evaluationPercentage}} %
+                </td>
+                <td [routerLink]="[TaskStatuses.PARAMETERIZATION === o?.status && o?.owner.id === meUser.id ? SiteURLS.TASK.EDIT : SiteURLS.TASK.VIEW, o?.id ]">
+                    {{o?.score | number: Parameters.scoreNumberFormat}}
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </peas-table>
+
+</peas-card>

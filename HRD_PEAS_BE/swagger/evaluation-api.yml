@@ -1,0 +1,105 @@
+openapi: "3.0.0"
+info:
+  title: PEAS Evaluation API
+  description: Feladat értékelés interfészek
+  version: 1.0.0
+  contact:
+    name: Nextent Informatics
+    email: apiteam@nextent.hu
+    url: http://nextent.hu
+servers:
+  - url: "http://127.0.0.1:8080/peas-evaluation"
+    description: local szerver
+  - url: "http://localhost:8080/peas-evaluation"
+    description: local szerver
+  - url: "http://wildfly-peas.nextentdmz.hu:8080/peas-evaluation"
+    description: demo szerver
+tags:
+  - name: evaluation
+    description: Értékelés
+
+
+paths:
+
+  /evaluation_v1/{evaluationId}:
+    parameters:
+      - name: evaluationId
+        in: path
+        required: true
+        description: Értékelés azonosítója
+        schema:
+          type: integer
+          format: int64  
+    get:
+      tags:
+        - evaluation
+      summary: Egy értékeléshez adatok lekérdezése
+      description: >-
+        A feladat adatainak lekérése az értékelés elvégzéséhez.  
+          
+        Ellenőrzés:
+          - Létező értékelés.
+          - A belépett felhasználó az értékelés értékelője, és még nem értékelte.
+      operationId: getEvaluation
+      responses:
+        200:
+          description: Egy értékeléshez adatok lekérdezése
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/EvaluationModel"
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+    put:
+      tags:
+        - evaluation
+      summary: Értékelés küldése
+      description: >-
+        Egy értékelés küldése.  
+          
+        Ellenőrzés:
+          - Létező értékelés.
+          - A belépett felhasználó az értékelés értékelője, és még nem értékelte.
+          - Kötelező értékelési szempontokhoz van-e választás.
+          
+        Működés:
+          - A feladat értékelési szempontjainak választási lehetőségeiből választás, valamint szöveges értékelés tárolása.
+          - Értékelés pontszám számítása és tárolása.
+          - Egy értékelés alatt lévő értékelést értékelt állapotba állítja: UNDER_EVALUATION -> EVALUATED
+          - Hozzá tartozó tennivaló lezárása.
+          - Hozzá tartozó értesítés kész-re állítása.
+          - A belépett felhasználóhoz tartozó automatikus feladathoz egy IGEN értékelés készítése.
+          - Ha ő az utolsó értékelő: Feladat értékeltre állítása folyamat.
+      operationId: modifyAndSendEvaluation
+      requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/EvaluationModel"
+      responses:
+        200:
+          description: Értékelés küldése
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/EvaluationModel"
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+          
+components:
+  securitySchemes:
+    bearerAuth:  # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+
+security:
+  - bearerAuth: []
+
+

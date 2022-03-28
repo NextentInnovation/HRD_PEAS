@@ -1,0 +1,101 @@
+{
+  "deadline": "2019-11-12T12:09:13.218Z",
+  "evaluatedStartDate": "2019-11-12T12:09:13.218Z",
+  "factors": [
+    {
+      "factor": {
+        "id" : 2,
+        "name" : "Kommunikáció",
+        "options" : [ {
+          "id" : 3,
+          "name" : "Kevés",
+          "score" : 1.0
+        }, {
+          "id" : 4,
+          "name" : "Elvárt/Vállalt",
+          "score" : 3.0
+        }, {
+          "id" : 5,
+          "name" : "Megfelelő",
+          "score" : 5.0
+        } ]
+      },
+      "required": true,
+      "selected": {
+      }
+    },
+    {
+      "factor": {
+        "id" : 4,
+        "name" : "Output minősége",
+        "options" : [ {
+          "id" : 9,
+          "name" : "Nem megfelelő",
+          "score" : 1.0
+        }, {
+          "id" : 10,
+          "name" : "Várt",
+          "score" : 3.0
+        }, {
+          "id" : 11,
+          "name" : "Megfelelő",
+          "score" : 5.0
+        } ]
+      },
+      "required": false,
+      "selected": {
+      }
+    },
+    {
+      "factor": {
+        "id" : 5,
+        "name" : "Együttműködés hatékonysága",
+        "options" : [ {
+          "id" : 12,
+          "name" : "Fejlensztendő",
+          "score" : 1.0
+        }, {
+          "id" : 13,
+          "name" : "Várt",
+          "score" : 3.0
+        }, {
+          "id" : 14,
+          "name" : "Megfelelés",
+          "score" : 5.0
+        } ]
+      },
+      "required": false,
+      "selected": {
+      }
+    }
+  ],
+  "id": 342342,
+  "note": "",
+  "task": {
+    "name" : "Megfelelően tesztelek",
+    "description" : "Megfelelően tesztelek",
+    "difficulty" : {
+      "id" : 2,
+      "name" : "Közepes",
+      "description" : "Közepes",
+      "multiplier" : 1.2
+    },
+    "id": 1,
+    "owner" : {
+      "id" : 6,
+      "active" : true,
+      "mode" : "normal",
+      "userName" : "hegedus.tamas",
+      "fullName" : "Hegedűs Tamás",
+      "email" : "hegedus.tamas@nextent.hu",
+      "organization" : "apdev",
+      "initial" : null,
+      "companyFullname" : "Nextent Zrt.",
+      "component" : null,
+      "roles" : [ "user" ],
+      "roleItems" : [ "user_roleitem", "common_roleitem" ]
+    },
+    "taskType" : "NORMAL",
+    "status" : "PARAMETERIZATION"
+  }
+}

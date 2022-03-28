@@ -1,0 +1,226 @@
+openapi: "3.0.0"
+info:
+  title: PEAS Authentication and Authorization API
+  description: PEAS Autentikációs és autorizaciós modul API
+  version: 1.0.0
+  contact:
+    name: Nextent Informatics
+    email: apiteam@nextent.hu
+    url: http://nextent.hu
+servers:
+  - url: "http://127.0.0.1:8080/peas-auth"
+    description: local szerver
+  - url: "http://localhost:8080/peas-auth"
+    description: local szerver
+  - url: "http://wildfly-peas.nextentdmz.hu:8080/peas-auth"
+    description: demo szerver
+tags:
+  - name: auth
+    description: Authentikáció, Bejelentkezés
+  - name: base
+    description: Alap műveletek
+  - name: resource
+    description: Erőforrások
+
+
+paths:
+  /login_v1:
+    post:
+      tags:
+        - auth
+      summary: Bejelentkezés PEAS user-rel
+      operationId: login
+      security: []
+      requestBody:
+        description: Felhasználónév-jelszó
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthenticationRequestModel"
+            examples:
+              demo0:
+                summary: Demo felhasználó WEB
+                value:
+                  username: demo
+                  password: 35be5
+                description:
+                  Demo felhasználó belép az alapértelmezett céggel WEB-es módon
+              demo1:
+                summary: Demo felhasználó WEB
+                value:
+                  username: demo
+                  password: 35be5
+                  mode: WEB
+                description:
+                  Demo felhasználó belép az alapértelmezett céggel WEB-es módon
+              demo2:
+                summary: Demo felhasználó APP
+                value:
+                  username: demo
+                  password: 35be5
+                  mode: APP
+                description:
+                  Demo felhasználó belép az alapértelmezett céggel APP módon
+              demo3:
+                summary: Demo felhasználó más céggel
+                value:
+                  username: demo
+                  password: 35be5
+                  company: nextent
+                  mode: APP
+                description:
+                  Demo felhasználó belép az alapértelmezett más céggel
+      responses:
+        200:
+          description: >-
+            Autentikációs JWT token, amelyet viszaad eredményben is és header-ben is
+          content:
+            application/json:
+              schema:
+                type: string
+          headers:
+            X-Authorization:
+              schema:
+                type: string
+              description: JWT Token
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+
+  /login_v1/{virtualUserToken}:
+    get:
+      tags:
+        - auth
+      summary: Virtualis felhasználó esetés token alapú bejelentkezés
+      security: []
+      operationId: virtualUserLogin
+      description: >-
+        Levélben meghívott felhasználó beléptetése
+      parameters:
+        - name: virtualUserToken
+          description: User Token
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Autentikációs JWT token
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+  /logout_v1:
+    delete:
+      tags:
+        - auth
+      summary: Kilépés PEAS userrel WEB és APP felhasználóval
+      operationId: logout
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Ok
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+  /me_v1:
+    get:
+      tags:
+        - auth
+      summary: Kurrens PEAS felhasználó lekérdezése
+      description: >-
+        Kurrens PEAS felhasználó lekérdezése
+        Több nem kell, mert LDAP alapján megy a felhasználó kezelés
+        Ez kliens oldalt segítő funkció, hogy le tudja kérdezni a felhasználó információkat
+      operationId: currentUser
+      responses:
+        200:
+          description: Kurrens felhasználó adatai
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/UserModel"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+  /healt_v1:
+    get:
+      tags:
+        - base
+        - auth
+      security: []
+      summary: Jelzi, hogy él a az alkalmazás
+      operationId: healthly
+      description: >-
+        Felhő, LW vagy egyéb esetben ezt a szolgáltatást lehet beregisztrálni, hogy jelezze, hogy az alkalmazás él.
+      responses:
+        200:
+          description: Live
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+  /module_v1:
+    get:
+      tags:
+        - resource
+      summary: Modul információk
+      description: >-
+        Modul információk
+      security: []
+      operationId: getAllModule
+      responses:
+        200:
+          description: Modulok
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/ModuleListModel"
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+
+components:
+  
+  securitySchemes:
+    bearerAuth:  # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+
+  schemas:
+    AuthenticationRequestModel:
+      type: object
+      description: Belépési adatok
+      required:
+      - username
+      - password
+      properties:
+        username:
+          type: string
+          description: Felhasználónév
+        password:
+          type: string
+          description: Jelszó
+        company:
+          type: string
+          description: Cég
+        mode:
+          type: string
+          enum:
+            - WEB
+            - APP
+          default: WEB
+          description: >-
+            Bejelentkezés módja
+            WEB: Böngészőben lép be a felhasználó
+            APP: Mobil alakalmazás segítségével lép be a felhasználó
+
+security:
+  - bearerAuth: []

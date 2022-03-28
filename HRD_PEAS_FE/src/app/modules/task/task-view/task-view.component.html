@@ -1,0 +1,115 @@
+<div class="row" *ngIf="data">
+    <div class="col-12">
+        <peas-card class="data-view-card">
+            <h1>{{ data.name }}</h1>
+        </peas-card>
+    </div>
+    <div class="col-lg-6">
+        <div class="row">
+            <div class="col-12">
+                <peas-card class="card-margin data-view-card" [title]="'task_view.base_data.title' | translate">
+                    <div class="row">
+                        <label class="col-sm-4">{{ 'task_view.owner' | translate }} </label>
+                        <span class="col-sm-8">{{ data.owner.fullName }}</span>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4">{{ 'task_view.task_status' | translate }} </label>
+                        <span class="col-sm-8">{{ 'constants.task_status.' + data.status.toLowerCase() | translate }}</span>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4">{{ 'task_view.description' | translate }} </label>
+                        <span class="col-sm-8">{{ data.description }}</span>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4">{{ 'task_view.difficulty' | translate }} </label>
+                        <span class="col-sm-8">{{ data.difficulty.name }}</span>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4">{{ 'task_view.created_date' | translate }} </label>
+                        <span class="col-sm-8" [innerHTML]="DateUtils.formatHours((data.createdDate | date:DateUtils.DATE_TIME_FORMAT))"></span>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4">{{ 'task_view.deadline' | translate }} </label>
+                        <span class="col-sm-8" [innerHTML]="DateUtils.formatHours((data.deadline | date:DateUtils.DATE_TIME_FORMAT))"></span>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4">{{ 'task_view.end_date' | translate }} </label>
+                        <span class="col-sm-8" [innerHTML]="DateUtils.formatHours((data.startDate | date:DateUtils.DATE_TIME_FORMAT))"></span>
+                        <!-- TODO modelben még nincs ilyen érték majd utólag kell bővíteni -->
+                    </div>
+                </peas-card>
+            </div>
+            <div class="col-12">
+                <peas-card class="card-margin data-view-card" [title]="'task_view.virtues.title' | translate">
+                    <div class="row">
+                        <label class="col-sm-4">{{ 'task_view.company_virtues' | translate }} </label>
+                        <span class="col-sm-8">
+                            <span class="task-virtue-box" *ngFor="let companyVirtues of data.companyVirtues">
+                                {{ companyVirtues.value }}
+                            </span>
+                        </span>
+                    </div>
+                    <div class="row mg-t-20">
+                        <label class="col-sm-4">{{ 'task_view.leader_virtues' | translate }} </label>
+                        <span class="col-sm-8">
+                            <span class="task-virtue-box" *ngFor="let leaderVirtues of data.leaderVirtues">
+                                {{ leaderVirtues.value }}
+                            </span>
+                        </span>
+                    </div>
+                </peas-card>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="row">
+            <div class="col-12 none-left-space">
+                <peas-card class="card-margin data-view-card" [title]="'task_view.evaluation_result.title' | translate">
+                    <div class="row">
+                        <label class="col-sm-4">{{ 'task_view.evaluation_percentage' | translate }} </label>
+                        <span class="col-sm-8">{{ data.evaluationPercentage }} %</span>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4">{{ 'task_view.score' | translate }} </label>
+                        <span class="col-sm-8">{{ data.score | number: Parameters.scoreNumberFormat }}</span>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4">{{ 'task_view.evaluation_end_date' | translate }} </label><!-- TODO ilyen adat még nincs a modelben -->
+                        <span class="col-sm-8" [innerHTML]="DateUtils.formatHours((data.endDate | date:DateUtils.DATE_TIME_FORMAT))"></span>
+                    </div>
+                </peas-card>
+            </div>
+            <div class="col-12 none-left-space">
+                <peas-card class="card-margin data-view-card" [title]="'task_view.evaluation.title' | translate">
+                    <div class="row">
+                        <label class="col-sm-4">{{ 'task_view.evaluators' | translate }} </label>
+                        <span class="col-sm-8">
+                            <ng-container *ngFor="let evaluators of data.evaluators">
+                                {{ evaluators.evaluator.fullName }},
+                            </ng-container>
+                        </span>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4">{{ 'task_view.task_factors' | translate }} </label>
+                        <span class="col-sm-8">
+                            <div class="row task-factor-box" *ngFor="let taskFactor of data.taskfactors" [ngClass]="{ 'required' : taskFactor.required }">
+                                <span class="col">{{ taskFactor.name }}</span>
+                                <!--span style="width: 50px">{{ 'no-data' }}</span-->
+                            </div>
+                        </span>
+                    </div>
+                </peas-card>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="button-row outbox-button-row">
+            <button mat-raised-button color="primary" (click)="evaluation()" *ngIf="CommonUtils.isNotEmpty(data.evaluationId)">
+                {{ 'task_edit.form.button.evaluation' | translate }}</button>
+            <button mat-raised-button color="primary" (click)="copy()">{{ 'task_edit.form.button.copy' | translate }}</button>
+            <button peasBackButton mat-raised-button color="accent">{{ 'global.button.back' | translate }}</button>
+        </div>
+    </div>
+</div>

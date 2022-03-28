@@ -1,0 +1,168 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div class="row">
+
+    <!-- Szeresztő felület -->
+    <div class="col-12">
+        <peas-card title="Szerkesztő">
+            <div class="row">
+                <div class="col-lg-6">
+                    <span class="upper-label-group">
+                        <label for="name-input" class="upper-label">Input</label>
+                        <input id="name-input" class="form-control input" type="text" size="30" pInputText [(ngModel)]="testData">
+                    </span>
+                </div>
+                <div class="col-lg-6">
+                    <span class="upper-label-group">
+                        <label for="name-selector" class="upper-label">Select</label>
+                        <p-dropdown id="name-selector" [options]="list" [(ngModel)]="selectedListElement" placeholder="Válassz" optionLabel="name" [showClear]="true"></p-dropdown>
+                    </span>
+                </div>
+                <div class="col-lg-6">
+                    <span class="upper-label-group">
+                        <label for="multiselect1" class="upper-label">Multi Select</label>
+                        <p-multiSelect name="multiselect1" [options]="multiSelectList" [(ngModel)]="selectedList" [filter]="true" filterBy="value.name">
+                            <ng-template let-value pTemplate="selectedItems">
+                                <span *ngFor="let item of value">{{ item.name }}</span>
+                            </ng-template>
+                            <ng-template let-item pTemplate="item">
+                                <label>{{ item.value.name }}</label>
+                            </ng-template>
+                        </p-multiSelect>
+                    </span>
+                </div>
+                <div class="col-lg-6">
+                    <span class="upper-label-group">
+                        <label for="multiselect2" class="upper-label">Multi Select with second switch</label>
+                        <p-multiSelect name="multiselect2" [options]="multiSelectList" [(ngModel)]="selectedList" [filter]="true" filterBy="value.name">
+                            <ng-template let-value pTemplate="selectedItems">
+                                <span *ngFor="let item of value" [ngClass]="{ 'required' : item.required }">{{ item.name }}
+                                    <i class="pi pi-times delete-item-icon" (click)="CommonUtils.deleteItemFromList(selectedList, item); $event.stopPropagation();"></i>
+                                </span>
+                            </ng-template>
+                            <ng-template let-item pTemplate="item">
+                                <div class="multiselect-item-with-switch">
+                                    <label>{{ item.value.name }}</label>
+                                    <span>
+                                        <label>Kötelező: </label>
+                                        <p-inputSwitch [(ngModel)]="item.value.required" (click)="$event.stopPropagation()"></p-inputSwitch>
+                                    </span>
+                                </div>
+                            </ng-template>
+                        </p-multiSelect>
+                    </span>
+                </div>
+                <div class="col-lg-6">
+                    <span class="upper-label-group">
+                        <label for="Ng-select Multi Select" class="upper-label">Ng-Select</label>
+                        <ng-select
+                                [items]="list"
+                                [notFoundText]="'global.select.search.not_found' | translate"
+                                [multiple]="true"
+                                bindLabel="name"
+                                [closeOnSelect]="true"
+                                bindValue="id"
+                                [(ngModel)]="selectedListIDs">
+
+                                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                                    <span [ngClass]="{ 'required' : item.required }">{{ item.name }}
+                                        <i class="pi pi-times delete-item-icon" (click)="clear(item); $event.stopPropagation()"></i>
+                                    </span>
+                                </ng-template>
+
+                                <ng-template ng-option-tmp let-item="item">
+                                    <div class="multiselect-item-with-switch">
+                                        <!--p-checkbox id="item-{{index}}" [(ngModel)]="item$.selected" binary="true"></p-checkbox-->
+                                        <label>{{   item.name   }}</label>
+                                        <span>
+                                            <label>Kötelező: </label>
+                                            <p-inputSwitch [(ngModel)]="item.required" (click)="$event.stopPropagation()"></p-inputSwitch>
+                                        </span>
+                                    </div>
+                                </ng-template>
+                        </ng-select>
+                    </span>
+                </div>
+                <div class="col-lg-12">
+                    <span class="upper-label-group">
+                        <label for="select-button" class="upper-label">Select Button</label>
+                        <p-selectButton name="select-button" [options]="selectButtonDatas" [(ngModel)]="selectButton" optionLabel="name">
+                            <ng-template let-item>
+                                <div tooltip="Tooltip vajon működik?" container="body" containerClass="peas-tooltip" placement="bottom"
+                                     #pop_select_button="bs-tooltip">
+                                    <span>{{ item.value.name }}</span>
+                                    <i class="far fa-question-circle button-info" (click)="$event.stopPropagation()"></i>
+                                </div>
+                            </ng-template>
+                        </p-selectButton>
+                    </span>
+                </div>
+                <div class="col-lg-12 button-row">
+                    <button mat-raised-button>Basic</button>
+                    <button mat-raised-button color="warn" (click)="tooltTipError('Hé hé hé hééééé!')">Warn?</button>
+                    <button mat-raised-button color="primary" disabled>Disabled</button>
+                    <button mat-raised-button color="accent" (click)="tooltTipInfo('Mégse akarjuk menteni')">Mégse</button>
+                    <button mat-raised-button color="primary"
+                            tooltip="Tooltip mentés gombra" containerClass="peas-tooltip" #pop_save="bs-tooltip"
+                            container="body" (click)="tooltTipSuccess('Sikeres mentés')">Mentés
+                        <i class="far fa-question-circle button-info" (click)="pop_save.show(); $event.stopPropagation()"></i></button>
+                </div>
+            </div>
+        </peas-card>
+    </div>
+
+    <!-- Table componens használatára példa -->
+    <div class="col-12">
+        <peas-card title="Welcome to {{ title }}!" [titleTemplate]="titleTemplate">
+            <ng-template #titleTemplate>
+                <img width="50" style="margin-left: auto;" alt="Angular Logo" src="./assets/images/logo.png">
+            </ng-template>
+
+            <peas-table [options]="tableOptions" (refresh)="refreshList()">
+                <table class="table table-sm table-striped">
+
+                    <thead class="thead-inverse">
+                    <tr>
+                        <th></th>
+                        <th peas-sortable-column="name">Név</th>
+                        <th peas-sortable-column="company">Cég</th>
+                        <th peas-sortable-column="email">E-mail</th>
+                    </tr>
+
+                    <tr class="search-row">
+                        <td class="small-icon-button">
+                            <sas-search-button [searchObject]="search"></sas-search-button>
+                        </td>
+                        <td><input class="form-control form-control-sm" peasSearchColumn name="partnerCode" type="text" [(ngModel)]="search.name"/></td>
+                        <td><input class="form-control form-control-sm" peasSearchColumn name="name" type="text" [(ngModel)]="search.company"/></td>
+                        <td><input class="form-control form-control-sm" peasSearchColumn name="name" type="text" [(ngModel)]="search.email"/></td>
+                    </tr>
+                    </thead>
+
+
+                    <tbody id="{{ tableOptions.name }}">
+                    <tr *ngFor="let o of list  | paginate: tableOptions.paginationConfig">
+                        <td>
+                            <div class="btn-group" dropdown>
+                                <button class="btn btn-lg dropdown-toggle" dropdownToggle><i class="fas fa-ellipsis-v"></i></button>
+                                <ul class="dropdown-menu" *dropdownMenu>
+                                    <li>
+                                        <button class="dropdown-item"><i class="far fa-eye"></i> Részletek</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td>{{o?.name}}</td>
+                        <td>{{o?.company}}</td>
+                        <td>{{o?.email}}</td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </peas-table>
+
+        </peas-card>
+    </div>
+</div>
+
+
+

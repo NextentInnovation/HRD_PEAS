@@ -1,0 +1,19 @@
+<div class="login-card">
+<peas-card [titleTemplate]="titleTemplate">
+    <ng-template #titleTemplate>
+        <img class="logo" alt="Angular Logo" src="./assets/images/logo.png">
+        <h1>{{ 'login.title' | translate }}</h1>
+    </ng-template>
+    <form>
+        <span class="upper-label-group p-l-20 p-r-20">
+            <label for="userName" class="upper-label">{{ 'login.user_name' | translate }}</label>
+            <input id="userName" name="userName" class="form-control input" type="text" size="30" pInputText [(ngModel)]="userName">
+        </span>
+        <span class="upper-label-group p-l-20 p-r-20">
+            <label for="password" class="upper-label">{{ 'login.password' | translate }}</label>
+            <input id="password" name="password" class="form-control input" type="password" size="30" pInputText [(ngModel)]="password">
+        </span>
+        <button mat-raised-button color="primary" (click)="login()" [disabled]="isRunProcess" type="submit">{{ 'login.button.login' | translate }}</button>
+    </form>
+</peas-card>
+</div>

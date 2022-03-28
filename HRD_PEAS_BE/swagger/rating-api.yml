@@ -1,0 +1,101 @@
+openapi: "3.0.0"
+info:
+  title: PEAS Vezetői minősítés API
+  description: Vezetői minősítés interfészek
+  version: 1.0.0
+  contact:
+    name: Nextent Informatics
+    email: apiteam@nextent.hu
+    url: http://nextent.hu
+servers:
+  - url: "http://127.0.0.1:8080/peas-rating"
+    description: local szerver
+  - url: "http://localhost:8080/peas-rating"
+    description: local szerver
+  - url: "http://wildfly-peas.nextentdmz.hu:8080/peas-rating"
+    description: demo szerver
+tags:
+  - name: rating
+    description: Vezetői minősítés
+
+
+paths:
+  /rating_v1/{ratingId}:
+    parameters:
+      - name: ratingId
+        in: path
+        required: true
+        description: Kiválasztott vezetői minősítés
+        schema:
+          type: integer
+          format: int64  
+          nullable: false
+
+    post:
+      tags:
+        - rating
+      summary: Vezetői minősítés küldése
+      description: >-
+        Vezetői minősítés adatainak küldése.  
+          
+        Ellenőrzés:
+          - Létező Rating objektum ratingId alapján.
+          - A belépett felhasználó a vezető benne.
+          - Még nem minősített.
+          - Kötelező adatok (textualEvaluation, gradeRecommendation, cooperation) megléte.
+          
+        Működés:
+          - Rating tárolás.
+          - Rating állapot állítás.
+          - Teendő állapot állítás: kész.
+          - Értesítés állapot állítás: kész.
+      security: []
+      operationId: saveRating
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RatingSendModel"
+      responses:
+        200:
+          description: Ok
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+
+components:
+
+  schemas:
+    RatingSendModel:
+      type: object
+      description: Minősítés
+      required:
+        - textualEvaluation
+        - gradeRecommendation
+        - cooperation
+      properties:
+        textualEvaluation:
+          type: string
+          nullable: false
+          description: Szöveges értékelés
+        gradeRecommendation:
+          type: string
+          nullable: false
+          description: Besorolás és juttatatási javaslat
+        cooperation:
+          type: boolean
+          nullable: false
+          description: Együttműködés igen/nem
+        
+
+  securitySchemes:
+    bearerAuth:  # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+
+security:
+  - bearerAuth: []
+
+

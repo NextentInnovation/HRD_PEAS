@@ -1,0 +1,13 @@
+# Swagger Codegen Ignore
+
+
+target/generated-sources/**/pom.xml
+target/generated-sources/**/model/**
+target/generated-sources/**/configuration/**
+target/generated-sources/**/test/**
+
+target/generated-sources/**/main/**/NotFoundException.java
+target/generated-sources/**/main/**/ApiResponseMessage.java
+target/generated-sources/**/main/**/ApiOriginFilter.java
+target/generated-sources/**/main/**/ApiException.java
+

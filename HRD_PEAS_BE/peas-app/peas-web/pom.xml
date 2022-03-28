@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	
+	<parent>
+        <artifactId>peas-app</artifactId>
+        <groupId>hu.nextent.peas</groupId>
+        <version>1.0.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+	
+    <artifactId>peas-web</artifactId>
+    <name>peas-web</name>
+    <packaging>war</packaging> 	
+	
+	<dependencies>
+	
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-auth</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-user</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-resource</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-demo</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+		
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-task</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-evaluation</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-todo</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+		
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-virtue</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-rating</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-period</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+		
+		<dependency>
+            <groupId>hu.nextent.peas</groupId>
+            <artifactId>peas-report</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+	</dependencies>
+
+</project>

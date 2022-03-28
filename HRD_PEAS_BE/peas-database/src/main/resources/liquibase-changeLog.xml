@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+
+	<!--
+		Használt context-ek
+		context:
+			- demo
+			- local
+			- memory
+		
+		demo: 
+			Csak produkciós módban használt.
+			A mostani értelme, hogy az alap paraméterezést tölti be.
+			Mint példáúl tábla szerkezet.
+		local:
+			Tesztelés egy minta céggel
+		memory:
+			H2 memóriába futtatandó adatbázis számára
+		
+	-->
+	
+	<property name="notification_email_template" value="./templates/peas_notification_template.html"/>
+
+	<changeSet id="disable-safe-update" author="admin" runAlways="true" context="demo, local" dbms="mysql">
+        <sql>SET SQL_SAFE_UPDATES=0;</sql>
+    </changeSet>
+	
+	<changeSet id="schema-selector" author="admin" runAlways="true" context="demo, local" dbms="mysql">
+        <sql>USE peas;</sql>
+    </changeSet>	
+
+	<changeSet id="h2-set-mode" author="admin" runAlways="true" context="memory" dbms="h2">
+        <sql>SET MODE MYSQL;</sql>
+        <sql>CREATE SCHEMA IF NOT EXISTS "public";</sql>
+    </changeSet>
+	
+	<!-- Spring-Batch -->
+	<changeSet author="peter.tamas" id="spring-batch-mysql">
+		<sqlFile path="db/spring-batch/schema-mysql.sql" relativeToChangelogFile="true"/>
+	</changeSet>
+	
+	<!-- Tábla szerkezet -->
+	<changeSet author="peter.tamas" id="db_schema">
+		<sqlFile path="db/0130_create_schema.sql" relativeToChangelogFile="true"/>
+	</changeSet>
+	
+	<include file="db/0130_insert_views.sql" relativeToChangelogFile="true"/>
+	
+	<!-- Alap adatok -->
+	<include file="db/0130_insert_systemparameter.sql" relativeToChangelogFile="true"/>
+	
+	<include file="db/0130_insert_roles.sql" relativeToChangelogFile="true"/>
+	
+	
+	<include file="db/0130_insert_label.sql" relativeToChangelogFile="true"/>
+
+	<changeSet author="admin" id="email_template">
+        <insert tableName="emailtemplate">
+			<column name="code" value="notification"/>
+            <column name="language" value="hu"/>
+			<column name="subject" value="{{subject}}"/>
+			<column name="content" type="longblob" valueBlobFile="${notification_email_template}"/>
+        </insert>
+        <insert tableName="emailtemplate">
+			<column name="code" value="notification"/>
+            <column name="language" value="en"/>
+			<column name="subject" value="{{subject}}"/>
+			<column name="content" type="longblob" valueBlobFile="${notification_email_template}"/>
+        </insert>
+    </changeSet>
+
+	<!-- Utolsó script -->
+	<changeSet id="enable-safe-update" author="admin" runAlways="true" context="demo, local" dbms="mysql">
+        <sql>SET SQL_SAFE_UPDATES=1;</sql>
+    </changeSet>
+
+
+</databaseChangeLog>
+

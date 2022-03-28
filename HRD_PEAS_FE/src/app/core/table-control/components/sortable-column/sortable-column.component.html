@@ -1,0 +1,3 @@
+<ng-content></ng-content>
+<i class="fas fa-angle-up" *ngIf="(table.options.sortDirection === SortDirection.ASC) && (table.options.sortedColumn === column)"></i>
+<i class="fas fa-angle-down" *ngIf="(table.options.sortDirection === SortDirection.DESC)  && (table.options.sortedColumn === column)"></i>

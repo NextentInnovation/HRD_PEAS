@@ -1,0 +1,106 @@
+<peas-card [title]="'period.table.card.title' | translate">
+    <!--button class="btn btn-sm btn-primary mg-l-20" [routerLink]="[SiteURLS.TASK.CREATE]">{{ 'button.new.task' | translate }}</button-->
+    <peas-table [options]="tableOptions" (refresh)="getList()" [list]="list">
+        <table class="table table-sm table-striped">
+            <thead class="thead-inverse">
+            <tr>
+                <th></th>
+                <th peas-sortable-column="name">{{ 'period.table.header.name' | translate }}</th>
+                <th peas-sortable-column="startDate">{{ 'period.table.header.start_date' | translate }}</th>
+                <th peas-sortable-column="endDate">{{ 'period.table.header.end_date' | translate }}</th>
+                <th peas-sortable-column="ratingEndDate">{{ 'period.table.header.rating_end_date' | translate }}</th>
+                <th peas-sortable-column="status">{{ 'period.table.header.status' | translate }}</th>
+            </tr>
+            <tr class="search-row">
+                <td class="small-icon-button">
+                    <sas-search-button [searchObject]="search"></sas-search-button>
+                </td>
+                <td><input class="form-control form-control-sm input" peasSearchColumn name="name" type="text" [(ngModel)]="search.name"/></td>
+                <td class="inline-2date">
+                    <!--input disabled class="form-control form-control-sm" peasSearchColumn name="createTo" type="text"/-->
+                    <p-calendar peasSearchColumn
+                                [(ngModel)]="search.startDateRange.min"
+                                [maxDate]="search.startDateRange.max"
+                                [locale]="calendarLocalConfig"
+                                dateFormat="yy-mm-dd"
+                                showButtonBar="true"
+                                [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                [monthNavigator]="true"></p-calendar>-<p-calendar peasSearchColumn
+                                                                                  [(ngModel)]="search.startDateRange.max"
+                                                                                  [minDate]="search.startDateRange.min"
+                                                                                  [locale]="calendarLocalConfig"
+                                                                                  dateFormat="yy-mm-dd"
+                                                                                  showButtonBar="true"
+                                                                                  [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                                                                  [monthNavigator]="true"></p-calendar>
+                </td>
+                <td class="inline-2date">
+                    <!--input disabled class="form-control form-control-sm" peasSearchColumn name="createTo" type="text"/-->
+                    <p-calendar peasSearchColumn
+                                [(ngModel)]="search.endDateRange.min"
+                                [maxDate]="search.endDateRange.max"
+                                [locale]="calendarLocalConfig"
+                                dateFormat="yy-mm-dd"
+                                showButtonBar="true"
+                                [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                [monthNavigator]="true"></p-calendar>-<p-calendar peasSearchColumn
+                                                                                  [(ngModel)]="search.endDateRange.max"
+                                                                                  [minDate]="search.endDateRange.min"
+                                                                                  [locale]="calendarLocalConfig"
+                                                                                  dateFormat="yy-mm-dd"
+                                                                                  showButtonBar="true"
+                                                                                  [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                                                                  [monthNavigator]="true"></p-calendar>
+                </td>
+                <td class="inline-2date">
+                    <!--input disabled class="form-control form-control-sm" peasSearchColumn name="createTo" type="text"/-->
+                    <p-calendar peasSearchColumn
+                                [(ngModel)]="search.ratingEndDateRange.min"
+                                [maxDate]="search.ratingEndDateRange.max"
+                                [locale]="calendarLocalConfig"
+                                dateFormat="yy-mm-dd"
+                                showButtonBar="true"
+                                [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                [monthNavigator]="true"></p-calendar>-<p-calendar peasSearchColumn
+                                                                                  [(ngModel)]="search.ratingEndDateRange.max"
+                                                                                  [minDate]="search.ratingEndDateRange.min"
+                                                                                  [locale]="calendarLocalConfig"
+                                                                                  dateFormat="yy-mm-dd"
+                                                                                  showButtonBar="true"
+                                                                                  [yearNavigator]="true" [yearRange]="DateUtils.yearRange()"
+                                                                                  [monthNavigator]="true"></p-calendar>
+                </td>
+                <!-- TODO: lecserélni lenyilóra -->
+                <td><input class="form-control form-control-sm input" peasSearchColumn name="name" type="text" [(ngModel)]="search.status"/></td>
+            </tr>
+            </thead>
+            <tbody id="{{ tableOptions.name }}">
+            <tr *ngFor="let o of list  | paginate: tableOptions.paginationConfig">
+                <td>
+                    <div class="btn-group" dropdown >
+                        <button class="btn btn-lg dropdown-toggle" dropdownToggle><i class="fas fa-ellipsis-v"></i></button>
+                        <ul class="dropdown-menu" *dropdownMenu>
+
+                        </ul>
+                    </div>
+                </td>
+                <td>
+                    {{o?.name}}
+                </td>
+                <td>
+                    {{o?.startDate}}
+                </td>
+                <td>
+                    {{o?.endDate}}
+                </td>
+                <td>
+                    {{o?.ratingEndDate}}
+                </td>
+                <td>
+                    {{o?.status}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </peas-table>
+</peas-card>

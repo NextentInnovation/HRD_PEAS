@@ -1,0 +1,106 @@
+{
+  "companyScoreAvg": 5.8,
+  "content": [
+    {
+      "asLeaderOrganization": null,
+      "asLeaderOrganizationScore": null,
+      "employee": {
+        "active": true,
+        "companyName": "nextent",
+        "email": "hegedus.tamas@nextent.hu",
+        "fullName": "Hegedűs Tamás",
+        "id": 6,
+        "mode": "normal",
+        "organization": "Alkalmazás fejlesztés",
+        "userName": "hegedus.tamas"
+      },
+      "leader": {
+        "active": true,
+        "email": "szabo.istvan@nextent.hu",
+        "fullName": "Szabó István",
+        "id": 342343,
+        "mode": "normal",
+        "organization": "Appdev",
+        "userName": "szabo.istvan"
+      },
+      "score": 6.8
+    },
+    {
+      "asLeaderOrganization": null,
+      "asLeaderOrganizationScore": null,
+      "employee": {
+        "active": true,
+        "companyName": "nextent",
+        "email": "hegedus.tamas@nextent.hu",
+        "fullName": "Pálhidy Csaba",
+        "id": 6,
+        "mode": "normal",
+        "organization": "Alkalmazás fejlesztés",
+        "userName": "hegedus.tamas"
+      },
+      "leader": {
+        "active": true,
+        "email": "szabo.istvan@nextent.hu",
+        "fullName": "Szabó István",
+        "id": 342343,
+        "mode": "normal",
+        "organization": "Appdev",
+        "userName": "szabo.istvan"
+      },
+      "score": 7.4
+    },
+    {
+      "asLeaderOrganization": null,
+      "asLeaderOrganizationScore": null,
+      "employee": {
+        "active": true,
+        "companyName": "nextent",
+        "email": "hegedus.tamas@nextent.hu",
+        "fullName": "Péter Tamás",
+        "id": 6,
+        "mode": "normal",
+        "organization": "Alkalmazás fejlesztés",
+        "userName": "hegedus.tamas"
+      },
+      "leader": {
+        "active": true,
+        "email": "szabo.istvan@nextent.hu",
+        "fullName": "Szabó István",
+        "id": 342343,
+        "mode": "normal",
+        "organization": "Appdev",
+        "userName": "szabo.istvan"
+      },
+      "score": 7.2
+    },
+    {
+      "asLeaderOrganization": "Alkalmazás fejlesztés",
+      "asLeaderOrganizationScore": 7,
+      "employee": {
+        "active": true,
+        "companyName": "nextent",
+        "email": "hegedus.tamas@nextent.hu",
+        "fullName": "Szabó István",
+        "id": 6,
+        "mode": "normal",
+        "organization": "Appdev",
+        "userName": "hegedus.tamas"
+      },
+      "leader": {
+        "active": true,
+        "email": "canjavec.attila@nextent.hu",
+        "fullName": "Canjavec Attila",
+        "id": 342343,
+        "mode": "normal",
+        "organization": "Területi vezetők",
+        "userName": "szabo.istvan"
+      },
+      "score": 6.8
+    }
+  ],
+  "number": 0,
+  "organizationScoreAvg": 6.6,
+  "size": 20,
+  "totalElements": 5,
+  "totalPages": 1
+}

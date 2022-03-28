@@ -1,0 +1,151 @@
+<ng-container *ngIf="data">
+    <div class="row">
+        <div class="col-12" *ngIf="!ratingId">
+            <peas-card class="data-view-card">
+                <h1 *ngIf="!personal">{{ 'report.employee.title' | translate }}</h1>
+                <h1 *ngIf="personal">{{ 'report.evaluated.title' | translate }}</h1>
+            </peas-card>
+        </div>
+        <div class="col-12" *ngIf="ratingId">
+            <peas-card class="data-view-card">
+                <h1>{{ 'rating.rate.main.title' | translate: { userName: data.employee.fullName, period: data.period.name } }}</h1>
+            </peas-card>
+        </div>
+        <div class="col-12" *ngIf="!ratingId">
+            <div class="row peroid_selector">
+                <label>{{ 'Periódus:' | translate }} </label>
+                <span>
+                    <ng-select *ngIf="periods"
+                               [notFoundText]="'global.select.search.not_found' | translate"
+                               [items]="periods"
+                               [multiple]="false"
+                               name="periodName"
+                               bindLabel="name"
+                               bindValue="id"
+                               [closeOnSelect]="true"
+                               [clearable]="false"
+                               [(ngModel)]="periodId"
+                                (change)="changePeriod()">
+                    </ng-select>
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <peas-card class="card-margin data-view-card" [title]="'report.employee.user_data.title' | translate">
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.employee' | translate }} </label>
+                    <span class="col-sm-8">{{ data.employee.fullName }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.leader' | translate }} </label>
+                    <span class="col-sm-8">{{ data.leader?.fullName }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.employee.organization' | translate }} </label>
+                    <span class="col-sm-8">{{ data.employee.organization }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.as_leader.organization' | translate }} </label>
+                    <span class="col-sm-8">{{ data.asLeaderOrganization }}</span>
+                </div>
+            </peas-card>
+        </div>
+        <div class="col-lg-6 none-left-space" *ngIf="data.score">
+            <peas-card class="card-margin data-view-card" [title]="'report.employee.user_score_data.title' | translate">
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.employee.score' | translate }} </label>
+                    <span class="col-sm-8">{{ data.score | number: Parameters.scoreNumberFormat }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.company.score' | translate }} </label>
+                    <span class="col-sm-8">{{ data.companyScoreAvg | number: Parameters.scoreNumberFormat }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.organization.score' | translate }} </label>
+                    <span class="col-sm-8">{{ data.organizationScore | number: Parameters.scoreNumberFormat }}</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4">{{ 'report.employee.user_data.as_leader.score' | translate }} </label>
+                    <span class="col-sm-8">{{ data.asLeaderOrganizationScore | number: Parameters.scoreNumberFormat }}</span>
+                </div>
+            </peas-card>
+        </div>
+        <div class="col-12" *ngIf="!ratingId && !isMe() && CommonUtils.isNotEmpty(data.textualEvaluation)">
+            <peas-card class="card-margin data-view-card" [title]="'report.employee.rating.title' | translate">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label class="col-sm-4">{{ 'report.employee.rating.textual_evaluation' | translate }} </label>
+                            <span class="col-sm-8">{{ data.textualEvaluation }}</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label class="col-sm-4">{{ 'report.employee.rating.grade_recommendation' | translate }} </label>
+                            <span class="col-sm-8">{{ data.gradeRecommendation }}</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <label class="col-sm-4">{{ 'report.employee.rating.cooperation' | translate }} </label>
+                            <span class="col-sm-8">{{ data.cooperation ? ('report.rating.cooperation.yes' | translate) : ('report.rating.cooperation.no' | translate) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </peas-card>
+        </div>
+        <div class="col-12">
+            <peas-card [title]="'report.employee.table.title' | translate">
+                <peas-table [options]="tableOptions" [list]="data.tasks">
+                    <table class="table table-sm table-striped">
+                        <thead class="thead-inverse" *ngIf="data.tasks && data.tasks.length > 0">
+                        <tr>
+                            <th></th>
+                            <th>{{ 'report.employee.table.header.name' | translate }}</th>
+                            <th>{{ 'report.employee.table.header.difficulty' | translate }}</th>
+                            <th>{{ 'report.employee.table.header.created_date' | translate }}</th>
+                            <th>{{ 'report.employee.table.header.deadline' | translate }}</th>
+                            <th>{{ 'report.employee.table.header.end_date' | translate }}</th>
+                            <th>{{ 'report.employee.table.header.score' | translate }}</th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="{{ tableOptions.name }}">
+                        <tr *ngFor="let o of data.tasks" [routerLink]="[TaskTypes.AUTOMATIC === o.taskType ? null : '/' +
+                            (personal ? SiteURLS.REPORT.PERSONAL_BASE + '/' + SiteURLS.REPORT.EVALUATED_TASK : SiteURLS.REPORT.BASE + '/' + SiteURLS.REPORT.EVALUATION), o.id ]">
+                            <td></td>
+                            <td>{{o?.name}}</td>
+                            <td>{{o?.difficulty.name}}</td>
+                            <td [innerHTML]="DateUtils.formatHours((o?.createdDate | date:DateUtils.DATE_TIME_FORMAT))"></td>
+                            <td [innerHTML]="DateUtils.formatHours((o?.deadline | date:DateUtils.DATE_TIME_FORMAT))"></td>
+                            <td [innerHTML]="DateUtils.formatHours((o?.endDate | date:DateUtils.DATE_TIME_FORMAT))"></td>
+                            <td>{{o?.score | number: Parameters.scoreNumberFormat}}</td>
+                        </tr>
+                        </tbody>
+                        <tfoot class="thead-inverse" *ngIf="data.tasks && data.tasks.length > 0">
+                            <th></th>
+                            <th colspan="5">
+                                <ng-container *ngIf="data && CommonUtils.isNotEmpty(data.score)">
+                                    {{ 'report.employee.table.score' | translate }}
+                                    <span *ngIf="CommonUtils.isNotEmpty(data.normalTasksScoreAvg) && CommonUtils.isNotEmpty(data.automaticTaskScore)">
+                                        {{ 'report.employee.table.score.details' | translate:
+                                        { normalTaskScoreAvg: data.normalTasksScoreAvg | number: Parameters.scoreNumberFormat,
+                                            automaticTaskScore: data.automaticTaskScore | number: Parameters.scoreNumberFormat } }}
+                                    </span>
+                                </ng-container>
+                            </th>
+                            <th>{{data.score | number: Parameters.scoreNumberFormat}}</th>
+                        </tfoot>
+                    </table>
+                </peas-table>
+            </peas-card>
+        </div>
+    </div>
+    <div class="row" *ngIf="!(personal || ratingId)">
+        <div class="col-12">
+            <div class="button-row outbox-button-row">
+                <button peasBackButton mat-raised-button color="primary">{{ 'global.button.back' | translate }}</button>
+            </div>
+        </div>
+    </div>
+</ng-container>

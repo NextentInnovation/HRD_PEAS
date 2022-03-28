@@ -1,0 +1,74 @@
+{
+  "content": [
+    {
+      "createdDate": "2019-10-10T10:37:30.684Z",
+      "deadline": "2019-10-10T10:37:30.684Z",
+      "description": "Leírés",
+      "id": 1,
+      "name": "Peas tesztelése 1",
+      "owner": {
+        "active": true,
+        "companyName": "string",
+        "email": "palhidy.csaba@nextent.hu",
+        "fullName": "Pálhidy Csaba",
+        "id": 342342,
+        "mode": "normal",
+        "organisation": "Alkalmazás fejlesztés",
+        "userName": "palhidy.csaba"
+      },
+      "percentage": 0,
+      "score": 0,
+      "startDate": "2019-10-10T10:37:30.684Z",
+      "taskStatus": "PARAMETERIZATION",
+      "taskType": "NORMAL"
+    },
+    {
+      "createdDate": "2019-10-10T10:37:30.684Z",
+      "deadline": "2019-10-10T10:37:30.684Z",
+      "description": "Leírés",
+      "id": 1,
+      "name": "Peas tesztelése 2",
+      "owner": {
+        "active": true,
+        "companyName": "string",
+        "email": "palhidy.csaba@nextent.hu",
+        "fullName": "Pálhidy Csaba",
+        "id": 342342,
+        "mode": "normal",
+        "organisation": "Alkalmazás fejlesztés",
+        "userName": "palhidy.csaba"
+      },
+      "percentage": 67,
+      "score": 80,
+      "startDate": "2019-10-10T10:37:30.684Z",
+      "taskStatus": "UNDER_EVALUATION",
+      "taskType": "NORMAL"
+    },
+    {
+      "createdDate": "2019-10-10T10:37:30.684Z",
+      "deadline": "2019-10-10T10:37:30.684Z",
+      "description": "Leírés",
+      "id": 1,
+      "name": "Peas tesztelése 3",
+      "owner": {
+        "active": true,
+        "companyName": "string",
+        "email": "palhidy.csaba@nextent.hu",
+        "fullName": "Pálhidy Csaba",
+        "id": 342342,
+        "mode": "normal",
+        "organisation": "Alkalmazás fejlesztés",
+        "userName": "palhidy.csaba"
+      },
+      "percentage": 100,
+      "score": 69,
+      "startDate": "2019-10-10T10:37:30.684Z",
+      "taskStatus": "EVALUATED",
+      "taskType": "NORMAL"
+    }
+  ],
+  "number": 0,
+  "size": 20,
+  "totalElements": 3,
+  "totalPages": 1
+}

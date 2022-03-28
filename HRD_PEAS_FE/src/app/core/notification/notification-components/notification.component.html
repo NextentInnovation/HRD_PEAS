@@ -1,0 +1,16 @@
+<div class="cdk-overlay-container">
+  <div class="cdk-global-overlay-wrapper" dir="ltr" style="justify-content: flex-end; align-items: flex-start;">
+    <div id="cdk-overlay-0" class="cdk-overlay-pane" style="pointer-events: auto; position: static; margin-top: 0px; margin-right: 0px;">
+      <ng-container *ngFor="let message of messageList">
+        <div class="mat-snack-bar-container ng-tns-c24-1 ng-trigger ng-trigger-state mat-snack-bar-top ng-star-inserted {{ message.animationClass }}" role="alert">
+          <div class="ng-star-inserted">
+            <div class="alert alert-icon-left" [ngClass]="message.panelClass" role="alert">
+              <strong>{{ message.data }}</strong>
+              <button class="btn btn-sm close"><i class="fas fa-times" (click)="dismiss(message.id)"></i></button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

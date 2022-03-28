@@ -1,0 +1,109 @@
+<peas-card [title]="'main_page.to_do_list.card.title' | translate">
+    <peas-table [options]="toDoTableOptions" [list]="toDoList">
+        <table class="table table-sm table-striped" *ngIf="toDoList && toDoList.length > 0">
+            <thead class="thead-inverse">
+                <tr>
+                    <th></th>
+                    <th>{{ 'main_page.to_do_list.table.header.deadline' | translate }}</th>
+                    <th>{{ 'main_page.to_do_list.table.header.message' | translate }}</th>
+                </tr>
+            </thead>
+
+            <tbody id="{{ toDoTableOptions.name }}">
+            <tr *ngFor="let o of toDoList  | paginate: toDoTableOptions.paginationConfig" [ngClass]="{ 'deadline_coming': o.deadlineComming }">
+                <td>
+                    <i *ngIf="o.deadlineComming" class="fas fa-exclamation-triangle blink"></i>
+                    <!--div class="btn-group" dropdown>
+                        <button class="btn btn-lg dropdown-toggle" dropdownToggle><i class="fas fa-ellipsis-v"></i></button>
+                        <ul class="dropdown-menu" *dropdownMenu>
+                            <li>
+                                <button class="dropdown-item" (click)="goToReferenceAction(o)">
+                                    <i class="far fa-hand-point-right"></i> {{ 'main_page.to_do_list.table.row.button.execute' | translate }}
+                                </button>
+                            </li>
+                        </ul>
+                    </div-->
+                </td>
+                <td (click)="goToReferenceAction(o)" [innerHTML]="DateUtils.formatHours((o?.deadline | date:DateUtils.DATE_TIME_FORMAT))"></td>
+                <td (click)="goToReferenceAction(o)">{{o?.message}}</td>
+            </tr>
+            </tbody>
+
+        </table>
+    </peas-table>
+    <div class="more-data-link" >
+        <a class="mg-r-20" (click)="goToToDoWithFinishedSearch()">
+            {{ 'main_page.to_do_list.table.more_data_link' | translate }}
+        </a>
+    </div>
+</peas-card>
+
+<peas-card [title]="'main_page.card.in_progress.title' | translate">
+    <peas-table [options]="inProgressTasksTableOptions" [list]="inProgressTasksList">
+        <table class="table table-sm table-striped" *ngIf="inProgressTasksList && inProgressTasksList.length > 0">
+
+            <thead class="thead-inverse">
+            <tr>
+                <th></th>
+                <th>{{ 'main_page.in_progress.table.header.name' | translate }}</th>
+                <th>{{ 'main_page.in_progress.table.header.create_to' | translate }}</th>
+                <th>{{ 'main_page.in_progress.table.header.deadline' | translate }}</th>
+            </tr>
+             </thead>
+
+            <tbody id="{{ inProgressTasksTableOptions.name }}">
+            <tr *ngFor="let o of inProgressTasksList  | paginate: inProgressTasksTableOptions.paginationConfig"
+                [routerLink]="[ '/' + SiteURLS.TASK.BASE + '/' + (TaskStatuses.PARAMETERIZATION === o?.status ? SiteURLS.TASK.EDIT : SiteURLS.TASK.VIEW), o?.id ]">
+                <td>
+
+                </td>
+                <td>{{o?.name}}</td>
+                <td [innerHTML]="DateUtils.formatHours((o?.createdDate | date:DateUtils.DATE_TIME_FORMAT))"></td>
+                <td [innerHTML]="DateUtils.formatHours((o?.deadline | date:DateUtils.DATE_TIME_FORMAT))"></td>
+            </tr>
+            </tbody>
+        </table>
+    </peas-table>
+    <div class="more-data-link" >
+        <a class="mg-r-20" (click)="goToTaskListWithInProgressSearch()">
+            {{ 'main_page.in_progress.table.more_data_link' | translate }}
+        </a>
+    </div>
+</peas-card>
+
+<peas-card [title]="'main_page.card.finished.title' | translate">
+    <peas-table [options]="finishedTasksTableOptions" [list]="finishedTasksList">
+        <table class="table table-sm table-striped" *ngIf="finishedTasksList && finishedTasksList.length > 0">
+
+            <thead class="thead-inverse">
+            <tr>
+                <th></th>
+                <th>{{ 'main_page.finished.table.header.name' | translate }}</th>
+                <th>{{ 'main_page.finished.table.header.end_date' | translate }}</th>
+                <th>{{ 'main_page.finished.table.header.task_status' | translate }}</th>
+                <th>{{ 'main_page.finished.table.header.percentage' | translate }}</th>
+                <th>{{ 'main_page.finished.table.header.score' | translate }}</th>
+            </tr>
+            </thead>
+
+            <tbody id="{{ finishedTasksTableOptions.name }}">
+            <tr *ngFor="let o of finishedTasksList  | paginate: finishedTasksTableOptions.paginationConfig"
+                [routerLink]="[ '/' + SiteURLS.TASK.BASE + '/' + (TaskStatuses.PARAMETERIZATION === o?.status ? SiteURLS.TASK.EDIT : SiteURLS.TASK.VIEW), o?.id ]">
+                <td>
+
+                </td>
+                <td>{{o?.name}}</td>
+                <td [innerHTML]="DateUtils.formatHours((o?.startDate | date:DateUtils.DATE_TIME_FORMAT))"></td>
+                <td>{{ o && o.status ? ('constants.task_status.' + o.status.toLowerCase() | translate) : '' }}</td>
+                <td>{{o?.evaluationPercentage}} %</td>
+                <td>{{o?.score | number: Parameters.scoreNumberFormat}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </peas-table>
+    <div class="more-data-link" >
+        <a class="mg-r-20" (click)="goToTaskListWithFinishedSearch()">
+            {{ 'main_page.finished.table.more_data_link' | translate }}
+        </a>
+    </div>
+</peas-card>

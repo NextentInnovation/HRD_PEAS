@@ -1,0 +1,247 @@
+openapi: "3.0.0"
+info:
+  title: PEAS Resources API
+  description: PEAS Resources Application
+  version: 1.0.0
+  contact:
+    name: Nextent Informatics
+    email: apiteam@nextent.hu
+    url: http://nextent.hu
+servers:
+  - url: "http://127.0.0.1:8080/peas-resource"
+    description: local szerver
+  - url: "http://localhost:8080/peas-resource"
+    description: local szerver
+  - url: "http://wildfly-peas.nextentdmz.hu:8080/peas-resource"
+    description: demo szerver
+tags:
+  - name: resource
+    description: Erőforrások
+  - name: label
+    description: Címkék
+
+
+paths:
+  /label_v1:
+    get:
+      tags:
+        - resource
+        - label
+      summary: Címkék lekérdezése
+      description: >-
+        Címkék lekérdezése
+      security: []
+      operationId: getAllLabel
+      responses:
+        200:
+          description: Címkék
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  kulcs: érték
+                  kréta: tábla
+                  tej: vaj
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+  /info_v1:
+    get:
+      tags:
+        - resource
+      summary: Alkalmazás információk
+      description: >-
+        Alkalmazás információk<br/>
+          * Currens felhasználó<br/>
+          * Vezető<br/>
+          * Nehézségi szintek<br/>
+          * Vállalati értékek<br/>
+          * Csoport értékek<br/>
+          * Task típusok<br/>
+          * Task státuszok<br/>
+          * Értékelési státuszok<br/>
+          * Értékelési szempontok<br/>
+          * Értékelési státuszok<br/>
+          * Értékelési szempontok<br/>
+          * Aktív periódus<br/>
+          * Periódus státuszok
+      operationId: getInfo
+      responses:
+        200:
+          description: Információk
+          content:
+            application/json:
+              schema:
+                $ref: "common.yml#/components/PeasAppInfoModel"
+        204:
+          $ref: "common.yml#/response/NoContentResponse"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+  
+  /autocomplet_v1:
+    put:
+      tags:
+        - resource
+      operationId: queryAutocomplet
+      summary: Task nevek gyorskereső
+      description: >-
+        Taskok lekérdezése<br/>
+        Keres a névben és a leírásban<br/>
+        <br/>
+        autocompletType: Lekérdezés típusa<br/>
+            Típusok:
+              - task<br/>
+                Task nevében Keres<br/>
+                ADMIN/HR: esetben minden taskban<br/>
+                USER: Csak saját taskban<br/>
+                LEADER: Beosztottak taskjaiban<br/>
+              - user<br/>
+                Minden felhasználóban keres<br/>
+              - company<br/>
+                ADMIN: Minden cég nevében<br/>
+                Egyébb esetben: Csak saját céget adja vissza<br/>
+              - difficulty<br/>
+                Az adott céghez tartozó nehézségekben<br/>
+              - companyVirtue<br/>
+                Az adott céghez céges értékekben<br/>
+              - leaderVirtue<br/>
+                A belépett felhasználó vezetőjének az csoport értékeiben<br/>
+              - factor<br/>
+                Az adott céghez rendelt szempontokban keres<br/>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AutocompletQueryModel"
+      responses:
+        200:
+          description: Gyorskereső
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AutocompletModel"
+        default:
+          $ref: "common.yml#/response/DefaultErrorResponse"
+
+components:
+
+  schemas:
+    AutocompletQueryModel:
+      type: object
+      required:
+        - autocomplet
+      properties:
+        autocompletType:
+          type: string
+          nullable: false
+          description: >-
+            Lekérdezés típusa
+          enum:
+            - task
+            - user
+            - company
+            - difficulty
+            - companyVirtue
+            - leaderVirtue
+            - factor
+          example: task
+        filter:
+          type: string
+          nullable: true
+          description: >-
+            Keresendő kifejezés, ha nincs megadva, akkor az összesből lehetséges elemből 
+            adja vissza a limit értékével szűkítve
+        limit:
+          type: integer
+          format: int32
+          default: 10
+          nullable: true
+          description: >-
+            Lekérdezés limitálás
+
+
+    AutocompletItemModel:
+      description: >-
+        Adatkonverzió<br/>
+        Task<br/>
+          Task.id -> id<br/>
+          Task.name -> name<br/>
+          Task.description -> description<br/>
+        User<br/>
+          User.id -> id<br/>
+          User.userName -> name<br/>
+          User.fullName -> description<br/>
+          User.email -> email<br/>
+        Company<br/>
+          Company.id -> id<br/>
+          Company.name -> name<br/>
+          Company.fullName -> description<br/>
+        Difficulty<br/>
+          Difficulty.id -> id<br/>
+          Difficulty.name -> name<br/>
+          Difficulty.description -> description<br/>
+        CompanyVirtue<br/>
+          CompanyVirtue.id -> id<br/>
+          CompanyVirtue.value -> name<br/>
+          CompanyVirtue.value -> description<br/>
+        LeaderVirtue<br/>
+          LeaderVirtue.id -> id<br/>
+          LeaderVirtue.value -> name<br/>
+          LeaderVirtue.value -> description<br/>
+        Factor<br/>
+          Factor.id -> id<br/>
+          Factor.name -> name<br/>
+          Factor.name -> description<br/>
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Objektum azonosító
+        name:
+          type: string
+          description: Talált érték
+        description:
+          type: string
+          description: Talált érték
+      additionalProperties: true
+
+    AutocompletModel:
+      type: object
+      properties:
+        content: 
+          type: array
+          items:
+            $ref: "#/components/schemas/AutocompletItemModel"
+        totalElements:
+          type: integer
+          format: int64
+          default: 0
+          description: Hány elem kérdezhető le
+        autocompletType:
+          type: string
+          description: Lekérderdezés típusa
+        filter:
+          type: string
+          description: Keresendő kifejezés
+        limit:
+          type: integer
+          format: int32
+          default: 10
+          description: Lekérdezés limitálás
+
+  securitySchemes:
+    bearerAuth:  # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+
+
+security:
+  - bearerAuth: []
+
+

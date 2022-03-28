@@ -1,0 +1,167 @@
+{
+  "currentUser" : {
+    "id" : 6,
+    "active" : true,
+    "mode" : "normal",
+    "userName" : "hegedus.tamas",
+    "fullName" : "Hegedűs Tamás",
+    "email" : "hegedus.tamas@nextent.hu",
+    "companyName" : "nextent",
+    "organisation" : null,
+    "initial" : null,
+    "companyFullname" : null,
+    "component" : null,
+    "roles" : null,
+    "roleItems" : null
+  },
+  "leader" : {
+    "id" : 5,
+    "active" : true,
+    "mode" : "normal",
+    "userName" : "szabo.istvan",
+    "fullName" : "Szabó István",
+    "email" : "szabo.istvan@nextent.hu",
+    "companyName" : "nextent",
+    "organisation" : null,
+    "initial" : null,
+    "companyFullname" : null,
+    "component" : null,
+    "roles" : null,
+    "roleItems" : null
+  },
+  "difficulties" : [ {
+    "id" : 1,
+    "name" : "Egyszerű",
+    "description" : "Egyszerű",
+    "multiplier" : 1.0
+  }, {
+    "id" : 2,
+    "name" : "Közepes",
+    "description" : "Közepes",
+    "multiplier" : 1.2
+  }, {
+    "id" : 3,
+    "name" : "Nehéz",
+    "description" : "Nehéz",
+    "multiplier" : 1.4
+  } ],
+  "taskstatuses" : [ "PARAMETERIZATION", "UNDER_EVALUATION", "EVALUATED", "CLOSED" ],
+  "tasktypes" : [ "NORMAL", "AUTOMATIC", "TEMPLATE" ],
+  "evaluationstatuses" : [ "BEFORE_EVAULATING", "EVAULATING", "EVAULATED", "CLOSED" ],
+  "companyVirtues" : [ {
+    "id" : 1,
+    "value" : "Elismert monetáris politikai és pénzügyi szaktekintély"
+  }, {
+    "id" : 2,
+    "value" : "Pénzügyi stabilitás és az európai pénzügyi integráció"
+  }, {
+    "id" : 3,
+    "value" : "Elszámoltathatóság, függetlenség, hitelesség; közeli kapcsolat az európai polgárokkal"
+  }, {
+    "id" : 4,
+    "value" : "Közös identitás, világos hatás- és feladatkörök, megfelelő szervezetirányítás"
+  }, {
+    "id" : 5,
+    "value" : "A bankfelügyeletben bevált gyakorlat; egyenlő bánásmód, esélyegyenlőség"
+  }, {
+    "id" : 6,
+    "value" : "Kockázatalapú megközelítés, arányosság; felügyeleti intézkedés"
+  } ],
+  "leaderVirtues" : [ {
+    "id" : 4,
+    "own" : false,
+    "owner" : {
+      "id" : 5,
+      "active" : true,
+      "mode" : "normal",
+      "userName" : "szabo.istvan",
+      "fullName" : "Szabó István",
+      "email" : "szabo.istvan@nextent.hu",
+      "companyName" : "nextent",
+      "organisation" : null
+    },
+    "value" : "Légy jelen és vond be az alkalmazottaidat"
+  } ],
+  "periods" : null,
+  "factors" : [ {
+    "id" : 1,
+    "name" : "Kommunikáció",
+    "options" : [ {
+      "id" : 1,
+      "name" : "Kevés",
+      "score" : 1.0
+    }, {
+      "id" : 2,
+      "name" : "Elvárt/Vállalt",
+      "score" : 3.0
+    }, {
+      "id" : 3,
+      "name" : "Megfelelő",
+      "score" : 5.0
+    } ]
+  }, {
+    "id" : 2,
+    "name" : "Határidők betartása",
+    "options" : [ {
+      "id" : 4,
+      "name" : "Nem megfelelő",
+      "score" : 1.0
+    }, {
+      "id" : 5,
+      "name" : "Várt",
+      "score" : 3.0
+    }, {
+      "id" : 6,
+      "name" : "Megfelelő",
+      "score" : 5.0
+    } ]
+  }, {
+    "id" : 3,
+    "name" : "Output minősége",
+    "options" : [ {
+      "id" : 7,
+      "name" : "Nem megfelelő",
+      "score" : 1.0
+    }, {
+      "id" : 8,
+      "name" : "Várt",
+      "score" : 3.0
+    }, {
+      "id" : 9,
+      "name" : "Megfelelő",
+      "score" : 5.0
+    } ]
+  }, {
+    "id" : 4,
+    "name" : "Együttműködés hatékonysága",
+    "options" : [ {
+      "id" : 10,
+      "name" : "Fejlensztendő",
+      "score" : 1.0
+    }, {
+      "id" : 11,
+      "name" : "Várt",
+      "score" : 3.0
+    }, {
+      "id" : 12,
+      "name" : "Megfelelés",
+      "score" : 5.0
+    } ]
+  }, {
+    "id" : 5,
+    "name" : "Innováció",
+    "options" : [ {
+      "id" : 13,
+      "name" : "Nincs",
+      "score" : 1.0
+    }, {
+      "id" : 14,
+      "name" : "Várt",
+      "score" : 3.0
+    }, {
+      "id" : 15,
+      "name" : "Van",
+      "score" : 5.0
+    } ]
+  } ]
+}

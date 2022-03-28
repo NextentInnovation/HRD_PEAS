@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>hu.nextent.peas</groupId>
+    <artifactId>peas-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+
+
+    <properties>
+		<!-- Alap beállítás -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		
+		<!-- projekt tulajdonságok -->
+		<swagger-api-dir>${rootDir}/swagger</swagger-api-dir>
+		
+		<!-- hibernate -->
+		<hibernate-properties-name>hibernate.properties</hibernate-properties-name>
+		<hibernate-properties>${rootDir}/resources/hibernate.properties</hibernate-properties>
+
+		<!-- liquibase -->
+		<local-liquibase-datasource-url>jdbc:mysql://localhost:3306/peas?verifyServerCertificate=false&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&amp;useUnicode=yes&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC</local-liquibase-datasource-url>
+		<local-liquibase-datasource-driver-class>com.mysql.cj.jdbc.Driver</local-liquibase-datasource-driver-class>
+		<local-liquibase-datasource-username>peas_maintainer</local-liquibase-datasource-username>
+		<local-liquibase-datasource-password>F3i@XEP9</local-liquibase-datasource-password>
+		
+		<demo-liquibase-datasource-url>jdbc:mysql://mysql-peas.nextentdmz.hu:3306/peas?verifyServerCertificate=false&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&amp;useUnicode=yes&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC</demo-liquibase-datasource-url>
+		<demo-liquibase-datasource-driver-class>com.mysql.cj.jdbc.Driver</demo-liquibase-datasource-driver-class>
+		<demo-liquibase-datasource-username>peas_maintainer</demo-liquibase-datasource-username>
+		<demo-liquibase-datasource-password>F3i@XEP9</demo-liquibase-datasource-password>
+
+		<timestamp>${maven.build.timestamp}</timestamp>
+        <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss'Z'</maven.build.timestamp.format>
+    </properties>
+	
+	<!-- Felhasználható dependenciák  beírva a verziók, hogy ne kelljen másutt beírni-->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject</artifactId>
+				<version>1</version>
+			</dependency>
+			<dependency>
+			  <groupId>javax.servlet</groupId>
+			  <artifactId>servlet-api</artifactId>
+			  <version>2.5</version>
+			  <scope>provided</scope>
+		   </dependency>
+		   <dependency>
+			  <groupId>javax.validation</groupId>
+			  <artifactId>validation-api</artifactId>
+			  <version>2.0.1.Final</version>
+			  <scope>provided</scope>
+		   </dependency>
+		   <!-- Spring -->
+		   	<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>5.0.2.RELEASE</version>
+				<exclusions>
+				  <exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				  </exclusion>
+				</exclusions>
+			</dependency>
+		   <dependency>
+			  <groupId>org.springframework</groupId>
+			  <artifactId>spring-context</artifactId>
+			  <version>5.0.2.RELEASE</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>org.springframework</groupId>
+			  <artifactId>spring-webmvc</artifactId>
+			  <version>5.0.2.RELEASE</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>org.springframework</groupId>
+			  <artifactId>spring-web</artifactId>
+			  <version>5.0.2.RELEASE</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>org.springframework</groupId>
+			  <artifactId>spring-context-support</artifactId>
+			  <version>5.0.2.RELEASE</version>
+		   </dependency>
+		   <!-- Spring aspects -->
+		   <dependency>
+			  <groupId>org.springframework</groupId>
+			  <artifactId>spring-aspects</artifactId>
+			  <version>5.0.2.RELEASE</version>
+		   </dependency>
+		   <!-- Spring security -->
+		   <dependency>
+			  <groupId>org.springframework.security</groupId>
+			  <artifactId>spring-security-core</artifactId>
+			  <version>5.0.2.RELEASE</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>org.springframework.security</groupId>
+			  <artifactId>spring-security-web</artifactId>
+			  <version>5.0.2.RELEASE</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>org.springframework.security</groupId>
+			  <artifactId>spring-security-config</artifactId>
+			  <version>5.0.2.RELEASE</version>
+		   </dependency>
+		   <dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-test</artifactId>
+				<version>5.0.2.RELEASE</version>
+				<scope>test</scope>
+			</dependency>
+		   <!-- Spring data -->
+		   <dependency>
+			  <groupId>org.springframework</groupId>
+			  <artifactId>spring-orm</artifactId>
+			  <version>5.0.2.RELEASE</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>org.springframework.data</groupId>
+			  <artifactId>spring-data-jpa</artifactId>
+			  <version>2.1.5.RELEASE</version>
+		   </dependency>
+		   <!-- Spring batch -->
+		   <dependency>
+				<groupId>org.springframework.batch</groupId>
+				<artifactId>spring-batch-core</artifactId>
+				<version>4.2.0.RELEASE</version>
+		   </dependency>
+			<dependency>
+			    <groupId>org.springframework.batch</groupId>
+			    <artifactId>spring-batch-test</artifactId>
+			    <version>4.2.0.RELEASE</version>
+			    <scope>test</scope>
+			</dependency>
+		   <!-- jwt -->
+		   <dependency>
+			  <groupId>io.jsonwebtoken</groupId>
+			  <artifactId>jjwt</artifactId>
+			  <version>0.7.0</version>
+		   </dependency>
+		   <!-- jpa -->
+		   <dependency>
+			  <groupId>org.hibernate</groupId>
+			  <artifactId>hibernate-core</artifactId>
+			  <version>5.3.7.Final</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>org.hibernate</groupId>
+			  <artifactId>hibernate-jpamodelgen</artifactId>
+			  <version>5.3.7.Final</version>
+		   </dependency>
+		   <dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-c3p0</artifactId>
+				<version>5.3.7.Final</version>
+				<scope>test</scope>
+			</dependency>
+		   <!--SpringFox dependencies-->
+		   <!--
+		   <dependency>
+			  <groupId>io.springfox</groupId>
+			  <artifactId>springfox-swagger2</artifactId>
+			  <version>2.9.2</version>
+			  <exclusions>
+				 <exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-annotations</artifactId>
+				 </exclusion>
+			  </exclusions>
+		   </dependency>
+		   <dependency>
+			  <groupId>io.springfox</groupId>
+			  <artifactId>springfox-swagger-ui</artifactId>
+			  <version>2.9.2</version>
+		   </dependency>
+		   -->
+		   <dependency>
+			  <groupId>io.springfox</groupId>
+			  <artifactId>springfox-swagger2</artifactId>
+			  <version>2.9.2</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>io.springfox</groupId>
+			  <artifactId>springfox-swagger-ui</artifactId>
+			  <version>2.9.2</version>
+		   </dependency>
+		   <!-- mysql -->
+		   <dependency>
+			  <groupId>mysql</groupId>
+			  <artifactId>mysql-connector-java</artifactId>
+			  <version>8.0.17</version>
+		   </dependency>
+		   <!-- jackson -->
+		   <dependency>
+			  <groupId>com.fasterxml.jackson.dataformat</groupId>
+			  <artifactId>jackson-dataformat-xml</artifactId>
+			  <version>2.10.0</version>
+		   </dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+			  <version>2.10.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+			  <version>2.10.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.module</groupId>
+				<artifactId>jackson-module-parameter-names</artifactId>
+			  <version>2.10.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.datatype</groupId>
+				<artifactId>jackson-datatype-jdk8</artifactId>
+			  <version>2.10.0</version>
+			</dependency>
+		   <dependency>
+			  <groupId>com.fasterxml.jackson.datatype</groupId>
+			  <artifactId>jackson-datatype-jsr310</artifactId>
+			  <version>2.10.0</version>
+		   </dependency>
+		   <!--
+		   <dependency>
+			  <groupId>com.fasterxml.jackson.dataformat</groupId>
+			  <artifactId>jackson-dataformat-xml</artifactId>
+			  <version>2.9.5</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>com.fasterxml.jackson.datatype</groupId>
+			  <artifactId>jackson-datatype-jsr310</artifactId>
+			  <version>2.9.5</version>
+		   </dependency>
+		   -->
+		   
+		   <!-- utils -->
+		   <dependency>
+			  <groupId>com.google.guava</groupId>
+			  <artifactId>guava</artifactId>
+			  <version>28.1-jre</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>com.github.ben-manes.caffeine</groupId>
+			  <artifactId>caffeine</artifactId>
+			  <version>2.8.0</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>com.github.ben-manes.caffeine</groupId>
+			  <artifactId>guava</artifactId>
+			  <version>2.8.0</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>org.apache.commons</groupId>
+			  <artifactId>commons-lang3</artifactId>
+			  <version>3.5</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>org.projectlombok</groupId>
+			  <artifactId>lombok</artifactId>
+			  <version>1.18.8</version>
+			  <scope>provided</scope>
+		   </dependency>
+		   <dependency>
+			  <groupId>org.modelmapper</groupId>
+			  <artifactId>modelmapper</artifactId>
+			  <version>2.3.0</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>org.reflections</groupId>
+			  <artifactId>reflections</artifactId>
+			  <version>0.9.11</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>args4j</groupId>
+			  <artifactId>args4j</artifactId>
+			  <version>2.33</version>
+		   </dependency>
+		   <dependency>
+			  <groupId>com.squareup</groupId>
+			  <artifactId>javapoet</artifactId>
+			  <version>1.11.1</version>
+		   </dependency>
+		   <!-- Test -->
+		   <dependency>
+			  <groupId>junit</groupId>
+			  <artifactId>junit</artifactId>
+			  <version>4.12</version>
+			  <scope>test</scope>
+		   </dependency>
+		   <dependency>
+			  <groupId>org.mockito</groupId>
+			  <artifactId>mockito-core</artifactId>
+			  <version>2.23.4</version>
+			  <scope>test</scope>
+		   </dependency>
+		   <dependency>
+			  <groupId>org.springframework</groupId>
+			  <artifactId>spring-test</artifactId>
+			  <version>5.0.2.RELEASE</version>
+			  <scope>test</scope>
+		   </dependency>
+		   <!-- log slf4j -->
+		   <!--
+		   <dependency>
+			  <groupId>org.slf4j</groupId>
+			  <artifactId>slf4j-log4j12</artifactId>
+			  <version>1.7.24</version>
+		   </dependency>
+		   -->
+		    <!-- 2. Bridge logging from JCL to SLF4j -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>1.7.30</version>
+			</dependency>
+			<!-- 3. logback -->
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>1.2.3</version>
+			</dependency>
+		
+		   <!-- liquibase -->
+		   <dependency>
+			  <groupId>org.liquibase</groupId>
+			  <artifactId>liquibase-core</artifactId>
+			  <version>3.6.3</version>
+		   </dependency>
+		   <dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>1.4.200</version>
+				<scope>test</scope>
+		   </dependency>
+		   
+		   <!-- javax.mail -->
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>javax.mail-api</artifactId>
+				<version>1.6.2</version>
+			</dependency>
+			<!-- javax.mail lokális környezetben -->
+			<dependency>
+				<groupId>com.sun.mail</groupId>
+				<artifactId>javax.mail</artifactId>
+				<version>1.6.2</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<!-- Felhasznált alap dependenciák -->
+	<dependencies>
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+		</dependency>
+
+	   <dependency>
+		  <groupId>javax.validation</groupId>
+		  <artifactId>validation-api</artifactId>
+	   </dependency>
+	   <dependency>
+		  <groupId>javax.servlet</groupId>
+		  <artifactId>servlet-api</artifactId>
+	   </dependency>
+	   <!--SpringFox dependencies-->
+	   <dependency>
+		  <groupId>io.springfox</groupId>
+		  <artifactId>springfox-swagger2</artifactId>
+		  <!--
+		  <exclusions>
+			 <exclusion>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+			 </exclusion>
+		  </exclusions>
+		  -->
+	   </dependency>
+	   <dependency>
+		  <groupId>io.springfox</groupId>
+		  <artifactId>springfox-swagger-ui</artifactId>
+	   </dependency>
+	   <!-- Spring -->
+	   <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<exclusions>
+			  <exclusion>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+			  </exclusion>
+			</exclusions>
+		</dependency>
+	   <dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-context</artifactId>
+	   </dependency>
+	   <dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-webmvc</artifactId>
+	   </dependency>
+	   <dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-web</artifactId>
+	   </dependency>
+	   <dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-context-support</artifactId>
+	   </dependency>
+	   <!-- Spring aspects -->
+	   <!--
+			<dependency><groupId>org.springframework</groupId><artifactId>spring-aspects</artifactId></dependency>
+			-->
+	   <!-- Spring data -->
+	   <dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-orm</artifactId>
+	   </dependency>
+	   <dependency>
+		  <groupId>org.springframework.data</groupId>
+		  <artifactId>spring-data-jpa</artifactId>
+	   </dependency>
+	   <!-- Spring batch -->
+	   <dependency>
+			<groupId>org.springframework.batch</groupId>
+			<artifactId>spring-batch-core</artifactId>
+	   </dependency>
+	   <dependency>
+			    <groupId>org.springframework.batch</groupId>
+			    <artifactId>spring-batch-test</artifactId>
+			    <scope>test</scope>
+			</dependency>
+	   <!-- Spring security -->
+	   <dependency>
+		  <groupId>org.springframework.security</groupId>
+		  <artifactId>spring-security-core</artifactId>
+	   </dependency>
+	   <dependency>
+		  <groupId>org.springframework.security</groupId>
+		  <artifactId>spring-security-web</artifactId>
+	   </dependency>
+	   <dependency>
+		  <groupId>org.springframework.security</groupId>
+		  <artifactId>spring-security-config</artifactId>
+	   </dependency>
+	   <dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+		</dependency>
+	   <dependency>
+		  <groupId>io.jsonwebtoken</groupId>
+		  <artifactId>jjwt</artifactId>
+	   </dependency>
+	   <!-- jpa -->
+	   <dependency>
+		  <groupId>org.hibernate</groupId>
+		  <artifactId>hibernate-core</artifactId>
+	   </dependency>
+	   <dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-c3p0</artifactId>
+				<scope>test</scope>
+			</dependency>
+		<dependency>
+            <groupId>com.mchange</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>0.9.5.2</version>
+			<scope>test</scope>
+        </dependency>
+	   <!-- mysql -->
+	   <dependency>
+		  <groupId>mysql</groupId>
+		  <artifactId>mysql-connector-java</artifactId>
+	   </dependency>
+	   <!-- XML processing: Jackson -->
+	   
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<!--
+	   <dependency>
+		  <groupId>com.fasterxml.jackson.dataformat</groupId>
+		  <artifactId>jackson-dataformat-xml</artifactId>
+	   </dependency>
+	   -->
+	   	<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-parameter-names</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.datatype</groupId>
+				<artifactId>jackson-datatype-jdk8</artifactId>
+			</dependency>
+		   <dependency>
+			  <groupId>com.fasterxml.jackson.datatype</groupId>
+			  <artifactId>jackson-datatype-jsr310</artifactId>
+		   </dependency>
+		<!--
+	   <dependency>
+		  <groupId>com.fasterxml.jackson.dataformat</groupId>
+		  <artifactId>jackson-dataformat-xml</artifactId>
+	   </dependency>
+	   <dependency>
+		  <groupId>com.fasterxml.jackson.datatype</groupId>
+		  <artifactId>jackson-datatype-jsr310</artifactId>
+	   </dependency>
+		-->
+	   <!-- utils -->
+	   <dependency>
+		  <groupId>com.google.guava</groupId>
+		  <artifactId>guava</artifactId>
+	   </dependency>
+	   		   <dependency>
+			  <groupId>com.github.ben-manes.caffeine</groupId>
+			  <artifactId>caffeine</artifactId>
+		   </dependency>
+		   <dependency>
+			  <groupId>com.github.ben-manes.caffeine</groupId>
+			  <artifactId>guava</artifactId>
+		   </dependency>
+	   <dependency>
+		  <groupId>org.apache.commons</groupId>
+		  <artifactId>commons-lang3</artifactId>
+	   </dependency>
+	   <dependency>
+		  <groupId>org.projectlombok</groupId>
+		  <artifactId>lombok</artifactId>
+	   </dependency>
+	   <dependency>
+		  <groupId>org.modelmapper</groupId>
+		  <artifactId>modelmapper</artifactId>
+	   </dependency>
+	   <dependency>
+		  <groupId>org.reflections</groupId>
+		  <artifactId>reflections</artifactId>
+	   </dependency>
+	   <!-- Test -->
+	   <dependency>
+		  <groupId>junit</groupId>
+		  <artifactId>junit</artifactId>
+	   </dependency>
+	   <dependency>
+		  <groupId>org.mockito</groupId>
+		  <artifactId>mockito-core</artifactId>
+	   </dependency>
+	   <dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-test</artifactId>
+	   </dependency>
+	   <!-- log slf4j -->
+	   <!--
+	   <dependency>
+		  <groupId>org.slf4j</groupId>
+		  <artifactId>slf4j-log4j12</artifactId>
+	   </dependency>
+	   -->
+	   <!-- 2. Bridge logging from JCL to SLF4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<!-- 3. logback -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+	   
+	   <dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+	    </dependency>
+	</dependencies>
+	
+
+	
+	<!-- Alap plugin-ek alap konfigurációja -->
+	<build>
+        <defaultGoal>clean install</defaultGoal>
+		
+		<sourceDirectory>src/main/java</sourceDirectory>
+		
+		<pluginManagement>
+			<plugins>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>3.1.0</version>
+					<configuration>
+						<failOnMissingWebXml>false</failOnMissingWebXml>
+					</configuration>            
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>2.5.2</version>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>3.0.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.6.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>properties-maven-plugin</artifactId>
+					<version>1.0-alpha-1</version>
+				</plugin>
+				
+				<!-- http://khmarbaise.github.io/iterator-maven-plugin -->
+				<plugin>
+					<groupId>com.soebes.maven.plugins</groupId>
+					<artifactId>iterator-maven-plugin</artifactId>
+					<version>0.5.0</version>
+				</plugin>
+				<!-- https://github.com/khmarbaise/echo-maven-plugin -->
+				<plugin>
+					<groupId>com.soebes.maven.plugins</groupId>
+					<artifactId>maven-echo-plugin</artifactId>
+					<version>0.1</version>
+				</plugin>
+				<!-- https://coderplus.github.io/copy-rename-maven-plugin/plugin-info.html -->
+				<plugin>
+					<groupId>com.coderplus.maven.plugins</groupId>
+					<artifactId>copy-rename-maven-plugin</artifactId>
+					<version>1.0</version>
+				</plugin>
+				<!-- https://github.com/beiliubei/maven-replacer-plugin/wiki/Usage-Guide -->
+				<plugin>
+					<groupId>com.google.code.maven-replacer-plugin</groupId>
+					<artifactId>maven-replacer-plugin</artifactId>
+					<version>1.3.5</version>
+				</plugin>			
+					
+				<plugin>
+					<groupId>org.liquibase</groupId>
+					<artifactId>liquibase-maven-plugin</artifactId>
+					<version>3.4.2</version>
+				</plugin>
+				
+				<plugin>
+					<groupId>io.swagger.codegen.v3</groupId>
+					<artifactId>swagger-codegen-maven-plugin</artifactId>
+					<version>3.0.11</version>
+				</plugin>
+				
+				<!-- https://github.com/jdcasey/directory-maven-plugin -->
+				<plugin>
+					<groupId>org.commonjava.maven.plugins</groupId>
+					<artifactId>directory-maven-plugin</artifactId>
+					<version>0.1</version>
+				</plugin>
+				
+				
+			</plugins>
+		</pluginManagement>
+		
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>${project.build.directory}/generated-resources</directory>
+				<filtering>true</filtering>
+			</resource>
+	    </resources>
+		
+		<plugins>
+			<plugin>
+				<!-- berakja a peas-parent alap könyvtárat a rootDir-be -->
+				<groupId>org.commonjava.maven.plugins</groupId>
+				<artifactId>directory-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>directories</id>
+						<goals>
+							<goal>directory-of</goal>
+						</goals>
+						<phase>validate</phase>
+						<configuration>
+							<property>rootDir</property>
+							<project>
+								<groupId>hu.nextent.peas</groupId>
+								<artifactId>peas-parent</artifactId>
+							</project>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+				  <execution>
+					<id>copy to temp-generated-sources</id>
+					<phase>generate-sources</phase>
+					<goals>
+					  <goal>copy-resources</goal>
+					</goals>
+					<configuration>
+					  <outputDirectory>${project.build.directory}/generated-resources</outputDirectory>
+					  <overwrite>true</overwrite>
+					  <resources>          
+						<resource>
+						  <directory>${rootDir}/resources</directory>
+						  <filtering>true</filtering>
+						</resource>
+					  </resources>              
+					</configuration>            
+				  </execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-resource</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-resource</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}/generated-resources</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+
+		</plugins>
+	</build>
+	
+	<modules>
+        <module>peas-interfaces</module>
+        <module>peas-tools</module>
+        <module>peas-database</module>
+        <module>peas-common</module>
+		<module>peas-service</module>
+        <module>peas-app</module>
+    </modules>
+		
+	<profiles>
+		<profile>
+			<!-- Local -->
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			
+			<properties>
+				<profile-id>local</profile-id>
+			</properties>
+			
+		</profile>
+		
+		<profile>
+			<!-- demo -->
+			<id>demo</id>
+			
+			<properties>
+				<profile-id>demo</profile-id>
+			</properties>
+
+		</profile>
+	</profiles>
+    
+</project>

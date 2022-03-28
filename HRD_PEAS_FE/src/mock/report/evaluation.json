@@ -1,0 +1,98 @@
+{
+  "asLeaderOrganization": "Főnökök",
+  "asLeaderOrganizationScore": 6.6,
+  "automaticTaskScore": 0.8,
+  "companyScoreAvg": 6.5,
+  "cooperation": true,
+  "employee": {
+    "active": true,
+    "companyName": "nextent",
+    "email": "hegedus.tamas@nextent.hu",
+    "fullName": "Hegedűs Tamás",
+    "id": 6,
+    "mode": "normal",
+    "organization": "Alkalmazás fejlesztés",
+    "userName": "hegedus.tamas"
+  },
+  "factorScoreAvgs": [
+    6, 5
+  ],
+  "factors": [
+    {
+      "id" : 5,
+      "name" : "Együttműködés hatékonysága"
+    }, {
+      "id" : 3,
+      "name" : "Határidők betartása"
+    }
+  ],
+  "gradeRecommendation": "Nem terjesztem jelenleg fizetésmódosításra",
+  "leader": {
+    "active": true,
+    "email": "szabo.istvan@nextent.hu",
+    "fullName": "Szabó István",
+    "id": 342343,
+    "mode": "normal",
+    "organization": "Vezetői",
+    "userName": "szabo.istvan"
+  },
+  "normalTasksScoreAvg": 6.8,
+  "organizationScore": 6.7,
+  "period": {
+    "endDate": "2019-11-28T11:45:00.851Z",
+    "id": 342342,
+    "name": "Valamilyen periódus",
+    "ratingEndDate": "2019-11-28T11:45:00.851Z",
+    "startDate": "2019-11-28T11:45:00.851Z",
+    "status": "ACTIVE"
+  },
+  "rows": [
+    {
+      "evaluatorName": "Teszt Elek",
+      "factorScores": [
+        7,4
+      ],
+      "note": "Ez egy megjegyzés",
+      "scoreAvg": 5.5
+    },
+    {
+      "evaluatorName": "Nevem Senki",
+      "factorScores": [
+        5,6
+      ],
+      "note": "Ez egy megjegyzés senkitől",
+      "scoreAvg": 5.5
+    }
+  ],
+  "score": 6,
+  "task": {
+    "createdDate": "2019-11-27T09:24:44.859Z",
+    "deadline": "2019-11-27T09:24:44.859Z",
+    "description": "Ez egy feladat leírása",
+    "difficulty": {
+      "description": "Egyszerű",
+      "id": 1,
+      "multiplier": 1,
+      "name": "Egyszerű"
+    },
+    "endDate": "2019-11-27T09:24:44.859Z",
+    "evaluationPercentage": 80,
+    "id": 342342,
+    "name": "Peas tesztelése",
+    "owner": {
+      "active": true,
+      "companyName": "nextent",
+      "email": "hegedus.tamas@nextent.hu",
+      "fullName": "Hegedűs Tamás",
+      "id": 6,
+      "mode": "normal",
+      "organisation": null,
+      "userName": "hegedus.tamas"
+    },
+    "score": 5.5,
+    "startDate": "2019-11-27T09:24:44.859Z",
+    "status": "PARAMETERIZATION",
+    "taskType": "NORMAL"
+  },
+  "textualEvaluation": "Időre a tudásának megfelelően, minden feladatot teljesített"
+}

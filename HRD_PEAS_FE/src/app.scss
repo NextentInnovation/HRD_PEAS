@@ -1,0 +1,455 @@
+// Import common styles
+@import 'app-common';
+// Place any CSS rules you want to apply only on WEB here
+@import 'assets/styles/base/material-theme';
+@import '../node_modules/bootstrap/scss/bootstrap';
+@import 'assets/styles/utils/bootstrap-override';
+@import 'assets/styles/utils/prime-ng-override';
+@import 'assets/styles/utils/matreial-override';
+// Layouts
+@import "assets/styles/layouts/header";
+@import "assets/styles/layouts/footer";
+@import "assets/styles/layouts/card";
+@import "assets/styles/layouts/sidebar";
+@import "assets/styles/layouts/grid";
+@import "assets/styles/components/table";
+
+body {
+  position: relative;
+  background-color: $primary-color;
+  color: $white;
+}
+
+.drawer-container {
+  margin-top: 50px;
+}
+
+.custom-scrollbar-white::-webkit-scrollbar
+{
+  width: 5px;
+}
+
+.custom-scrollbar-white::-webkit-scrollbar-thumb
+{
+  border-radius: 4px;
+  background-color: $white;
+}
+
+.custom-scrollbar::-webkit-scrollbar
+{
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb
+{
+  border-radius: 4px;
+  background-color: $primary-color;
+}
+
+.date-hour {
+  color: #aeb1b5;
+}
+
+.button-row {
+  text-align: right;
+  padding: 0 30px;
+
+  .button-info {
+    padding: 0 5px;
+    margin-right: -10px;
+    float: none;
+    font-size: 22px;
+  }
+}
+
+.ng-select {
+
+  .ng-select-container {
+    display: block;
+    min-height: 35px;
+    height: auto;
+    width: 100% !important;
+    background-clip: padding-box !important;
+    border: 1px solid $primary-color !important;
+    border-radius: 0.25rem !important;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+    font-size: 14px;
+    color: #333333;
+    background: $white;
+    padding: 5px;
+    padding-bottom: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    .ng-clear-wrapper .ng-clear {
+      font-size: 24px !important;
+      color: $primary-color;
+      font-weight: bold;
+    }
+
+    .ng-arrow-wrapper {
+      width: 25px;
+      padding-right: 12px;
+      padding-top: 8px;
+      cursor: pointer;
+      position: relative;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .ng-arrow-wrapper .ng-arrow {
+      font-size: 1.25em;
+      color: $primary-color;
+      font-family: 'primeicons';
+      speak: none;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+      display: inline-block;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .ng-arrow-wrapper .ng-arrow:before {
+      content: "\e902";
+    }
+  }
+}
+
+    .ng-value {
+      .delete-item-icon {
+        margin: auto;
+      }
+
+      .delete-item-icon {
+        margin: auto 5px;
+        background: $white;
+        border-radius: inherit;
+        color: $primary-color;
+      }
+
+      span {
+        background-color: $secondary-color;
+        color: $white;
+        padding: 5px;
+        margin-right: 5px;
+        border-radius: 10px;
+        display: inline-flex;
+        margin-bottom: 5px;
+        white-space: normal;
+      }
+
+      p {
+        padding: 0;
+        margin: 0;
+      }
+
+      span.required {
+        background-color: $primary-color;
+        font-weight: bold;
+
+        p:after {
+          content: ' *';
+          color: $white;
+        }
+      }
+    }
+
+  .ng-dropdown-panel {
+     width: auto;
+    min-width: 100%;
+  }
+
+  .append-to-body.ng-select-top.ng-dropdown-panel {
+    //position: fixed !important;
+  }
+
+  .ng-dropdown-panel-items {
+    padding: 0;
+    border: 2px solid $primary-color;
+    border-radius: 5px;
+    background-color: $white;
+    opacity: 1;
+
+    .ng-option {
+      color: #333333;
+      background: $white;
+      padding: 5px;
+      border-bottom: 1px solid $primary-border-color;
+    }
+
+    .ng-option:hover {
+      background-color: $hover-color;
+      color: $black;
+    }
+
+    .ng-option.ng-option-selected {
+      background-color: $secondary-color;
+      color: $white;
+    }
+
+    .multiselect-item-with-switch {
+      display: inline-flex;
+      width: 100%;
+
+      span {
+        display: flex;
+        margin-left: auto;
+
+        label {
+          line-height: 24px;
+          margin: 0 5px;
+          padding: 0;
+        }
+      }
+
+      label {
+        vertical-align: initial;
+        white-space: normal;
+      }
+    }
+  }
+
+.box-title-input {
+  border: 1px solid transparent;
+  background-color: transparent;
+  width: calc(100% - 20px);
+  padding-left: 5px;
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px 10px -10px;
+  color: $primary-color;
+}
+
+.box-title-input:hover {
+  border-color: $secondary-color;
+  border-radius: 0.25rem;
+}
+
+.box-title-input:focus {
+  border: 1px solid $primary-color;
+  border-radius: 0.25rem;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.special-header-card .card {
+  background-color: $white;
+}
+
+.card-margin .card-body {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.box-title-input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: $secondary-font-color;
+  opacity: 1; /* Firefox */
+}
+
+.box-title-input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: $secondary-font-color;
+}
+
+.box-title-input::-ms-input-placeholder { /* Microsoft Edge */
+  color: $secondary-font-color;
+}
+
+.data-view-card {
+  h1 {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: -10px;
+    font-size: 36px;
+    font-weight: bold;
+    color: $primary-color;
+  }
+
+  label {
+    text-align: right;
+    font-weight: bold;
+  }
+
+  &.big-label {
+    label {
+      font-size: 18px;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    label {
+      text-align: left;
+      margin-top: 10px;
+      margin-bottom: 0px;
+    }
+  }
+}
+
+.task-factor-table {
+  width: 100%;
+  margin: auto 10px;
+
+  td:first-child {
+    width: auto;
+    text-align: left;
+  }
+
+  td:nth-child(2n)  {
+    width: 50px;
+  }
+}
+
+.task-virtue-box {
+  background-color: #3b93fe;
+  color: #ffffff;
+  padding: 5px;
+  margin-right: 5px;
+  border-radius: 10px;
+  display: block;
+  margin-bottom: 5px;
+  white-space: normal;
+}
+
+.task-factor-box {
+  background-color: #3b93fe;
+  color: #ffffff;
+  padding: 5px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  white-space: normal;
+
+  &.required {
+    background-color: $primary-color;
+
+    span:first-child:after {
+      content: ' *';
+      color: $white;
+    }
+  }
+}
+.col-lg-hide {
+  display: block;
+}
+
+.col-lg-show {
+  display: none;
+}
+
+@media screen and (min-width: 992px) {
+  .none-left-space {
+    padding-left: 0 !important;
+
+    .card {
+      margin-left: 0 !important;
+    }
+  }
+
+  .col-lg-hide {
+    display: none;
+  }
+
+  .col-lg-show {
+    display: block;
+  }
+}
+
+.more-data-link {
+  text-align: right;
+  color: $primary-color;
+
+  a {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+.deadline_coming {
+  background-color: $warning-color !important;
+}
+
+.blink {
+  animation: blink-animation 1s steps(5, start) infinite;
+  -webkit-animation: blink-animation 1s steps(5, start) infinite;
+}
+
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+
+.peroid_selector {
+  label {
+    margin-left: 30px;
+    margin-right: 10px;
+    margin-top: 5px;
+  }
+
+  ng-select {
+    color: black;
+    width: 300px;
+
+    .ng-select-container .ng-value span {
+      color: $primary-color;
+      background-color: transparent;
+      font-weight: bold;
+      padding: 0;
+      margin: 0;
+      border-radius: 0;
+      display: inline-flex;
+      white-space: normal;
+    }
+  }
+}
+
+.required-star:after {
+  content: ' *';
+}
+
+.loading-points {
+  position: fixed;
+  display: block;
+  margin: 0;
+  padding: 0;
+  top: 45vh;
+
+  .lds-ellipsis {
+    width: 28vw;
+    margin-left: 48vw;
+  }
+}
+
+.table-header-rotated {
+  thead {
+    th {
+      border-top: none;
+    }
+  }
+
+  th.rotate {
+    height: 100px;
+    white-space: nowrap;
+    // Firefox needs the extra DIV for some reason, otherwise the text disappears if you rotate
+    > div {
+      transform:
+              // Magic Numbers
+              translate(0px, -4px)
+                // 45 is really 360-45
+              rotate(337deg);
+      width: 30px;
+    }
+  }
+}

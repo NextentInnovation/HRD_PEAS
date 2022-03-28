@@ -1,0 +1,85 @@
+variables:
+  ARTIFACT_NAME: "peas.war"
+  WILDFLY_HQ_USER: "root"
+  WILDFLY_HQ_HOST: "192.168.102.206"
+  AUTODEPLOY_PATH: "/opt/wildfly-17.0.1.Final/standalone/deployments"
+  NPM_OPS: "--unsafe-perm"
+  
+  
+
+stages:
+  - build
+  - build_war
+  - deploy
+
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+
+cache:
+  paths:
+    - node_modules/
+    - dist/
+    - target/
+
+build:nextentDev:
+  stage: build
+  image: alexsuch/angular-cli:7.3.8
+  script:
+    - npm install $NPM_OPS
+    - ng build -c test
+  when: manual
+  only:
+    - develop
+  artifacts:
+    paths:
+      - node_modules/
+      - dist/
+    expire_in: 1 week
+
+build:prod:
+  stage: build
+  script:
+    - npm install $NPM_OPS
+    - ng build --configuration=PROD
+  when: manual
+  only:
+    - master
+  artifacts:
+    paths:
+      - node_modules/
+      - dist/
+    expire_in: 1 week
+
+build:war:
+  stage: build_war
+  image: registry.nextentdmz.hu:5000/peas/builder/fe-war:1.0
+  script:
+    - test -d target && rm -fr target/* || mkdir target
+    - cd dist
+    - zip -r ../target/$ARTIFACT_NAME .
+    - cd ..
+  when: manual
+  only:
+    - develop
+    - master
+  artifacts:
+    paths:
+      - target/$ARTIFACT_NAME
+    expire_in: 1 week
+
+deploy:nextent_Dev:
+  stage: deploy
+  image: registry.nextentdmz.hu:5000/peas/builder/fe-war:1.0
+  script:
+    - echo "deploy"
+    # Undeploy
+    - echo $WILDFLY_SERVER_SSH_KEY | base64 -d > private.key
+    - chmod 600 private.key
+    - ssh -oStrictHostKeyChecking=no -i private.key $WILDFLY_HQ_USER@$WILDFLY_HQ_HOST rm -f $AUTODEPLOY_PATH/$ARTIFACT_NAME
+    - sleep 3
+    # Copy Deploy to autodeploy dir
+    - scp -i private.key target/$ARTIFACT_NAME $WILDFLY_HQ_USER@$WILDFLY_HQ_HOST:$AUTODEPLOY_PATH/$ARTIFACT_NAME
+  when: manual
+  only:
+    - develop
+    - master

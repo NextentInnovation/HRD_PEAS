@@ -1,0 +1,69 @@
+<mat-toolbar class="header mat-primary">
+    <button class="btn btn-outline-primary" (click)="menuToggle()">
+        <i class="fas fa-bars"></i>
+    </button>
+    <img alt="PEAR logo" [routerLink]="'/'" class="logo pointer" src="./assets/images/logo_invers.png"/>
+    <div class="h-align-center">
+
+    </div>
+    <div>
+        <button class="btn btn-outline-primary" [routerLink]="['/' + SiteURLS.TASK.BASE + '/' + SiteURLS.TASK.CREATE, {back: 'main'}]"
+                [tooltip]="'header.create-new-task.tooltip' | translate" container="body" containerClass="peas-header-tooltip" placement="bottom" #pop_select_button="bs-tooltip">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+    <div>
+        <button class="btn btn-outline-primary" [ngClass]="{'disabled': !(toDoList && toDoList.length > 0)}" (click)="openNextToDo()"
+                [tooltip]="(toDoList && toDoList.length > 0) ? ('header.todo.tooltip' | translate: { number: toDoList.length}) : 'header.todo.tooltip.none' | translate"
+                container="body" containerClass="peas-header-tooltip" placement="bottom" #pop_select_button="bs-tooltip">
+            <i class="fas fa-tasks"></i>
+        </button>
+    </div>
+    <div class="notification-list" #dropDownBox>
+        <button class="btn btn-outline-primary" [tooltip]="(getUnreadNotificationNumber() > 0) ? ('header.notification.tooltip' | translate: { number: getUnreadNotificationNumber()}) : 'header.notification.tooltip.none' | translate"
+                container="body" containerClass="peas-header-tooltip" placement="bottom" #pop_select_button="bs-tooltip"
+                (click)="!dropDown.classList.contains('show') ? loadNotificationsAndSetRead() : ''; dropDown.classList.toggle('show'); dropDownMenu.classList.toggle('show');">
+            <i class="far fa-bell notification"><span class="new" *ngIf="newNotificiation"></span></i>
+        </button>
+        <div class="dropdown" #dropDown>
+            <div>
+            <ul class="dropdown-menu custom-scrollbar" #dropDownMenu>
+                <li class="hover" [ngClass]="{ 'readed': !notif.readed, 'pointer': notif.status === NotificationStatus.OPEN }" (click)="goToReferenceAction(notif)"
+                    *ngFor="let notif of notificationList | slice:0:8;" role="menuitem">
+                    <i *ngIf="notif.status === NotificationStatus.OPEN" class="fas fa-exclamation-circle"></i>
+                    <i *ngIf="notif.status === NotificationStatus.INFORMATION" class="fas fa-info"></i>
+                    <i *ngIf="notif.status === NotificationStatus.CLOSE" class="fas fa-check"></i>
+                    <i *ngIf="notif.status === NotificationStatus.EXPIRED" class="fas fa-times"></i>
+                    <div class="notification-container">
+                        <label>{{ notif.subject }}</label>
+                        <div [innerHTML]="notif.body"></div>
+                        <span>{{ notif.createdDate | date: DateUtils.DATE_TIME_FORMAT }}</span>
+                    </div>
+                </li>
+                <li *ngIf="(notificationList && notificationList.length <= 0) || !notificationList">
+                    <div class="empty-table-text">{{ 'header.notification.empty' | translate }}</div>
+                </li>
+                <li *ngIf="(notificationList && notificationList.length > 0) || !notificationList" role="menuitem" class="show-all"
+                    (click)="dropDown.classList.remove('show'); dropDownMenu.classList.remove('show')">
+                    <button class="btn btn-link" [routerLink]="'/' + SiteURLS.NOTIFICATION.BASE">{{ 'header.notification.show_all' | translate }}</button>
+                </li>
+            </ul>
+            </div>
+        </div>
+    </div>
+    <div class="vertical-line"></div>
+    <div style="position: relative" dropdown placement="bottom right" #userMenuDropDown="bs-dropdown">
+        <div dropdownToggle class="header-personal-menu pointer">
+            <div class="name">{{ userData?.fullName ? userData?.fullName : 'Anonymus' }}</div>
+            <span class="profile"> {{ getMonogram( userData?.fullName ) }} </span>
+        </div>
+            <ul class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                <!--li>
+                    <button class="dropdown-item"><i class="far fa-eye"></i> Profil</button>
+                </li-->
+                <li>
+                    <button class="dropdown-item" (click)="logout()"><i class="fas fa-sign-out-alt"></i> {{ 'header.logout' | translate }}</button>
+                </li>
+            </ul>
+    </div>
+</mat-toolbar>
